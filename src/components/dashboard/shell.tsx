@@ -133,8 +133,9 @@ export function DashboardShell({
                   <button
                     onClick={() => {
                       setIsOpen(false);
+                      const origin = encodeURIComponent(window.location.origin);
                       window.open(
-                        `${API_BASE}/auth/google`,
+                        `${API_BASE}/auth/google?origin=${origin}`,
                         "google_oauth",
                         "width=500,height=600,left=200,top=100",
                       );

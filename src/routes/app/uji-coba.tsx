@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
-import { Bot, RotateCcw, Send, Sparkles, User } from "lucide-react";
+import { Link, createFileRoute } from "@tanstack/react-router";
+import { Bot, RotateCcw, Send, ShieldAlert, Sparkles, User } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -15,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { getAdTemplates, getFaqItems, getKnowledgeDocs } from "@/mock/api";
+import { getAdTemplates, getFaqItems, getKnowledgeDocs, getLicenseStatus, trialBot } from "@/mock/api";
 import { aiEngines } from "@/mock/data";
 
 export const Route = createFileRoute("/app/uji-coba")({
@@ -47,6 +47,7 @@ function UjiCobaPage() {
   const { data: docs = [] } = useQuery({ queryKey: ["docs"], queryFn: getKnowledgeDocs });
   const { data: faqs = [] } = useQuery({ queryKey: ["faqs"], queryFn: getFaqItems });
   const { data: ads = [] } = useQuery({ queryKey: ["ads"], queryFn: getAdTemplates });
+  const { data: licenseStatus } = useQuery({ queryKey: ["license-status"], queryFn: getLicenseStatus });
 
   const [engine, setEngine] = useState("deepseek-v4-flash");
   const [kanal, setKanal] = useState<"chat" | "iklan">("chat");
@@ -54,7 +55,9 @@ function UjiCobaPage() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSend = () => {
+  const isLicenseActive = licenseStatus?.isActive ?? true;
+
+  const handleSend = async () => {
     if (!input.trim()) return;
 
     const userText = input.trim();
@@ -70,6 +73,25 @@ function UjiCobaPage() {
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
     setLoading(true);
+
+    try {
+      const trialResult = await trialBot(userText, kanal);
+      if (trialResult) {
+        const botMsg: Message = {
+          id: `b-${Date.now()}`,
+          sender: "bot",
+          text: trialResult.jawaban,
+          source: trialResult.sumber,
+          confidence: trialResult.keyakinan,
+          time: new Date().toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" }),
+        };
+        setMessages((prev) => [...prev, botMsg]);
+        setLoading(false);
+        return;
+      }
+    } catch {
+      // Fallback local logic below
+    }
 
     setTimeout(() => {
       let botResponse =
@@ -146,6 +168,20 @@ function UjiCobaPage() {
           </Button>
         }
       />
+
+      {!isLicenseActive && (
+        <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded-lg border border-amber-500/30 bg-amber-500/10 p-4 text-amber-800 dark:text-amber-200">
+          <div className="flex items-center gap-3">
+            <ShieldAlert className="size-5 shrink-0 text-amber-600 dark:text-amber-400" />
+            <div className="text-xs sm:text-sm">
+              <span className="font-semibold">Lisensi Tidak Aktif atau Habis:</span> Fitur auto-reply AI dan balas iklan dinonaktifkan sampai lisensi diaktifkan.
+            </div>
+          </div>
+          <Button asChild size="sm" variant="outline" className="border-amber-500/40 hover:bg-amber-500/20 text-xs">
+            <Link to="/app/lisensi">Aktivasi Lisensi →</Link>
+          </Button>
+        </div>
+      )}
 
       <div className="grid gap-6 lg:grid-cols-[300px_1fr]">
         <div className="panel space-y-5 p-5">

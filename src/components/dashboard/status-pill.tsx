@@ -36,3 +36,10 @@ export function toneForWa(status: string): Tone {
   if (status === "memindai") return "info";
   return "danger";
 }
+
+export function toneForTenant(status: string): Tone {
+  if (status === "aktif") return "success";
+  if (status === "suspend") return "danger";
+  return "muted";
+}
+

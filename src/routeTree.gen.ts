@@ -25,6 +25,7 @@ import { Route as AppPengetahuanRouteImport } from './routes/app/pengetahuan'
 import { Route as AppPercakapanRouteImport } from './routes/app/percakapan'
 import { Route as AppUjiCobaRouteImport } from './routes/app/uji-coba'
 import { Route as AppWhatsappRouteImport } from './routes/app/whatsapp'
+import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as AdminTenantsIndexRouteImport } from './routes/admin/tenants.index'
 import { Route as AdminTenantsTenantIdRouteImport } from './routes/admin/tenants.$tenantId'
 
@@ -108,6 +109,11 @@ const AppWhatsappRoute = AppWhatsappRouteImport.update({
   path: '/whatsapp',
   getParentRoute: () => AppRouteRoute,
 } as any)
+const AuthCallbackRoute = AuthCallbackRouteImport.update({
+  id: '/auth/callback',
+  path: '/auth/callback',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminTenantsIndexRoute = AdminTenantsIndexRouteImport.update({
   id: '/tenants/',
   path: '/tenants/',
@@ -134,6 +140,7 @@ export interface FileRoutesByFullPath {
   '/app/percakapan': typeof AppPercakapanRoute
   '/app/uji-coba': typeof AppUjiCobaRoute
   '/app/whatsapp': typeof AppWhatsappRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/admin/': typeof AdminIndexRoute
   '/app/': typeof AppIndexRoute
   '/admin/tenants/$tenantId': typeof AdminTenantsTenantIdRoute
@@ -152,6 +159,7 @@ export interface FileRoutesByTo {
   '/app/percakapan': typeof AppPercakapanRoute
   '/app/uji-coba': typeof AppUjiCobaRoute
   '/app/whatsapp': typeof AppWhatsappRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/admin': typeof AdminIndexRoute
   '/app': typeof AppIndexRoute
   '/admin/tenants/$tenantId': typeof AdminTenantsTenantIdRoute
@@ -173,6 +181,7 @@ export interface FileRoutesById {
   '/app/percakapan': typeof AppPercakapanRoute
   '/app/uji-coba': typeof AppUjiCobaRoute
   '/app/whatsapp': typeof AppWhatsappRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/admin/': typeof AdminIndexRoute
   '/app/': typeof AppIndexRoute
   '/admin/tenants/$tenantId': typeof AdminTenantsTenantIdRoute
@@ -195,6 +204,7 @@ export interface FileRouteTypes {
     | '/app/percakapan'
     | '/app/uji-coba'
     | '/app/whatsapp'
+    | '/auth/callback'
     | '/admin/'
     | '/app/'
     | '/admin/tenants/$tenantId'
@@ -213,6 +223,7 @@ export interface FileRouteTypes {
     | '/app/percakapan'
     | '/app/uji-coba'
     | '/app/whatsapp'
+    | '/auth/callback'
     | '/admin'
     | '/app'
     | '/admin/tenants/$tenantId'
@@ -233,6 +244,7 @@ export interface FileRouteTypes {
     | '/app/percakapan'
     | '/app/uji-coba'
     | '/app/whatsapp'
+    | '/auth/callback'
     | '/admin/'
     | '/app/'
     | '/admin/tenants/$tenantId'
@@ -244,6 +256,7 @@ export interface RootRouteChildren {
   AdminRouteRoute: typeof AdminRouteRouteWithChildren
   AppRouteRoute: typeof AppRouteRouteWithChildren
   MasukRoute: typeof MasukRoute
+  AuthCallbackRoute: typeof AuthCallbackRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -360,6 +373,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppWhatsappRouteImport
       parentRoute: typeof AppRouteRoute
     }
+    '/auth/callback': {
+      id: '/auth/callback'
+      path: '/auth/callback'
+      fullPath: '/auth/callback'
+      preLoaderRoute: typeof AuthCallbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/tenants/': {
       id: '/admin/tenants/'
       path: '/tenants'
@@ -430,6 +450,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRouteRoute: AdminRouteRouteWithChildren,
   AppRouteRoute: AppRouteRouteWithChildren,
   MasukRoute: MasukRoute,
+  AuthCallbackRoute: AuthCallbackRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

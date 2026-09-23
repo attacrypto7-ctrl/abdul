@@ -13,6 +13,7 @@ import {
 
 import { DashboardShell, type NavItem } from "@/components/dashboard/shell";
 import { getGoogleUser } from "@/lib/google-auth";
+import { getToken } from "@/lib/api-client";
 
 const items: NavItem[] = [
   { to: "/app", label: "Ringkasan", icon: LayoutDashboard },
@@ -29,7 +30,7 @@ const items: NavItem[] = [
 export const Route = createFileRoute("/app")({
   beforeLoad: () => {
     try {
-      if (!getGoogleUser()) throw redirect({ to: "/" });
+      if (!getGoogleUser() && !getToken()) throw redirect({ to: "/" });
     } catch (e) {
       if (e && typeof e === "object" && "statusCode" in e) throw e;
       return;

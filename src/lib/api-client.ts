@@ -63,6 +63,9 @@ export async function apiFetch<T>(path: string, opts: FetchOpts = {}): Promise<T
   let payload: BodyInit | undefined;
   if (opts.body instanceof FormData) {
     payload = opts.body;
+  } else if (typeof opts.body === "string") {
+    headers["Content-Type"] = "application/json";
+    payload = opts.body;
   } else if (opts.body !== undefined) {
     headers["Content-Type"] = "application/json";
     payload = JSON.stringify(opts.body);
@@ -76,10 +79,7 @@ export async function apiFetch<T>(path: string, opts: FetchOpts = {}): Promise<T
   const res = await fetch(`${API_BASE}${path}`, reqInit);
   if (res.status === 401 && opts.auth !== false) {
     clearSession();
-    if (typeof window !== "undefined" && !window.location.pathname.startsWith("/masuk")) {
-      window.location.assign("/masuk");
-    }
-    throw new ApiError(401, "Sesi berakhir, silakan masuk lagi");
+    throw new ApiError(401, "Sesi berakhir atau otorisasi tidak valid");
   }
   if (!res.ok) {
     const text = await res.text().catch(() => "");
@@ -159,12 +159,17 @@ export const activateLicense = (kode: string) =>
 
 // Tenant: WhatsApp
 export const fetchWaNumbers = () => apiFetch<AnyRecord[]>("/whatsapp/numbers");
-export const createWaNumber = (data: { label: string; nomor: string }) =>
+export const fetchWaPrimary = () => apiFetch<AnyRecord>("/whatsapp/primary");
+export const fetchWaQrDirect = () =>
+  apiFetch<{ qr: string | null; status: string; waNumberId: string }>("/whatsapp/qr");
+export const createWaNumber = (data: { label?: string; nomor?: string }) =>
   apiFetch<AnyRecord>("/whatsapp/numbers", { method: "POST", body: data });
 export const fetchWaQr = (id: string) =>
-  apiFetch<{ qr: string | null; status: string }>(`/whatsapp/numbers/${id}/qr`);
+  apiFetch<{ qr: string | null; status: string; waNumberId: string }>(`/whatsapp/numbers/${id}/qr`);
 export const disconnectWa = (id: string) =>
   apiFetch<AnyRecord>(`/whatsapp/numbers/${id}/disconnect`, { method: "POST" });
+export const deleteWaNumber = (id: string) =>
+  apiFetch<{ success: boolean; id: string }>(`/whatsapp/numbers/${id}`, { method: "DELETE" });
 export const toggleWaAuto = (id: string, data: { autoChat?: boolean; autoIklan?: boolean }) =>
   apiFetch<AnyRecord>(`/whatsapp/numbers/${id}/auto`, { method: "PATCH", body: data });
 

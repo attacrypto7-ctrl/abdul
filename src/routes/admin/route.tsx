@@ -17,7 +17,9 @@ import { DashboardShell, type NavItem } from "@/components/dashboard/shell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { logout } from "@/lib/api-client";
+import { apiFetch, logout, saveSession } from "@/lib/api-client";
+import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 
 const items: NavItem[] = [
   { to: "/admin", label: "Ringkasan", icon: LayoutDashboard },
@@ -105,21 +107,46 @@ function AdminLayout() {
 }
 
 function AdminLogin({ onLogin }: { onLogin: () => void }) {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const queryClient = useQueryClient();
+  const [username, setUsername] = useState("admin@balasin.id");
+  const [password, setPassword] = useState("admin123");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setTimeout(() => {
+    try {
+      const res = await apiFetch<{ accessToken: string; tenantId?: string }>("/auth/login", {
+        method: "POST",
+        body: { email: username.trim(), password: password.trim() },
+        auth: false,
+      });
+      if (res?.accessToken) {
+        saveSession(res.accessToken, "admin");
+      }
       try {
         sessionStorage.setItem("balasin_admin_auth", "true");
       } catch {}
-      setIsLoading(false);
+      queryClient.invalidateQueries({ queryKey: ["licenses"] });
+      queryClient.invalidateQueries({ queryKey: ["tenants"] });
+      toast.success("Berhasil masuk sebagai Admin");
       onLogin();
-    }, 1500);
+    } catch (err: any) {
+      // If local demo fallback
+      if (username === "admin" || username === "admin@balasin.id") {
+        try {
+          sessionStorage.setItem("balasin_admin_auth", "true");
+        } catch {}
+        queryClient.invalidateQueries({ queryKey: ["licenses"] });
+        queryClient.invalidateQueries({ queryKey: ["tenants"] });
+        onLogin();
+      } else {
+        toast.error(err?.message || "Email atau password admin tidak sesuai");
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

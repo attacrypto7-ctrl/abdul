@@ -1,4 +1,4 @@
-import { Link, createFileRoute } from "@tanstack/react-router";
+import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import {
   Bot,
   FileText,
@@ -11,6 +11,7 @@ import {
   ChevronDown,
   LogOut,
   UserPlus,
+  LayoutDashboard,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
@@ -83,6 +84,7 @@ const fitur = [
 ];
 
 function Landing() {
+  const navigate = useNavigate();
   const [showLogin, setShowLogin] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -151,6 +153,7 @@ function Landing() {
           }
           toast.success("Berhasil masuk dengan Google");
           setShowLogin(false);
+          navigate({ to: "/app" });
         }
         if (event.data?.type === "GOOGLE_AUTH_ERROR") {
           const msg = (event.data?.message as string) || "Autentikasi Google gagal";
@@ -168,8 +171,9 @@ function Landing() {
   const handleGoogleClick = () => {
     setOauthError(null);
     try {
+      const origin = encodeURIComponent(window.location.origin);
       const popup = window.open(
-        `${API_BASE}/auth/google`,
+        `${API_BASE}/auth/google?origin=${origin}`,
         "google_oauth",
         "width=500,height=600,left=200,top=100",
       );
@@ -257,6 +261,14 @@ function Landing() {
                         </p>
                       </div>
                       <div className="-mx-1 my-1 h-px bg-muted" />
+                      <Link
+                        to="/app"
+                        onClick={() => setIsOpen(false)}
+                        className="relative flex w-full cursor-pointer select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm font-medium text-emerald-400 outline-none hover:bg-accent hover:text-emerald-300"
+                      >
+                        <LayoutDashboard className="mr-2 size-4" />
+                        Buka Dashboard
+                      </Link>
                       <button
                         onClick={() => {
                           setIsOpen(false);

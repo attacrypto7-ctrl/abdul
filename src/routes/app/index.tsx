@@ -107,12 +107,11 @@ function TenantOverview() {
         </section>
 
         <section className="panel p-5">
-          <h2 className="text-sm font-semibold">Kuota chat bulan ini</h2>
+          <h2 className="text-sm font-semibold">Total chat dibalas</h2>
           <p className="mt-4 text-3xl font-semibold">{formatNumber(totalChat)}</p>
           <p className="text-xs text-muted-foreground">
-            {kuotaChat > 0 ? `dari kuota ${formatNumber(kuotaChat)} chat` : "Belum ada kuota aktif"}
+            {activeLicense ? `Lisensi aktif (${activeLicense.plan}) • Unlimited` : "Belum ada lisensi aktif"}
           </p>
-          <Progress value={persenKuota} className="mt-4 h-2" />
           <div className="mt-6 space-y-2 text-sm">
             <div className="flex justify-between">
               <span className="text-muted-foreground">Balas Chat Otomatis</span>

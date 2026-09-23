@@ -56,13 +56,28 @@ export interface FaqItem {
   jawaban: string;
 }
 
+export interface AdTemplateStep {
+  id: string;
+  urutan: number;
+  tipe: "teks" | "gambar" | "video";
+  isiTeks?: string;
+  urlGambar?: string;
+  namaGambar?: string;
+  urlVideo?: string;
+  namaVideo?: string;
+  urlMedia?: string;
+  namaMedia?: string;
+}
+
 export interface AdTemplate {
   id: string;
   pertanyaan: string;
-  jawaban: string;
-  mode: "exact" | "fuzzy";
+  jawaban?: string;
+  caraMencocokkan?: "sama_persis" | "boleh_mirip";
+  mode?: "exact" | "fuzzy";
   dipakai: number;
   aktif: boolean;
+  langkah?: AdTemplateStep[];
 }
 
 export interface ChatLog {
