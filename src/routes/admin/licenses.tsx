@@ -74,10 +74,8 @@ export const Route = createFileRoute("/admin/licenses")({
 function LicensesPage() {
   const queryClient = useQueryClient();
   const { data: licenses = [], isLoading } = useQuery({ queryKey: ["licenses"], queryFn: getLicenses });
-  const { data: tenants = [] } = useQuery({ queryKey: ["tenants"], queryFn: getTenants });
 
   const [open, setOpen] = useState(false);
-  const [selectedTenant, setSelectedTenant] = useState("");
   const [selectedPlan, setSelectedPlan] = useState("Growth");
   const [berakhirDate, setBerakhirDate] = useState(() => {
     const d = new Date();
@@ -116,17 +114,14 @@ function LicensesPage() {
 
     setIsSubmitting(true);
     try {
-      const cleanTenant = selectedTenant && selectedTenant !== "unassigned" ? selectedTenant : undefined;
       const res = await createAdminLicenseApi({
-        tenantId: cleanTenant,
         plan: selectedPlan,
         berakhir: berakhirDate,
       });
       setCreatedLicense(res);
       queryClient.invalidateQueries({ queryKey: ["licenses"] });
-      queryClient.invalidateQueries({ queryKey: ["tenants"] });
       toast.success("Kode lisensi berhasil di-generate!", {
-        description: `Kode: ${res?.kode} siap dibagikan ke pengguna.`,
+        description: `Kode: ${res?.kode} siap dibagikan ke pengguna siapa saja.`,
       });
     } catch (err: any) {
       toast.error(err?.message || "Gagal membuat lisensi.");
@@ -176,7 +171,6 @@ function LicensesPage() {
               setOpen(v);
               if (!v) {
                 setCreatedLicense(null);
-                setSelectedTenant("");
               }
             }}
           >
@@ -189,7 +183,7 @@ function LicensesPage() {
               <DialogHeader>
                 <DialogTitle>Generate Kode Lisensi Baru</DialogTitle>
                 <DialogDescription>
-                  Kode lisensi bebas diklaim oleh tenant mana saja yang memasukkan kodenya.
+                  Kode lisensi bebas diklaim oleh pengguna mana saja yang memasukkan kodenya.
                 </DialogDescription>
               </DialogHeader>
 
@@ -199,7 +193,7 @@ function LicensesPage() {
                     <CheckCircle2 className="size-8 text-emerald-500 mx-auto" />
                     <h3 className="text-sm font-semibold text-foreground">Kode Lisensi Berhasil Dibuat!</h3>
                     <p className="text-xs text-muted-foreground">
-                      Bagikan kode lisensi ini kepada tenant untuk diaktifkan di halaman Lisensi mereka:
+                      Bagikan kode lisensi ini kepada pengguna/klien untuk diaktifkan di menu Lisensi mereka:
                     </p>
                     <div className="flex items-center justify-center gap-2 pt-2">
                       <code className="rounded bg-background px-3 py-1.5 font-mono text-sm font-bold tracking-wider text-foreground border border-border">
@@ -211,7 +205,7 @@ function LicensesPage() {
                     </div>
                   </div>
                   <DialogFooter>
-                    <Button onClick={() => { setOpen(false); setCreatedLicense(null); setSelectedTenant(""); }} className="w-full">
+                    <Button onClick={() => { setOpen(false); setCreatedLicense(null); }} className="w-full">
                       Selesai
                     </Button>
                   </DialogFooter>
@@ -275,29 +269,6 @@ function LicensesPage() {
                     <p className="text-[11px] text-muted-foreground">
                       Setelah tanggal ini, lisensi akan kedaluwarsa secara otomatis.
                     </p>
-                  </div>
-
-                  <div className="grid gap-2">
-                    <Label className="flex items-center justify-between">
-                      <span>Alokasikan ke Tenant (Opsional)</span>
-                      <span className="text-[11px] text-muted-foreground font-normal">Bisa dikosongkan</span>
-                    </Label>
-                    <Select
-                      value={selectedTenant}
-                      onValueChange={setSelectedTenant}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Bebas / Tanpa Tenant (Kode Umum)" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="unassigned">-- Bebas / Kode Umum (Bisa Diklaim Siapa Saja) --</SelectItem>
-                        {tenants.map((t: any) => (
-                          <SelectItem key={t.id} value={t.id}>
-                            {t.nama} ({t.email})
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
                   </div>
 
                   <DialogFooter className="pt-2">

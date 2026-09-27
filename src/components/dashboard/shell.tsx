@@ -6,6 +6,8 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { getGoogleUser, handleLogout, GoogleUser } from "@/lib/google-auth";
 import { API_BASE } from "@/lib/api-client";
+import { BrandLogo } from "@/components/brand-logo";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export interface NavItem {
   to: string;
@@ -87,15 +89,23 @@ export function DashboardShell({
     : "?";
 
   return (
-    <div className="flex min-h-screen bg-background">
-      <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-sidebar-border bg-sidebar px-4 py-6 md:flex">
+    <div className="flex min-h-screen bg-background text-foreground transition-colors duration-200">
+      <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-sidebar-border bg-sidebar px-4 py-5 md:flex">
+        {/* Brand Logo & Header */}
+        <div className="mb-6 flex items-center justify-between px-2">
+          <Link to="/" className="transition-opacity hover:opacity-90">
+            <BrandLogo size="md" badge={title.includes("Admin") ? "Admin" : undefined} />
+          </Link>
+          <ThemeToggle size="sm" className="size-8" />
+        </div>
+
         {googleUser ? (
           <div
-            className="relative mb-8"
+            className="relative mb-6 rounded-xl border border-border/60 bg-card/60 p-2 shadow-xs"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
-            <button className="flex w-full cursor-pointer items-center gap-3 px-2 text-left transition-opacity hover:opacity-80 focus-visible:outline-none">
+            <button className="flex w-full cursor-pointer items-center gap-2.5 text-left transition-opacity hover:opacity-85 focus-visible:outline-none">
               <span className="relative shrink-0">
                 {avatarSrc && !imgError ? (
                   <img
@@ -103,24 +113,24 @@ export function DashboardShell({
                     alt="Google Profile"
                     referrerPolicy="no-referrer"
                     onError={() => setImgError(true)}
-                    className="w-10 h-10 rounded-full object-cover border border-emerald-500/30"
+                    className="w-9 h-9 rounded-full object-cover border border-emerald-500/40"
                   />
                 ) : (
-                  <span className="flex w-10 h-10 rounded-full items-center justify-center border border-emerald-500/30 bg-emerald-500/15 text-xs font-bold text-emerald-200">
+                  <span className="flex w-9 h-9 rounded-full items-center justify-center border border-emerald-500/40 bg-emerald-500/15 text-xs font-bold text-emerald-600 dark:text-emerald-300">
                     {initials}
                   </span>
                 )}
-                <span className="absolute -bottom-0.5 -right-0.5 size-3 rounded-full bg-emerald-500 border-2 border-background" />
+                <span className="absolute -bottom-0.5 -right-0.5 size-2.5 rounded-full bg-emerald-500 border-2 border-background" />
               </span>
               <span className="min-w-0 flex-1 leading-tight">
-                <span className="block truncate text-sm font-semibold text-sidebar-foreground">
+                <span className="block truncate text-xs font-semibold text-foreground">
                   {googleUser.name}
                 </span>
-                <span className="block truncate text-xs text-muted-foreground max-w-[130px]">
+                <span className="block truncate text-[11px] text-muted-foreground max-w-[120px]">
                   {googleUser.email}
                 </span>
               </span>
-              <ChevronDown className="size-4 shrink-0 text-muted-foreground" />
+              <ChevronDown className="size-3.5 shrink-0 text-muted-foreground" />
             </button>
             {isOpen && (
               <div className="absolute top-full left-0 pt-2 z-50">
@@ -168,13 +178,13 @@ export function DashboardShell({
                 key={item.to}
                 to={item.to}
                 className={cn(
-                  "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                  "group flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-all duration-200",
                   active
-                    ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                    : "text-muted-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground",
+                    ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-xs"
+                    : "text-muted-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground hover:translate-x-1",
                 )}
               >
-                <item.icon className={cn("size-4", active && "text-primary")} />
+                <item.icon className={cn("size-4 transition-transform duration-200 group-hover:scale-110", active && "text-primary")} />
                 {item.label}
               </Link>
             );
@@ -201,13 +211,22 @@ export function DashboardShell({
       </aside>
 
       <div className="min-w-0 flex-1">
+        {/* Mobile top header bar */}
+        <div className="flex items-center justify-between border-b border-border bg-sidebar px-4 py-2.5 md:hidden">
+          <Link to="/">
+            <BrandLogo size="sm" badge={title.includes("Admin") ? "Admin" : undefined} />
+          </Link>
+          <ThemeToggle size="sm" className="size-8" />
+        </div>
+
+        {/* Mobile horizontal nav */}
         <div className="flex gap-1 overflow-x-auto border-b border-border bg-sidebar px-3 py-2 md:hidden">
           {items.map((item) => (
             <Link
               key={item.to}
               to={item.to}
               className="flex items-center gap-2 whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-medium text-muted-foreground"
-              activeProps={{ className: "bg-sidebar-accent text-sidebar-accent-foreground" }}
+              activeProps={{ className: "bg-sidebar-accent text-sidebar-accent-foreground font-semibold" }}
             >
               <item.icon className="size-3.5" />
               {item.label}

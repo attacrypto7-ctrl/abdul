@@ -21,6 +21,8 @@ import { Route as AppAnalitikRouteImport } from './routes/app/analitik'
 import { Route as AppBalasChatRouteImport } from './routes/app/balas-chat'
 import { Route as AppBalasIklanRouteImport } from './routes/app/balas-iklan'
 import { Route as AppLisensiRouteImport } from './routes/app/lisensi'
+import { Route as AppPengaturanRouteImport } from './routes/app/pengaturan'
+import { Route as AppPengelolaanNomorRouteImport } from './routes/app/pengelolaan-nomor'
 import { Route as AppPengetahuanRouteImport } from './routes/app/pengetahuan'
 import { Route as AppPercakapanRouteImport } from './routes/app/percakapan'
 import { Route as AppUjiCobaRouteImport } from './routes/app/uji-coba'
@@ -89,6 +91,16 @@ const AppLisensiRoute = AppLisensiRouteImport.update({
   path: '/lisensi',
   getParentRoute: () => AppRouteRoute,
 } as any)
+const AppPengaturanRoute = AppPengaturanRouteImport.update({
+  id: '/pengaturan',
+  path: '/pengaturan',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppPengelolaanNomorRoute = AppPengelolaanNomorRouteImport.update({
+  id: '/pengelolaan-nomor',
+  path: '/pengelolaan-nomor',
+  getParentRoute: () => AppRouteRoute,
+} as any)
 const AppPengetahuanRoute = AppPengetahuanRouteImport.update({
   id: '/pengetahuan',
   path: '/pengetahuan',
@@ -136,6 +148,8 @@ export interface FileRoutesByFullPath {
   '/app/balas-chat': typeof AppBalasChatRoute
   '/app/balas-iklan': typeof AppBalasIklanRoute
   '/app/lisensi': typeof AppLisensiRoute
+  '/app/pengaturan': typeof AppPengaturanRoute
+  '/app/pengelolaan-nomor': typeof AppPengelolaanNomorRoute
   '/app/pengetahuan': typeof AppPengetahuanRoute
   '/app/percakapan': typeof AppPercakapanRoute
   '/app/uji-coba': typeof AppUjiCobaRoute
@@ -155,6 +169,8 @@ export interface FileRoutesByTo {
   '/app/balas-chat': typeof AppBalasChatRoute
   '/app/balas-iklan': typeof AppBalasIklanRoute
   '/app/lisensi': typeof AppLisensiRoute
+  '/app/pengaturan': typeof AppPengaturanRoute
+  '/app/pengelolaan-nomor': typeof AppPengelolaanNomorRoute
   '/app/pengetahuan': typeof AppPengetahuanRoute
   '/app/percakapan': typeof AppPercakapanRoute
   '/app/uji-coba': typeof AppUjiCobaRoute
@@ -177,6 +193,8 @@ export interface FileRoutesById {
   '/app/balas-chat': typeof AppBalasChatRoute
   '/app/balas-iklan': typeof AppBalasIklanRoute
   '/app/lisensi': typeof AppLisensiRoute
+  '/app/pengaturan': typeof AppPengaturanRoute
+  '/app/pengelolaan-nomor': typeof AppPengelolaanNomorRoute
   '/app/pengetahuan': typeof AppPengetahuanRoute
   '/app/percakapan': typeof AppPercakapanRoute
   '/app/uji-coba': typeof AppUjiCobaRoute
@@ -200,6 +218,8 @@ export interface FileRouteTypes {
     | '/app/balas-chat'
     | '/app/balas-iklan'
     | '/app/lisensi'
+    | '/app/pengaturan'
+    | '/app/pengelolaan-nomor'
     | '/app/pengetahuan'
     | '/app/percakapan'
     | '/app/uji-coba'
@@ -219,6 +239,8 @@ export interface FileRouteTypes {
     | '/app/balas-chat'
     | '/app/balas-iklan'
     | '/app/lisensi'
+    | '/app/pengaturan'
+    | '/app/pengelolaan-nomor'
     | '/app/pengetahuan'
     | '/app/percakapan'
     | '/app/uji-coba'
@@ -240,6 +262,8 @@ export interface FileRouteTypes {
     | '/app/balas-chat'
     | '/app/balas-iklan'
     | '/app/lisensi'
+    | '/app/pengaturan'
+    | '/app/pengelolaan-nomor'
     | '/app/pengetahuan'
     | '/app/percakapan'
     | '/app/uji-coba'
@@ -345,6 +369,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppLisensiRouteImport
       parentRoute: typeof AppRouteRoute
     }
+    '/app/pengaturan': {
+      id: '/app/pengaturan'
+      path: '/pengaturan'
+      fullPath: '/app/pengaturan'
+      preLoaderRoute: typeof AppPengaturanRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/app/pengelolaan-nomor': {
+      id: '/app/pengelolaan-nomor'
+      path: '/pengelolaan-nomor'
+      fullPath: '/app/pengelolaan-nomor'
+      preLoaderRoute: typeof AppPengelolaanNomorRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
     '/app/pengetahuan': {
       id: '/app/pengetahuan'
       path: '/pengetahuan'
@@ -422,6 +460,8 @@ interface AppRouteRouteChildren {
   AppBalasChatRoute: typeof AppBalasChatRoute
   AppBalasIklanRoute: typeof AppBalasIklanRoute
   AppLisensiRoute: typeof AppLisensiRoute
+  AppPengaturanRoute: typeof AppPengaturanRoute
+  AppPengelolaanNomorRoute: typeof AppPengelolaanNomorRoute
   AppPengetahuanRoute: typeof AppPengetahuanRoute
   AppPercakapanRoute: typeof AppPercakapanRoute
   AppUjiCobaRoute: typeof AppUjiCobaRoute
@@ -434,6 +474,8 @@ const AppRouteRouteChildren: AppRouteRouteChildren = {
   AppBalasChatRoute: AppBalasChatRoute,
   AppBalasIklanRoute: AppBalasIklanRoute,
   AppLisensiRoute: AppLisensiRoute,
+  AppPengaturanRoute: AppPengaturanRoute,
+  AppPengelolaanNomorRoute: AppPengelolaanNomorRoute,
   AppPengetahuanRoute: AppPengetahuanRoute,
   AppPercakapanRoute: AppPercakapanRoute,
   AppUjiCobaRoute: AppUjiCobaRoute,

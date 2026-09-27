@@ -116,42 +116,56 @@ function PercakapanPage() {
 
       <div className="panel overflow-hidden">
         <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Kontak</TableHead>
-              <TableHead>Kanal</TableHead>
-              <TableHead className="max-w-xs">Pesan Pelanggan</TableHead>
-              <TableHead className="max-w-xs">Balasan Terakhir</TableHead>
-              <TableHead>Waktu</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead className="text-right">Aksi</TableHead>
+          <TableHeader className="bg-card/40">
+            <TableRow className="border-b border-border hover:bg-transparent">
+              <TableHead className="px-6 py-3 text-left text-xs font-semibold text-muted-foreground border-r border-border">
+                Kontak
+              </TableHead>
+              <TableHead className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground border-r border-border">
+                Kanal
+              </TableHead>
+              <TableHead className="max-w-xs px-4 py-3 text-left text-xs font-semibold text-muted-foreground border-r border-border">
+                Pesan Pelanggan
+              </TableHead>
+              <TableHead className="max-w-xs px-4 py-3 text-left text-xs font-semibold text-muted-foreground border-r border-border">
+                Balasan Terakhir
+              </TableHead>
+              <TableHead className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground border-r border-border">
+                Waktu
+              </TableHead>
+              <TableHead className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground border-r border-border">
+                Status
+              </TableHead>
+              <TableHead className="px-6 py-3 text-left text-xs font-semibold text-muted-foreground">
+                Aksi
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {filteredLogs.map((log) => (
-              <TableRow key={log.id}>
-                <TableCell>
+              <TableRow key={log.id} className="border-b border-border">
+                <TableCell className="px-6 py-3 border-r border-border">
                   <p className="font-medium text-foreground">{log.kontak}</p>
                   <p className="font-mono text-xs text-muted-foreground">{log.nomor}</p>
                 </TableCell>
-                <TableCell>
+                <TableCell className="px-4 py-3 border-r border-border">
                   <Badge variant="outline" className="font-normal">
                     {log.kanal}
                   </Badge>
                 </TableCell>
-                <TableCell className="max-w-xs truncate text-xs text-foreground">
-                  "{log.pesanTerakhir}"
+                <TableCell className="max-w-xs truncate px-4 py-3 text-xs text-foreground border-r border-border">
+                  &quot;{log.pesanTerakhir}&quot;
                 </TableCell>
-                <TableCell className="max-w-xs truncate text-xs text-muted-foreground">
+                <TableCell className="max-w-xs truncate px-4 py-3 text-xs text-muted-foreground border-r border-border">
                   {log.balasan}
                 </TableCell>
-                <TableCell className="font-mono text-xs text-muted-foreground whitespace-nowrap">
+                <TableCell className="px-4 py-3 font-mono text-xs text-muted-foreground whitespace-nowrap border-r border-border">
                   {log.waktu}
                 </TableCell>
-                <TableCell>
+                <TableCell className="px-4 py-3 border-r border-border">
                   <StatusPill label={log.status} tone={toneForChatStatus(log.status)} />
                 </TableCell>
-                <TableCell className="text-right whitespace-nowrap">
+                <TableCell className="px-6 py-3 text-right whitespace-nowrap">
                   <div className="flex justify-end gap-1">
                     <Button
                       size="sm"
@@ -180,7 +194,10 @@ function PercakapanPage() {
 
             {filteredLogs.length === 0 && (
               <TableRow>
-                <TableCell colSpan={7} className="py-12 text-center text-muted-foreground">
+                <TableCell
+                  colSpan={7}
+                  className="px-6 py-12 text-center text-muted-foreground"
+                >
                   <MessagesSquare className="mx-auto mb-2 size-8 opacity-40" />
                   Tidak ada data percakapan yang sesuai.
                 </TableCell>

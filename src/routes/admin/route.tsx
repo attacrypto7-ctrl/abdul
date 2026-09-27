@@ -106,15 +106,22 @@ function AdminLayout() {
   );
 }
 
+import { BrandLogo } from "@/components/brand-logo";
+import { ThemeToggle } from "@/components/theme-toggle";
+
 function AdminLogin({ onLogin }: { onLogin: () => void }) {
   const queryClient = useQueryClient();
-  const [username, setUsername] = useState("admin@balasin.id");
-  const [password, setPassword] = useState("admin123");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!username.trim() || !password.trim()) {
+      toast.error("Silakan masukkan username dan password");
+      return;
+    }
     setIsLoading(true);
     try {
       const res = await apiFetch<{ accessToken: string; tenantId?: string }>("/auth/login", {
@@ -133,73 +140,69 @@ function AdminLogin({ onLogin }: { onLogin: () => void }) {
       toast.success("Berhasil masuk sebagai Admin");
       onLogin();
     } catch (err: any) {
-      // If local demo fallback
-      if (username === "admin" || username === "admin@balasin.id") {
-        try {
-          sessionStorage.setItem("balasin_admin_auth", "true");
-        } catch {}
-        queryClient.invalidateQueries({ queryKey: ["licenses"] });
-        queryClient.invalidateQueries({ queryKey: ["tenants"] });
-        onLogin();
-      } else {
-        toast.error(err?.message || "Email atau password admin tidak sesuai");
-      }
+      toast.error(err?.message || "Username atau password admin tidak sesuai");
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#0a0f14] px-4 font-sans">
-      <div className="absolute top-[-10%] left-[-10%] h-[50%] w-[50%] animate-pulse rounded-full bg-emerald-500/10 blur-[120px]" />
-      <div className="absolute bottom-[-10%] right-[-10%] h-[50%] w-[50%] animate-pulse rounded-full bg-emerald-500/10 blur-[120px] [animation-delay:2s]" />
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4 font-sans transition-colors duration-200">
+      {/* Top right Theme Toggle */}
+      <div className="absolute top-5 right-5 z-20">
+        <ThemeToggle />
+      </div>
 
-      <div className="w-full max-w-md animate-in fade-in slide-in-from-bottom-8 duration-700 ease-out">
-        <div className="backdrop-blur-md bg-slate-900/60 border border-emerald-500/20 shadow-2xl rounded-2xl overflow-hidden">
+      {/* Ambient background glows */}
+      <div className="absolute top-[-10%] left-[-10%] h-[50%] w-[50%] animate-pulse rounded-full bg-emerald-500/10 blur-[120px]" />
+      <div className="absolute bottom-[-10%] right-[-10%] h-[50%] w-[50%] animate-pulse rounded-full bg-teal-500/10 blur-[120px] [animation-delay:2s]" />
+
+      <div className="w-full max-w-md animate-in fade-in slide-in-from-bottom-8 duration-500 ease-out z-10">
+        <div className="panel bg-card border-border/80 shadow-xl rounded-2xl overflow-hidden">
           <div className="p-8">
             <div className="flex flex-col items-center text-center mb-8">
-              <div className="flex size-14 items-center justify-center rounded-2xl bg-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.4)] mb-4">
-                <Bot className="size-8 text-[#0a0f14]" />
+              <div className="mb-4">
+                <BrandLogo size="lg" badge="Admin" />
               </div>
-              <h1 className="text-2xl font-bold tracking-tight text-white mb-2">
-                Balasin Admin Panel
+              <h1 className="text-xl font-bold tracking-tight text-foreground">
+                Masuk ke Panel Admin
               </h1>
-              <p className="text-sm text-emerald-500/70">
-                Otorisasi diperlukan untuk mengakses sistem
+              <p className="text-xs text-muted-foreground mt-1">
+                Kredensial khusus administrator platform Balasin
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <div className="space-y-2">
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-1.5">
                 <Label
                   htmlFor="username"
-                  className="text-xs font-semibold uppercase tracking-wider text-emerald-500/50 ml-1"
+                  className="text-xs font-semibold uppercase tracking-wider text-muted-foreground ml-1"
                 >
                   Username
                 </Label>
                 <div className="relative group">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-emerald-500/30 group-focus-within:text-emerald-500 transition-colors" />
+                  <User className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground group-focus-within:text-emerald-500 transition-colors" />
                   <Input
                     id="username"
                     type="text"
-                    placeholder="admin"
+                    placeholder="Admin"
                     required
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    className="bg-black/40 border-emerald-500/10 pl-10 focus-visible:ring-emerald-500 focus-visible:border-emerald-500/50 text-white placeholder:text-white/10"
+                    className="bg-secondary/40 border-border pl-10 text-foreground placeholder:text-muted-foreground/50 focus-visible:ring-emerald-500"
                   />
                 </div>
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 <Label
                   htmlFor="password"
-                  className="text-xs font-semibold uppercase tracking-wider text-emerald-500/50 ml-1"
+                  className="text-xs font-semibold uppercase tracking-wider text-muted-foreground ml-1"
                 >
                   Password
                 </Label>
                 <div className="relative group">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-emerald-500/30 group-focus-within:text-emerald-500 transition-colors" />
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground group-focus-within:text-emerald-500 transition-colors" />
                   <Input
                     id="password"
                     type={showPassword ? "text" : "password"}
@@ -207,12 +210,12 @@ function AdminLogin({ onLogin }: { onLogin: () => void }) {
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="bg-black/40 border-emerald-500/10 pl-10 pr-10 focus-visible:ring-emerald-500 focus-visible:border-emerald-500/50 text-white placeholder:text-white/10"
+                    className="bg-secondary/40 border-border pl-10 pr-10 text-foreground placeholder:text-muted-foreground/50 focus-visible:ring-emerald-500"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-emerald-500/30 hover:text-emerald-500 transition-colors"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
                   >
                     {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
                   </button>
@@ -222,52 +225,39 @@ function AdminLogin({ onLogin }: { onLogin: () => void }) {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full relative overflow-hidden h-11 bg-emerald-500 hover:bg-emerald-400 text-[#0a0f14] font-bold rounded-xl shadow-[0_0_20px_rgba(16,185,129,0.2)] hover:shadow-[0_0_25px_rgba(16,185,129,0.4)] transition-all group active:scale-[0.98]"
+                className="w-full relative overflow-hidden h-11 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-md transition-all active:scale-[0.98] mt-2"
               >
                 {isLoading ? (
                   <Loader2 className="size-5 animate-spin" />
                 ) : (
-                  <>
-                    Masuk ke Panel Admin
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
-                  </>
+                  "Masuk ke Panel Admin"
                 )}
               </Button>
             </form>
-            <div className="mt-8 flex items-center justify-between">
+
+            <div className="mt-6 flex items-center justify-between pt-4 border-t border-border/60">
               <Link
                 to="/"
-                className="group flex items-center gap-2 text-xs font-semibold text-sky-200 transition-all duration-300 hover:text-sky-400"
+                className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
               >
-                <div className="flex size-8 items-center justify-center rounded-lg border border-sky-500/30 bg-sky-950/30 shadow-[0_0_10px_rgba(56,189,248,0.1)] transition-all group-hover:-translate-x-1 group-hover:border-sky-400 group-hover:shadow-[0_0_15px_rgba(56,189,248,0.4)]">
-                  ←
-                </div>
-                Kembali ke beranda
+                ← Kembali ke Beranda
               </Link>
               <Link
                 to="/app"
-                className="group flex items-center gap-2 text-xs font-semibold text-emerald-200 transition-all duration-300 hover:text-emerald-400"
+                className="flex items-center gap-1.5 text-xs font-medium text-emerald-600 dark:text-emerald-400 hover:underline transition-colors"
               >
                 Dashboard Tenant →
-                <div className="flex size-8 items-center justify-center rounded-lg border border-emerald-500/30 bg-emerald-950/30 shadow-[0_0_10px_rgba(16,185,129,0.1)] transition-all group-hover:translate-x-1 group-hover:border-emerald-400 group-hover:shadow-[0_0_15px_rgba(16,185,129,0.4)]">
-                  →
-                </div>
               </Link>
             </div>
           </div>
-          <div className="bg-emerald-500/5 py-4 px-8 border-t border-emerald-500/10">
-            <p className="text-[10px] text-center text-emerald-500/40 uppercase tracking-[0.2em]">
-              Secure Encryption Active • v2.4.0
+
+          <div className="bg-secondary/40 py-3 px-8 border-t border-border/60 text-center">
+            <p className="text-[11px] text-muted-foreground tracking-wider">
+              Enkripsi Sesi Aktif • Balasin System
             </p>
           </div>
         </div>
       </div>
-
-      <style>{`
-        @keyframes shimmer {
-          100% { transform: translateX(100%); }
-        }
-      `}</style>
     </div>
   );
 }

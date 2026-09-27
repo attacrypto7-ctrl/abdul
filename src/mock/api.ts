@@ -63,7 +63,7 @@ export const getLicenses = () => {
 export const getMyLicenses = async () => {
   if (isLoggedIn()) {
     const res = await safeFetch<AnyRecord[] | null>("/license/me", null);
-    if (res && Array.isArray(res) && res.length > 0) return res;
+    if (res && Array.isArray(res)) return res;
   }
   return delay(licenses);
 };
@@ -205,6 +205,29 @@ export const getKnowledgeDocs = () => {
 export const getFaqItems = () => {
   if (isLoggedIn()) return safeFetch<AnyRecord[]>("/knowledge/faq", faqItems);
   return delay(faqItems);
+};
+
+export const createFaqItemApi = async (data: { pertanyaan: string; jawaban: string }) => {
+  if (isLoggedIn()) {
+    return apiFetch<AnyRecord>("/knowledge/faq", {
+      method: "POST",
+      body: data,
+    });
+  }
+  const item = { id: `faq-${Date.now()}`, ...data };
+  faqItems.unshift(item as any);
+  return delay(item);
+};
+
+export const deleteFaqItemApi = async (id: string) => {
+  if (isLoggedIn()) {
+    return apiFetch<{ success: boolean }>(`/knowledge/faq/${id}`, {
+      method: "DELETE",
+    });
+  }
+  const idx = faqItems.findIndex((f) => f.id === id);
+  if (idx >= 0) faqItems.splice(idx, 1);
+  return delay({ success: true });
 };
 
 export const getAdTemplates = () => {
@@ -379,3 +402,65 @@ export const formatDate = (iso: string) =>
   new Date(iso).toLocaleDateString("id-ID", { day: "2-digit", month: "short", year: "numeric" });
 export const daysLeft = (iso: string) =>
   Math.max(0, Math.ceil((new Date(iso).getTime() - Date.now()) / 86_400_000));
+
+export const getTenantMe = async () => {
+  if (isLoggedIn()) {
+    try {
+      return await apiFetch<AnyRecord>("/tenant/me");
+    } catch {
+      // fallback
+    }
+  }
+  const defaultTenant = tenants[0] || {
+    id: "tenant-demo",
+    nama: "Bisnis Saya",
+    industri: "Belum Memilih",
+    email: "user@balasin.id",
+    plan: "Starter",
+    status: "aktif",
+  };
+  return delay(defaultTenant);
+};
+
+export const updateBusinessTypeApi = async (businessType: string) => {
+  if (isLoggedIn()) {
+    try {
+      return await apiFetch<AnyRecord>("/tenant/business-type", {
+        method: "PATCH",
+        body: { businessType },
+      });
+    } catch {
+      // fallback
+    }
+  }
+  if (tenants[0]) {
+    tenants[0].industri = businessType;
+  }
+  return delay({ success: true, businessType });
+};
+
+export const getTenantReadinessScore = async () => {
+  if (isLoggedIn()) {
+    try {
+      return await apiFetch<any>("/tenant/readiness-score");
+    } catch {
+      // fallback
+    }
+  }
+  return delay({
+    score: 65,
+    level: "Cukup Siap",
+    levelColor: "info",
+    checklist: [
+      { id: "tipe_bisnis", label: "Klasifikasi Tipe Bisnis", done: true, bobot: 15, hint: "Toko / E-Commerce" },
+      { id: "profil_faq", label: "Tanya Jawab (FAQ) & Template", done: true, bobot: 35, hint: "5 FAQ aktif" },
+      { id: "dokumen", label: "Dokumen & Panduan Lengkap", done: false, bobot: 20, hint: "Belum ada berkas PDF" },
+      { id: "iklan", label: "Template Balas Iklan", done: true, bobot: 15, hint: "1 template siap pakai" },
+      { id: "koneksi_wa", label: "Koneksi WhatsApp Aktif", done: false, bobot: 15, hint: "Nomor belum tersambung" },
+    ],
+    recommendations: [
+      "Sambungkan nomor WhatsApp bisnis Anda di menu Koneksi WhatsApp.",
+      "Unggah katalog produk atau dokumen panduan PDF untuk memperluas wawasan AI.",
+    ],
+  });
+};

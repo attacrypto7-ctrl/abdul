@@ -11,6 +11,7 @@ import { getToken, getRole, login } from "@/lib/api-client";
 
 export const Route = createFileRoute("/masuk")({
   beforeLoad: () => {
+    if (typeof window === "undefined") return;
     if (getToken()) {
       const role = getRole();
       throw redirect({ to: role === "admin" ? "/admin" : "/app" });

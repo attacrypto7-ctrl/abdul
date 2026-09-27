@@ -71,7 +71,7 @@ function LisensiPage() {
   const activeCode = latestLicense?.kode || licenseStatus?.kode || "LISENSI-AKTIF";
   const totalChatDibalas = licenseStatus?.totalChatDibalas ?? licenseStatus?.chatBulanIni ?? 0;
 
-  const hasLicenseData = Boolean(isLicenseActive && licenseEndDate);
+  const hasLicenseData = Boolean(licenseEndDate || latestLicense || licenseStatus?.kode);
 
   const copyLicense = () => {
     if (activeCode) {
@@ -133,7 +133,7 @@ function LisensiPage() {
                   className="font-mono uppercase tracking-wider"
                 />
                 <p className="text-xs text-muted-foreground">
-                  Format alfanumerik. Setelah aktivasi, AI & Balas Iklan langsung aktif tanpa batas kuota selama masa berlaku.
+                  Format alfanumerik. Setelah aktivasi, AI & Balas Iklan langsung aktif sesuai masa berlaku kode tanpa mengubah data akun Anda.
                 </p>
               </div>
               <DialogFooter>
@@ -159,7 +159,7 @@ function LisensiPage() {
         />
         <StatCard
           label="Masa Berlaku"
-          value={isLicenseActive ? `${sisaHari} Hari` : "-"}
+          value={isLicenseActive ? `${sisaHari} Hari` : (licenseEndDate ? "Habis" : "-")}
           icon={CalendarClock}
           hint={licenseEndDate ? `Hingga ${formatDate(licenseEndDate)}` : "Perlu aktivasi"}
         />
@@ -170,15 +170,21 @@ function LisensiPage() {
           hint="Semua balasan AI & template"
         />
         <StatCard
-          label="Nomor WA Aktif"
+          label="Nomor WA Terhubung"
           value={String(waList.length)}
           icon={Smartphone}
-          hint="Nomor CS terhubung"
+          hint="Nomor CS akun Anda"
         />
       </div>
 
+      <div className="mt-4 rounded-lg border border-border/60 bg-muted/20 p-4 text-xs text-muted-foreground flex items-center justify-between">
+        <span>
+          💡 <strong>Catatan:</strong> Seluruh data bisnis Anda (nomor WhatsApp, riwayat chat, dokumen pengetahuan, dan template iklan) tersimpan permanen di akun Anda dan tidak akan hilang saat masa lisensi habis. Lisensi hanya berfungsi menyalakan fitur AI dan balas iklan.
+        </span>
+      </div>
+
       {hasLicenseData ? (
-        <div className="mt-8 grid gap-6 lg:grid-cols-2">
+        <div className="mt-6 grid gap-6 lg:grid-cols-2">
           <div className="panel p-6 space-y-6">
             <div className="flex items-center justify-between">
               <h2 className="text-base font-semibold">Detail Lisensi</h2>
@@ -259,7 +265,7 @@ function LisensiPage() {
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="size-3.5 text-emerald-500" />
-                  Template Balas Iklan Otomatis (Teks & Gambar)
+                  Template Balas Iklan Otomatis (Teks, Gambar & Video)
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="size-3.5 text-emerald-500" />
@@ -274,7 +280,7 @@ function LisensiPage() {
           </div>
         </div>
       ) : (
-        <div className="panel mt-8 flex flex-col items-center justify-center p-12 text-center">
+        <div className="panel mt-6 flex flex-col items-center justify-center p-12 text-center">
           <KeyRound className="size-12 text-muted-foreground opacity-30 mb-3" />
           <h2 className="text-base font-semibold">Belum Ada Lisensi Aktif</h2>
           <p className="mt-1 text-xs text-muted-foreground max-w-sm">

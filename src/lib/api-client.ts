@@ -219,3 +219,16 @@ export const takeoverChat = (id: string) =>
 // Tenant: analitik
 export const fetchAnalytics = () => apiFetch<AnyRecord>("/analytics");
 export const fetchOverview = () => apiFetch<AnyRecord>("/analytics/overview");
+
+// Tenant: profil & kesiapan AI
+export const fetchTenantMe = () => apiFetch<AnyRecord>("/tenant/me");
+export const updateTenantBusinessType = (businessType: string) =>
+  apiFetch<AnyRecord>("/tenant/business-type", { method: "PATCH", body: { businessType } });
+export const fetchTenantReadinessScore = () =>
+  apiFetch<{
+    score: number;
+    level: "Perlu Dilengkapi" | "Cukup Siap" | "Sangat Siap & Akurat";
+    levelColor: "warning" | "info" | "success";
+    checklist: Array<{ id: string; label: string; done: boolean; bobot: number; hint: string }>;
+    recommendations: string[];
+  }>("/tenant/readiness-score");

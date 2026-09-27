@@ -232,9 +232,11 @@ function UjiCobaPage() {
         <div className="panel flex h-[580px] flex-col overflow-hidden">
           <div className="flex items-center justify-between border-b border-border bg-secondary/20 px-5 py-3">
             <div className="flex items-center gap-3">
-              <span className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                <Bot className="size-4" />
-              </span>
+              <img
+                src="/chatbot_wa.png"
+                alt="Bot Asisten"
+                className="size-8 rounded-lg object-contain"
+              />
               <div>
                 <p className="text-xs font-semibold">Bot Asisten</p>
                 <p className="text-[10px] text-muted-foreground">Status: Siap Uji Coba</p>

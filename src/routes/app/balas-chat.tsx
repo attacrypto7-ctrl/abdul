@@ -111,34 +111,41 @@ function AutoChatPage() {
             />
           </div>
 
-          <div className="grid gap-2 sm:grid-cols-2">
-            <div className="grid gap-2">
-              <Label>Tingkat kepintaran bot</Label>
-              <Select defaultValue="hemat">
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {tingkatAi.map((m) => (
-                    <SelectItem key={m.id} value={m.id}>
-                      {m.nama} — {m.catatan}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+          <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
+            <div className="w-full min-w-0 space-y-2">
+              <label className="block text-sm font-medium text-foreground">
+                Tingkat kepintaran bot
+              </label>
+              <div className="w-full min-w-0">
+                <Select defaultValue="hemat">
+                  <SelectTrigger className="w-full min-w-0 truncate">
+                    <SelectValue className="truncate" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {tingkatAi.map((m) => (
+                      <SelectItem key={m.id} value={m.id}>
+                        {m.nama} — {m.catatan}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
-            <div className="grid gap-2">
-              <Label>Bahasa balasan</Label>
-              <Select defaultValue="id">
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="id">Bahasa Indonesia</SelectItem>
-                  <SelectItem value="auto">Ikuti bahasa pelanggan</SelectItem>
-                  <SelectItem value="en">English</SelectItem>
-                </SelectContent>
-              </Select>
+
+            <div className="w-full min-w-0 space-y-2">
+              <label className="block text-sm font-medium text-foreground">Bahasa balasan</label>
+              <div className="w-full min-w-0">
+                <Select defaultValue="id">
+                  <SelectTrigger className="w-full min-w-0">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="id">Bahasa Indonesia</SelectItem>
+                    <SelectItem value="auto">Ikuti bahasa pelanggan</SelectItem>
+                    <SelectItem value="en">English</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
 
