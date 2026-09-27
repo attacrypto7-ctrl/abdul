@@ -5,7 +5,7 @@ nixPkgs = ['nodejs_22']
 cmds = ['npm install']
 
 [phases.build]
-cmds = ['npm run build']
+cmds = ['NITRO_PRESET=node-server npm run build']
 
 [start]
 cmd = 'node .output/server/index.mjs'

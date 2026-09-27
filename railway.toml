@@ -6,7 +6,7 @@
 
 [build]
 builder = "nixpacks"
-buildCommand = "npm install && npm run build"
+buildCommand = "NITRO_PRESET=node-server npm install && NITRO_PRESET=node-server npm run build"
 
 [deploy]
 startCommand = "node .output/server/index.mjs"
