@@ -9,7 +9,7 @@ builder = "nixpacks"
 buildCommand = "NITRO_PRESET=node-server npm install && NITRO_PRESET=node-server npm run build"
 
 [deploy]
-startCommand = "node .output/server/index.mjs"
+startCommand = "NITRO_HOST=0.0.0.0 HOST=0.0.0.0 node .output/server/index.mjs"
 healthcheckPath = "/"
 healthcheckTimeout = 30
 restartPolicyType = "on_failure"

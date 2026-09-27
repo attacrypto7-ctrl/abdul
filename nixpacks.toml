@@ -8,4 +8,4 @@ cmds = ['npm install']
 cmds = ['NITRO_PRESET=node-server npm run build']
 
 [start]
-cmd = 'node .output/server/index.mjs'
+cmd = 'NITRO_HOST=0.0.0.0 HOST=0.0.0.0 node .output/server/index.mjs'
