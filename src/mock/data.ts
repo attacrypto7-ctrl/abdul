@@ -139,11 +139,8 @@ export const pemakaianToken: TokenUsage[] = [];
 export const pertanyaanTeratas: TopQuestion[] = [];
 
 /**
- * Daftar mesin AI yang bisa dipilih tenant. Ini konfigurasi model, bukan data contoh dummy.
+ * Daftar mesin AI yang bisa dipilih tenant.
+ * Diisi dari respons API backend — lihat endpoint /tenant/ai-engines.
  */
-export const aiEngines = [
-  { id: "deepseek-v4-flash", nama: "DeepSeek V4 Flash", catatan: "Paling hemat — default" },
-  { id: "gemini-3.5-flash-lite", nama: "Gemini 3.5 Flash-Lite", catatan: "Latensi rendah" },
-  { id: "claude-haiku-4.5", nama: "Claude Haiku 4.5", catatan: "Akurasi tertinggi" },
-  { id: "gpt-5.6-luna", nama: "GPT-5.6 Luna", catatan: "Opsi tengah" },
-];
+export const aiEngines: { id: string; nama: string; catatan: string }[] = [];
+

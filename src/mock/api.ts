@@ -448,19 +448,20 @@ export const getTenantReadinessScore = async () => {
     }
   }
   return delay({
-    score: 65,
-    level: "Cukup Siap",
-    levelColor: "info",
+    score: 0,
+    level: "Belum Dikonfigurasi",
+    levelColor: "warning",
     checklist: [
-      { id: "tipe_bisnis", label: "Klasifikasi Tipe Bisnis", done: true, bobot: 15, hint: "Toko / E-Commerce" },
-      { id: "profil_faq", label: "Tanya Jawab (FAQ) & Template", done: true, bobot: 35, hint: "5 FAQ aktif" },
-      { id: "dokumen", label: "Dokumen & Panduan Lengkap", done: false, bobot: 20, hint: "Belum ada berkas PDF" },
-      { id: "iklan", label: "Template Balas Iklan", done: true, bobot: 15, hint: "1 template siap pakai" },
-      { id: "koneksi_wa", label: "Koneksi WhatsApp Aktif", done: false, bobot: 15, hint: "Nomor belum tersambung" },
+      { id: "tipe_bisnis", label: "Klasifikasi Tipe Bisnis", done: false, bobot: 15, hint: "Belum dipilih" },
+      { id: "profil_faq", label: "Tanya Jawab (FAQ) & Template", done: false, bobot: 35, hint: "Belum ada FAQ" },
+      { id: "dokumen", label: "Dokumen & Panduan Lengkap", done: false, bobot: 20, hint: "Belum ada berkas" },
+      { id: "iklan", label: "Template Balas Iklan", done: false, bobot: 15, hint: "Belum ada template" },
+      { id: "koneksi_wa", label: "Koneksi WhatsApp Aktif", done: false, bobot: 15, hint: "Belum tersambung" },
     ],
     recommendations: [
-      "Sambungkan nomor WhatsApp bisnis Anda di menu Koneksi WhatsApp.",
-      "Unggah katalog produk atau dokumen panduan PDF untuk memperluas wawasan AI.",
+      "Pilih tipe bisnis Anda di halaman Ringkasan untuk memulai.",
+      "Sambungkan nomor WhatsApp bisnis di menu Koneksi WhatsApp.",
+      "Tambahkan FAQ agar AI memahami produk dan layanan Anda.",
     ],
   });
 };

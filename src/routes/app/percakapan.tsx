@@ -247,8 +247,8 @@ function PercakapanPage() {
                 <Button
                   size="sm"
                   onClick={() => {
-                    toast.success("Percakapan berhasil diambil alih.");
-                    setSelectedChat(null);
+                    const clean = selectedChat.nomor.replace(/\D/g, "");
+                    window.open(`https://wa.me/${clean}`, "_blank", "noopener,noreferrer");
                   }}
                 >
                   Buka di WhatsApp Web

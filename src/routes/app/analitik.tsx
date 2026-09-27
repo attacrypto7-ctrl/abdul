@@ -5,14 +5,9 @@ import {
   HelpCircle,
   MessagesSquare,
   TrendingUp,
-  HeartHandshake,
-  Building2,
-  PieChart as PieIcon,
-  CheckCircle2,
-  Clock,
-  Wallet,
-  Users,
-  Award,
+  BarChart2,
+  InboxIcon,
+  RefreshCw,
 } from "lucide-react";
 import {
   Bar,
@@ -22,15 +17,13 @@ import {
   Tooltip,
   XAxis,
   YAxis,
-  Area,
-  AreaChart,
 } from "recharts";
 
 import { PageHeader } from "@/components/dashboard/shell";
 import { StatCard } from "@/components/dashboard/stat-card";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { formatNumber, getAnalytics, getTenantMe } from "@/mock/api";
+import { formatNumber, getAnalytics } from "@/mock/api";
 
 export const Route = createFileRoute("/app/analitik")({
   head: () => ({
@@ -38,379 +31,229 @@ export const Route = createFileRoute("/app/analitik")({
       { title: "Analitik — Dashboard Balasin" },
       {
         name: "description",
-        content: "Statistik pesan, efisiensi AI, dan analisa data topik pertanyaan donatur atau pelanggan.",
+        content: "Statistik pesan, efisiensi AI, dan topik pertanyaan yang paling sering diajukan pelanggan.",
       },
       { property: "og:title", content: "Analitik — Dashboard Balasin" },
-      { property: "og:description", content: "Statistik pesan dan analisa interaksi bisnis atau yayasan." },
+      { property: "og:description", content: "Statistik pesan dan analisa interaksi bot WhatsApp bisnis Anda." },
     ],
   }),
   component: AnalitikPage,
 });
 
-// Data Simulasi Analisa Khusus Skup Yayasan & Lembaga Sosial
-const dataYayasanProgram = [
-  { program: "Santunan Anak Yatim", jumlah: 142, persen: 38 },
-  { program: "Paket Pangan Dhuafa", jumlah: 98, persen: 26 },
-  { program: "Zakat Penghasilan & Maal", jumlah: 68, persen: 18 },
-  { program: "Jemput Donasi Sembako", jumlah: 45, persen: 12 },
-  { program: "Bantuan Medis Darurat", jumlah: 24, persen: 6 },
-];
-
-const dataYayasanMetode = [
-  { metode: "Transfer Bank Resmi (BSI/Mandiri)", jumlah: 215, persen: 62 },
-  { metode: "QRIS Donasi Instan", jumlah: 90, persen: 26 },
-  { metode: "Kurir Jemput Donasi ke Rumah", jumlah: 42, persen: 12 },
-];
-
-const pertanyaanDonaturTerpopuler = [
-  { pertanyaan: "Ke mana nomor rekening resmi donasi yayasan?", jumlah: 154, kategori: "Rekening Resmi" },
-  { pertanyaan: "Bagaimana alur titip doa & hajat bersama adik-adik yatim?", jumlah: 112, kategori: "Titip Doa & Hajat" },
-  { pertanyaan: "Berapa nisab dan hitungan zakat penghasilan bulan ini?", jumlah: 98, kategori: "Kalkulator Zakat" },
-  { pertanyaan: "Apakah ada layanan jemput donasi sembako/beras ke rumah?", jumlah: 67, kategori: "Jemput Donasi" },
-  { pertanyaan: "Apakah yayasan memiliki izin resmi Kemenkumham & Dinsos?", jumlah: 35, kategori: "Transparansi & Legalitas" },
-];
+function EmptyChart({ label }: { label: string }) {
+  return (
+    <div className="flex h-64 flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-border bg-secondary/20 text-center px-4">
+      <InboxIcon className="size-8 text-muted-foreground/40" />
+      <p className="text-sm text-muted-foreground">{label}</p>
+      <p className="text-xs text-muted-foreground/60">Data akan muncul otomatis setelah bot aktif menerima pesan.</p>
+    </div>
+  );
+}
 
 function AnalitikPage() {
-  const { data } = useQuery({ queryKey: ["analytics"], queryFn: getAnalytics });
-  const { data: tenant } = useQuery({ queryKey: ["tenant-me"], queryFn: getTenantMe });
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ["analytics"],
+    queryFn: getAnalytics,
+  });
 
-  const isYayasanTenant =
-    Boolean(tenant?.industri?.includes("Yayasan")) ||
-    Boolean(tenant?.industri?.includes("Profit")) ||
-    Boolean(tenant?.industri?.includes("Sosial"));
+  const chatHarian: { hari: string; chat: number; gagal: number }[] = data?.chatHarian ?? [];
+  const pertanyaanTeratas: { pertanyaan: string; jumlah: number }[] = data?.pertanyaanTeratas ?? [];
 
-  const chatHarian = data?.chatHarian ?? [];
-  const pertanyaanTeratas = data?.pertanyaanTeratas ?? [];
-
-  const totalChatMingguan = (chatHarian as { chat: number; gagal: number }[]).reduce(
-    (a, c) => a + c.chat,
-    0,
-  );
-  const totalGagalMingguan = (chatHarian as { chat: number; gagal: number }[]).reduce(
-    (a, c) => a + c.gagal,
-    0,
-  );
-  const suksesPersen =
-    totalChatMingguan > 0
-      ? Math.round(((totalChatMingguan - totalGagalMingguan) / totalChatMingguan) * 100)
-      : 98;
+  const totalChat = chatHarian.reduce((a, c) => a + c.chat, 0);
+  const totalGagal = chatHarian.reduce((a, c) => a + c.gagal, 0);
+  const totalDijawab = totalChat - totalGagal;
+  const suksesPersen = totalChat > 0 ? Math.round((totalDijawab / totalChat) * 100) : 0;
+  const efisiensiJam = totalChat > 0 ? Math.max(1, Math.round((totalChat * 4) / 60)) : 0;
   const maxPertanyaan = pertanyaanTeratas[0]?.jumlah || 1;
 
   return (
     <>
       <PageHeader
         title="Analitik & Performa"
-        description="Pantau volume interaksi chat masuk, efisiensi balasan otomatis AI, dan topik yang paling sering ditanyakan."
+        description="Pantau volume chat masuk, efisiensi balasan otomatis AI, dan topik yang paling sering ditanyakan pelanggan."
         action={
-          <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground">
-              {isYayasanTenant ? (
-                <>
-                  <HeartHandshake className="size-3.5 text-emerald-500" />
-                  <span>Klasifikasi: Yayasan &amp; Sosial</span>
-                </>
-              ) : (
-                <>
-                  <Building2 className="size-3.5 text-emerald-500" />
-                  <span>Klasifikasi: {tenant?.industri || "Toko & Bisnis Komersial"}</span>
-                </>
-              )}
-            </span>
-            <Button asChild variant="outline" size="sm" className="rounded-xl text-xs">
-              <Link to="/app/pengaturan">Ganti di Pengaturan</Link>
-            </Button>
-          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            className="rounded-xl text-xs gap-2"
+            onClick={() => refetch()}
+            disabled={isLoading}
+          >
+            <RefreshCw className={`size-3.5 ${isLoading ? "animate-spin" : ""}`} />
+            Perbarui Data
+          </Button>
         }
       />
 
-      {/* ========================================================= */}
-      {/* MODE YAYASAN & LEMBAGA SOSIAL */}
-      {/* ========================================================= */}
-      {isYayasanTenant ? (
-        <>
-          <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-4 flex flex-wrap items-center justify-between gap-3 mb-6">
-            <div className="flex items-center gap-3">
-              <span className="flex size-9 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 shrink-0">
-                <HeartHandshake className="size-5" />
-              </span>
-              <div>
-                <h2 className="text-xs font-bold text-foreground">
-                  Analisa Khusus Lembaga Sosial &amp; Yayasan
-                </h2>
-                <p className="text-[11px] text-muted-foreground mt-0.5">
-                  Memantau minat program kebaikan, pertanyaan donatur, dan efisiensi respon layanan kemanusiaan.
-                </p>
-              </div>
-            </div>
-            <span className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 bg-card px-3 py-1 rounded-full border border-border">
-              Akuntabilitas 100% Terjaga
-            </span>
-          </div>
+      {/* STAT CARDS */}
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <StatCard
+          label="Total Pesan Masuk"
+          value={formatNumber(totalChat)}
+          icon={MessagesSquare}
+          hint={totalChat > 0 ? "Chat pelanggan 7 hari terakhir" : "Bot belum menerima pesan"}
+        />
+        <StatCard
+          label="Efisiensi Balasan Otomatis"
+          value={totalChat > 0 ? `${suksesPersen}%` : "—"}
+          icon={TrendingUp}
+          tone={suksesPersen >= 80 ? "success" : totalChat > 0 ? "warning" : "default"}
+          hint={totalChat > 0 ? "Dijawab tuntas oleh AI" : "Data belum tersedia"}
+        />
+        <StatCard
+          label="Estimasi Jam Kerja Hemat"
+          value={efisiensiJam > 0 ? `${efisiensiJam} Jam` : "—"}
+          icon={Coins}
+          hint={efisiensiJam > 0 ? "Waktu CS yang dihemat minggu ini" : "Dihitung dari total chat dijawab"}
+        />
+        <StatCard
+          label="Topik Pertanyaan Populer"
+          value={pertanyaanTeratas.length > 0 ? String(pertanyaanTeratas.length) : "—"}
+          icon={HelpCircle}
+          hint={pertanyaanTeratas.length > 0 ? "Pertanyaan paling sering muncul" : "Belum ada data topik"}
+        />
+      </div>
 
-          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-            <StatCard
-              label="Interaksi Donatur"
-              value={formatNumber(347)}
-              icon={MessagesSquare}
-              hint="Chat donatur & titip doa minggu ini"
-            />
-            <StatCard
-              label="Respon Instan Otomatis"
-              value="99.4%"
-              icon={TrendingUp}
-              tone="success"
-              hint="Langsung dijawab < 2 detik"
-            />
-            <StatCard
-              label="Jam Kerja Pengurus Hemat"
-              value="24 Jam"
-              icon={Clock}
-              hint="Waktu admin yayasan yang dihemat"
-            />
-            <StatCard
-              label="Program Kebaikan Aktif"
-              value="5 Program"
-              icon={Award}
-              hint="ZISWAF, Yatim, Pangan, dll"
-            />
-          </div>
-
-          <div className="mt-6 grid gap-6 lg:grid-cols-2">
-            {/* Chart Sebaran Minat Program */}
-            <div className="panel p-5 rounded-2xl flex flex-col justify-between">
-              <div>
-                <div className="mb-4">
-                  <h3 className="text-sm font-semibold text-foreground">
-                    Program Kebaikan Paling Banyak Ditanyakan
-                  </h3>
-                  <p className="text-xs text-muted-foreground">
-                    Distribusi ketertarikan calon donatur terhadap program yayasan
-                  </p>
-                </div>
-                <div className="space-y-3.5 mt-4">
-                  {dataYayasanProgram.map((item) => (
-                    <div key={item.program} className="space-y-1.5">
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="font-medium text-foreground">{item.program}</span>
-                        <div className="flex items-center gap-2">
-                          <span className="text-muted-foreground">{item.jumlah} chat</span>
-                          <span className="font-bold text-emerald-600 dark:text-emerald-400">
-                            {item.persen}%
-                          </span>
-                        </div>
-                      </div>
-                      <Progress value={item.persen} className="h-2" />
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <p className="mt-5 text-[11px] text-muted-foreground border-t border-border/40 pt-3">
-                💡 <em>Insight:</em> Program Santunan Anak Yatim dan Pangan Dhuafa menjadi program favorit dengan interaksi tertinggi.
-              </p>
-            </div>
-
-            {/* Metode Donasi yang Diminati */}
-            <div className="panel p-5 rounded-2xl flex flex-col justify-between">
-              <div>
-                <div className="mb-4">
-                  <h3 className="text-sm font-semibold text-foreground">
-                    Pilihan Kanal Penyaluran Donatur
-                  </h3>
-                  <p className="text-xs text-muted-foreground">
-                    Kanal yang paling sering diminta petunjuknya oleh donatur
-                  </p>
-                </div>
-                <div className="space-y-3.5 mt-4">
-                  {dataYayasanMetode.map((m) => (
-                    <div key={m.metode} className="space-y-1.5">
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="font-medium text-foreground">{m.metode}</span>
-                        <span className="font-bold text-emerald-600 dark:text-emerald-400">
-                          {m.persen}%
-                        </span>
-                      </div>
-                      <Progress value={m.persen} className="h-2" />
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className="mt-5 p-3 rounded-xl bg-secondary/40 border border-border/60 text-xs text-muted-foreground">
-                <span className="font-semibold text-foreground block mb-0.5">
-                  Rekomendasi Operasional:
-                </span>
-                Sertakan QRIS resmi dan nomor rekening BSI/Mandiri dalam template profil yayasan agar donatur dapat mentransfer tanpa jeda.
-              </div>
-            </div>
-          </div>
-
-          {/* Top Pertanyaan Donatur */}
-          <div className="panel mt-6 p-5 rounded-2xl">
-            <div className="flex items-center justify-between mb-2">
-              <div>
-                <h3 className="text-sm font-semibold text-foreground">
-                  Pertanyaan Donatur &amp; Titip Doa Paling Sering Muncul
-                </h3>
-                <p className="text-xs text-muted-foreground">
-                  Dikelola dan dijawab otomatis oleh AI berdasarkan template yayasan Anda
-                </p>
-              </div>
-              <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">
-                100% Terjawab Cepat
-              </span>
-            </div>
-
-            <div className="mt-4 space-y-3">
-              {pertanyaanDonaturTerpopuler.map((p, idx) => (
-                <div
-                  key={p.pertanyaan}
-                  className="flex flex-wrap items-center justify-between gap-3 p-3 rounded-xl bg-secondary/30 border border-border/40 hover:bg-secondary/60 transition-colors"
-                >
-                  <div className="flex items-center gap-2.5">
-                    <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-xs font-bold text-emerald-600 dark:text-emerald-400 font-mono">
-                      {idx + 1}
-                    </span>
-                    <p className="text-xs font-medium text-foreground">{p.pertanyaan}</p>
-                  </div>
-                  <div className="flex items-center gap-3 ml-auto">
-                    <span className="text-[11px] bg-card px-2 py-0.5 rounded-full border border-border text-muted-foreground">
-                      {p.kategori}
-                    </span>
-                    <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 font-mono">
-                      {p.jumlah} kali
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </>
-      ) : (
-        /* ========================================================= */
-        /* MODE UMUM (BISNIS / TOKO / E-COMMERCE)                    */
-        /* ========================================================= */
-        <>
-          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-            <StatCard
-              label="Total Pesan Masuk"
-              value={formatNumber(totalChatMingguan || 128)}
-              icon={MessagesSquare}
-              hint="Chat pelanggan minggu ini"
-            />
-            <StatCard
-              label="Efisiensi Balasan Otomatis"
-              value={totalChatMingguan > 0 ? `${suksesPersen}%` : "98%"}
-              icon={TrendingUp}
-              tone="success"
-              hint="Dijawab tuntas oleh AI"
-            />
-            <StatCard
-              label="Estimasi Jam Kerja Hemat"
-              value={`${Math.max(1, Math.round(((totalChatMingguan || 128) * 4) / 60))} Jam`}
-              icon={Coins}
-              hint="Waktu CS yang dihemat"
-            />
-            <StatCard
-              label="Topik Pertanyaan Populer"
-              value={String(pertanyaanTeratas.length || 5)}
-              icon={HelpCircle}
-              hint="Pertanyaan paling sering muncul"
-            />
-          </div>
-
-          <div className="mt-8 grid gap-6 lg:grid-cols-2">
-            <div className="panel p-5 rounded-2xl">
-              <div className="mb-4">
-                <h3 className="text-sm font-semibold">Volume Chat 7 Hari Terakhir</h3>
-                <p className="text-xs text-muted-foreground">
-                  Jumlah chat dijawab bot vs dialihkan ke admin manusia
-                </p>
-              </div>
-              {chatHarian.length > 0 ? (
-                <div className="h-72 w-full">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={chatHarian}>
-                      <CartesianGrid strokeDasharray="3 3" opacity={0.15} />
-                      <XAxis dataKey="hari" tick={{ fontSize: 12 }} />
-                      <YAxis tick={{ fontSize: 12 }} />
-                      <Tooltip
-                        contentStyle={{
-                          backgroundColor: "hsl(var(--card))",
-                          borderColor: "hsl(var(--border))",
-                          borderRadius: "12px",
-                          fontSize: "12px",
-                        }}
-                      />
-                      <Bar dataKey="chat" name="Dijawab Otomatis" fill="#10b981" radius={[4, 4, 0, 0]} />
-                      <Bar dataKey="gagal" name="Dialihkan ke Admin" fill="#f59e0b" radius={[4, 4, 0, 0]} />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-              ) : (
-                <div className="flex h-72 items-center justify-center text-sm text-muted-foreground">
-                  Belum ada data aktivitas chat.
-                </div>
-              )}
-            </div>
-
-            <div className="panel p-5 rounded-2xl">
-              <div className="mb-4">
-                <h3 className="text-sm font-semibold">Rasio Kecepatan &amp; Kepuasan</h3>
-                <p className="text-xs text-muted-foreground">Perbandingan respon instan vs waktu tunggu</p>
-              </div>
-              <div className="h-72 flex flex-col justify-center space-y-5 px-2">
-                <div className="space-y-1.5">
-                  <div className="flex justify-between text-xs font-medium">
-                    <span>Respon Kilat (&lt; 2 Detik)</span>
-                    <span className="text-emerald-600 dark:text-emerald-400 font-bold">96%</span>
-                  </div>
-                  <Progress value={96} className="h-2.5" />
-                </div>
-                <div className="space-y-1.5">
-                  <div className="flex justify-between text-xs font-medium">
-                    <span>Akurasi Jawaban dari FAQ</span>
-                    <span className="text-emerald-600 dark:text-emerald-400 font-bold">94%</span>
-                  </div>
-                  <Progress value={94} className="h-2.5" />
-                </div>
-                <div className="space-y-1.5">
-                  <div className="flex justify-between text-xs font-medium">
-                    <span>Tingkat Kepuasan Pelanggan</span>
-                    <span className="text-emerald-600 dark:text-emerald-400 font-bold">98%</span>
-                  </div>
-                  <Progress value={98} className="h-2.5" />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="panel mt-6 p-5 rounded-2xl">
-            <h3 className="text-sm font-semibold">Pertanyaan Paling Sering Diajukan</h3>
-            <p className="text-xs text-muted-foreground">
-              Bisa digunakan untuk memperkaya data FAQ dan materi promosi iklan Anda.
+      {/* CHARTS ROW */}
+      <div className="mt-8 grid gap-6 lg:grid-cols-2">
+        {/* Bar Chart: Volume Chat Harian */}
+        <div className="panel p-5 rounded-2xl">
+          <div className="mb-4">
+            <h3 className="text-sm font-semibold flex items-center gap-2">
+              <BarChart2 className="size-4 text-emerald-500" />
+              Volume Chat 7 Hari Terakhir
+            </h3>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              Chat dijawab bot vs dialihkan ke admin manusia
             </p>
-
-            {pertanyaanTeratas.length > 0 ? (
-              <div className="mt-5 space-y-4">
-                {pertanyaanTeratas.map((p: { pertanyaan: string; jumlah: number }, index: number) => (
-                  <div key={p.pertanyaan} className="space-y-1.5">
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="font-medium text-foreground">
-                        {index + 1}. {p.pertanyaan}
-                      </span>
-                      <span className="text-muted-foreground">{formatNumber(p.jumlah)} kali</span>
-                    </div>
-                    <Progress value={(p.jumlah / maxPertanyaan) * 100} className="h-2" />
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="mt-6 text-sm text-muted-foreground">
-                Belum ada data pertanyaan yang terhimpun.
-              </p>
-            )}
           </div>
-        </>
-      )}
+
+          {chatHarian.length > 0 ? (
+            <div className="h-64 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={chatHarian} barGap={4}>
+                  <CartesianGrid strokeDasharray="3 3" opacity={0.12} vertical={false} />
+                  <XAxis dataKey="hari" tick={{ fontSize: 11 }} axisLine={false} tickLine={false} />
+                  <YAxis tick={{ fontSize: 11 }} axisLine={false} tickLine={false} />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: "hsl(var(--card))",
+                      borderColor: "hsl(var(--border))",
+                      borderRadius: "10px",
+                      fontSize: "12px",
+                    }}
+                  />
+                  <Bar dataKey="chat" name="Dijawab Otomatis" fill="#10b981" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="gagal" name="Dialihkan ke Admin" fill="#f59e0b" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          ) : (
+            <EmptyChart label="Belum ada data volume chat." />
+          )}
+        </div>
+
+        {/* Efisiensi & Statistik dari Data Real */}
+        <div className="panel p-5 rounded-2xl">
+          <div className="mb-4">
+            <h3 className="text-sm font-semibold flex items-center gap-2">
+              <TrendingUp className="size-4 text-emerald-500" />
+              Ringkasan Performa Bot
+            </h3>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              Dihitung dari data percakapan aktual minggu ini
+            </p>
+          </div>
+
+          {totalChat > 0 ? (
+            <div className="flex flex-col justify-center space-y-5 px-1 h-56">
+              <div className="space-y-1.5">
+                <div className="flex justify-between text-xs font-medium">
+                  <span>Chat Dijawab Otomatis</span>
+                  <span className="text-emerald-600 dark:text-emerald-400 font-bold tabular-nums">
+                    {totalDijawab} / {totalChat}
+                  </span>
+                </div>
+                <Progress value={suksesPersen} className="h-2.5" />
+                <p className="text-[11px] text-muted-foreground">{suksesPersen}% diselesaikan oleh AI tanpa intervensi admin</p>
+              </div>
+
+              <div className="space-y-1.5">
+                <div className="flex justify-between text-xs font-medium">
+                  <span>Chat Dialihkan ke Admin</span>
+                  <span className="text-amber-600 dark:text-amber-400 font-bold tabular-nums">
+                    {totalGagal} / {totalChat}
+                  </span>
+                </div>
+                <Progress
+                  value={totalChat > 0 ? Math.round((totalGagal / totalChat) * 100) : 0}
+                  className="h-2.5 [&>div]:bg-amber-500"
+                />
+                <p className="text-[11px] text-muted-foreground">
+                  {totalChat > 0 ? Math.round((totalGagal / totalChat) * 100) : 0}% perlu penanganan manual
+                </p>
+              </div>
+
+              <div className="pt-3 border-t border-border/40 rounded-xl bg-secondary/30 p-3 -mx-1">
+                <p className="text-xs font-semibold text-foreground">💡 Tips Optimasi</p>
+                <p className="text-[11px] text-muted-foreground mt-0.5 leading-relaxed">
+                  Tambahkan FAQ baru di halaman Pengetahuan AI untuk mengurangi eskalasi ke admin.
+                </p>
+                <Link to="/app/pengetahuan" className="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium hover:underline mt-1 inline-block">
+                  Lengkapi FAQ →
+                </Link>
+              </div>
+            </div>
+          ) : (
+            <EmptyChart label="Belum ada data performa. Aktifkan bot dan mulai terima pesan." />
+          )}
+        </div>
+      </div>
+
+      {/* TOP PERTANYAAN */}
+      <div className="panel mt-6 p-5 rounded-2xl">
+        <div className="flex items-start justify-between gap-4 mb-2">
+          <div>
+            <h3 className="text-sm font-semibold flex items-center gap-2">
+              <HelpCircle className="size-4 text-emerald-500" />
+              Pertanyaan Paling Sering Diajukan
+            </h3>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              Gunakan data ini untuk memperkaya FAQ dan template iklan Anda.
+            </p>
+          </div>
+          <Button asChild variant="outline" size="sm" className="rounded-xl text-xs shrink-0">
+            <Link to="/app/pengetahuan">Kelola FAQ</Link>
+          </Button>
+        </div>
+
+        {pertanyaanTeratas.length > 0 ? (
+          <div className="mt-5 space-y-4">
+            {pertanyaanTeratas.map((p, index) => (
+              <div key={p.pertanyaan} className="space-y-1.5">
+                <div className="flex items-center justify-between text-xs gap-3">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-[10px] font-bold text-emerald-600 dark:text-emerald-400 font-mono">
+                      {index + 1}
+                    </span>
+                    <span className="font-medium text-foreground truncate">{p.pertanyaan}</span>
+                  </div>
+                  <span className="text-muted-foreground shrink-0 tabular-nums">{formatNumber(p.jumlah)}×</span>
+                </div>
+                <Progress value={(p.jumlah / maxPertanyaan) * 100} className="h-1.5" />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="mt-5 flex flex-col items-center gap-3 py-10 rounded-xl border border-dashed border-border bg-secondary/20 text-center px-4">
+            <HelpCircle className="size-8 text-muted-foreground/40" />
+            <p className="text-sm text-muted-foreground">Belum ada pertanyaan yang terhimpun.</p>
+            <p className="text-xs text-muted-foreground/60">
+              Data topik pertanyaan akan muncul otomatis setelah bot aktif merespons pesan masuk.
+            </p>
+          </div>
+        )}
+      </div>
     </>
   );
 }

@@ -16,7 +16,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { getAdTemplates, getFaqItems, getKnowledgeDocs, getLicenseStatus, trialBot } from "@/mock/api";
-import { aiEngines } from "@/mock/data";
 
 export const Route = createFileRoute("/app/uji-coba")({
   head: () => ({
@@ -49,7 +48,6 @@ function UjiCobaPage() {
   const { data: ads = [] } = useQuery({ queryKey: ["ads"], queryFn: getAdTemplates });
   const { data: licenseStatus } = useQuery({ queryKey: ["license-status"], queryFn: getLicenseStatus });
 
-  const [engine, setEngine] = useState("deepseek-v4-flash");
   const [kanal, setKanal] = useState<"chat" | "iklan">("chat");
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -187,22 +185,12 @@ function UjiCobaPage() {
         <div className="panel space-y-5 p-5">
           <h2 className="text-sm font-semibold">Pengaturan Simulasi</h2>
 
-          <div className="grid gap-2">
-            <Label>Mesin AI (Backend)</Label>
-            <Select value={engine} onValueChange={setEngine}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {aiEngines.map((m) => (
-                  <SelectItem key={m.id} value={m.id}>
-                    {m.nama}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <p className="text-xs text-muted-foreground">
-              {aiEngines.find((e) => e.id === engine)?.catatan}
+          <div className="rounded-lg border border-border bg-secondary/30 p-3 text-xs space-y-1">
+            <p className="font-medium text-foreground flex items-center gap-1.5">
+              <Sparkles className="size-3.5 text-primary" /> Mesin AI
+            </p>
+            <p className="text-muted-foreground leading-relaxed">
+              Model AI diatur otomatis oleh backend sesuai paket lisensi Anda.
             </p>
           </div>
 
