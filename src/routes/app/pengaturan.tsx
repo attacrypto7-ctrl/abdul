@@ -22,7 +22,7 @@ import { toast } from "sonner";
 import { PageHeader } from "@/components/dashboard/shell";
 import { Button } from "@/components/ui/button";
 import { BusinessTypeModal, BUSINESS_TYPES } from "@/components/business-type-modal";
-import { getTenantMe, getLicenses } from "@/mock/api";
+import { getTenantMe, getLicenseStatus, formatDate } from "@/mock/api";
 
 export const Route = createFileRoute("/app/pengaturan")({
   head: () => ({
@@ -51,7 +51,10 @@ function getIconForType(type?: string) {
 
 function PengaturanPage() {
   const { data: tenant } = useQuery({ queryKey: ["tenant-me"], queryFn: getTenantMe });
-  const { data: licenses = [] } = useQuery({ queryKey: ["licenses"], queryFn: getLicenses });
+  const { data: licenseStatus, isLoading: loadingLic } = useQuery({
+    queryKey: ["license-status"],
+    queryFn: getLicenseStatus,
+  });
   const [modalOpen, setModalOpen] = useState(false);
 
   // Bot language personality preferences (saved locally)
@@ -61,7 +64,12 @@ function PengaturanPage() {
 
   const currentType = tenant?.industri || "Belum Memilih";
   const TypeIcon = getIconForType(currentType);
-  const activeLic = licenses[0] ?? null;
+
+  // Data lisensi REAL dari API
+  const isLicenseActive = licenseStatus?.isActive ?? false;
+  const activePlan = licenseStatus?.plan || null;
+  const licenseEndDate = licenseStatus?.lisensiBerakhir || null;
+
 
   const currentTypeDetail = BUSINESS_TYPES.find((b) =>
     currentType.toLowerCase().includes(b.id.toLowerCase().split("/")[0].trim()),
@@ -237,26 +245,49 @@ function PengaturanPage() {
             <div className="space-y-3 text-xs">
               <div className="flex justify-between py-2 border-b border-border/40">
                 <span className="text-muted-foreground">Nama Usaha / Tenant</span>
-                <span className="font-semibold text-foreground">{tenant?.nama || "Bisnis Saya"}</span>
+                <span className="font-semibold text-foreground">{tenant?.nama || "—"}</span>
               </div>
               <div className="flex justify-between py-2 border-b border-border/40">
                 <span className="text-muted-foreground">Email Terdaftar</span>
-                <span className="font-mono text-foreground">{tenant?.email || "user@gmail.com"}</span>
+                <span className="font-mono text-foreground">{tenant?.email || "—"}</span>
               </div>
               <div className="flex justify-between py-2 border-b border-border/40">
                 <span className="text-muted-foreground">Paket Layanan</span>
-                <span className="font-semibold text-emerald-600 dark:text-emerald-400">
-                  {activeLic ? activeLic.plan : "Starter"}
-                </span>
+                {loadingLic ? (
+                  <span className="text-muted-foreground italic">Memuat...</span>
+                ) : (
+                  <span className={`font-semibold ${activePlan ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground"}`}>
+                    {activePlan || "Belum aktif"}
+                  </span>
+                )}
+              </div>
+              <div className="flex justify-between py-2 border-b border-border/40">
+                <span className="text-muted-foreground">Status Lisensi</span>
+                {loadingLic ? (
+                  <span className="text-muted-foreground italic">Memuat...</span>
+                ) : (
+                  <span className={`font-semibold px-2 py-0.5 rounded-full text-[10px] ${
+                    isLicenseActive
+                      ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                      : "bg-red-500/10 text-red-600 dark:text-red-400"
+                  }`}>
+                    {isLicenseActive ? "✓ Aktif" : "✗ Tidak Aktif"}
+                  </span>
+                )}
               </div>
               <div className="flex justify-between py-2">
                 <span className="text-muted-foreground">Masa Aktif Lisensi</span>
-                <span className="font-mono text-muted-foreground">
-                  {activeLic ? activeLic.berakhir : "Permanen / Aktif"}
-                </span>
+                {loadingLic ? (
+                  <span className="text-muted-foreground italic">Memuat...</span>
+                ) : licenseEndDate ? (
+                  <span className="font-mono text-foreground">{formatDate(licenseEndDate)}</span>
+                ) : (
+                  <span className="text-muted-foreground italic">Belum ada data</span>
+                )}
               </div>
             </div>
           </section>
+
 
           <section className="panel rounded-2xl p-5 border border-border/60 bg-secondary/30">
             <h4 className="text-xs font-bold text-foreground mb-1.5 flex items-center gap-1.5">

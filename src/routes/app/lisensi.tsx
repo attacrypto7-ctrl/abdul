@@ -67,11 +67,12 @@ function LisensiPage() {
   const isLicenseActive = Boolean(licenseStatus?.isActive || (latestLicense && latestLicense.status === "aktif"));
   const licenseEndDate = latestLicense?.berakhir || licenseStatus?.lisensiBerakhir || null;
   const sisaHari = licenseEndDate ? daysLeft(licenseEndDate) : 0;
-  const activePlan = latestLicense?.plan || licenseStatus?.plan || "Starter";
-  const activeCode = latestLicense?.kode || licenseStatus?.kode || "LISENSI-AKTIF";
+  const activePlan = latestLicense?.plan || licenseStatus?.plan || null;
+  const activeCode = latestLicense?.kode || licenseStatus?.kode || null;
   const totalChatDibalas = licenseStatus?.totalChatDibalas ?? licenseStatus?.chatBulanIni ?? 0;
 
   const hasLicenseData = Boolean(licenseEndDate || latestLicense || licenseStatus?.kode);
+
 
   const copyLicense = () => {
     if (activeCode) {
@@ -155,7 +156,7 @@ function LisensiPage() {
           value={isLicenseActive ? "Aktif" : (licenseEndDate ? "Expired" : "Belum Aktif")}
           icon={isLicenseActive ? ShieldCheck : ShieldAlert}
           tone={isLicenseActive ? "success" : "danger"}
-          hint={hasLicenseData ? `Paket ${activePlan}` : "Perlu aktivasi admin"}
+          hint={hasLicenseData ? `Paket ${activePlan ?? "—"}` : "Perlu aktivasi admin"}
         />
         <StatCard
           label="Masa Berlaku"
@@ -198,12 +199,18 @@ function LisensiPage() {
               <div className="flex items-center justify-between border-b border-border pb-3">
                 <span className="text-muted-foreground">Kode Lisensi:</span>
                 <div className="flex items-center gap-2">
-                  <code className="rounded bg-secondary px-2.5 py-1 font-mono text-xs text-foreground font-semibold">
-                    {activeCode}
-                  </code>
-                  <Button size="sm" variant="ghost" onClick={copyLicense} title="Salin kode">
-                    <Copy className="size-3.5" />
-                  </Button>
+                  {activeCode ? (
+                    <>
+                      <code className="rounded bg-secondary px-2.5 py-1 font-mono text-xs text-foreground font-semibold">
+                        {activeCode}
+                      </code>
+                      <Button size="sm" variant="ghost" onClick={copyLicense} title="Salin kode">
+                        <Copy className="size-3.5" />
+                      </Button>
+                    </>
+                  ) : (
+                    <span className="text-muted-foreground italic text-xs">Tidak tersedia</span>
+                  )}
                 </div>
               </div>
 
@@ -256,7 +263,7 @@ function LisensiPage() {
 
             <div className="rounded-lg border border-border bg-secondary/30 p-4 space-y-3">
               <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Fitur Paket {activePlan} Termasuk:
+                Fitur Paket {activePlan ?? "—"} Termasuk:
               </h3>
               <ul className="space-y-2 text-xs text-foreground">
                 <li className="flex items-center gap-2">
