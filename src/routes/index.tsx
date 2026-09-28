@@ -425,7 +425,7 @@ function Landing() {
                         className="relative flex w-full cursor-pointer select-none items-center gap-2 rounded-lg px-2 py-1.5 text-sm outline-none hover:bg-accent"
                       >
                         <UserPlus className="size-4" />
-                        Ganti / Tambah Akun
+                        Tambahkan Akun lain
                       </button>
                       <button
                         onClick={() => handleLogout()}
@@ -520,7 +520,8 @@ function Landing() {
                 </div>
                 {isError && (
                   <p className="text-red-500 text-xs mt-1 leading-tight">
-                    Email atau kata sandi tidak cocok. Gunakan tombol Google di bawah untuk akses langsung.
+                    Email atau kata sandi tidak cocok. Gunakan tombol Google di bawah untuk akses
+                    langsung.
                   </p>
                 )}
               </div>
@@ -586,8 +587,9 @@ function Landing() {
           </h1>
 
           <p className="mx-auto mt-6 max-w-2xl text-base text-muted-foreground sm:text-lg">
-            Sambungkan WhatsApp bisnis Anda dalam 1 menit. AI menjawab chat pelanggan, merespons klik
-            iklan, dan melayani tanya-jawab produk seketika — tanpa bikin calon pembeli menunggu.
+            Sambungkan WhatsApp bisnis Anda dalam 1 menit. AI menjawab chat pelanggan, merespons
+            klik iklan, dan melayani tanya-jawab produk seketika — tanpa bikin calon pembeli
+            menunggu.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
@@ -724,18 +726,22 @@ function Landing() {
                             : "bg-white text-gray-900 dark:bg-[#202c33] dark:text-gray-100 rounded-tl-xs"
                         }`}
                       >
-                        {msg.media && (
+                        {"media" in msg && msg.media && (
                           <div className="mb-2 p-2 rounded-xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-center">
-                            <span className="text-[11px] font-medium block">{msg.media.label}</span>
+                            <span className="text-[11px] font-medium block">
+                              {(msg.media as { label: string }).label}
+                            </span>
                             <span className="text-[10px] text-muted-foreground block mt-0.5">
-                              {msg.media.keterangan}
+                              {(msg.media as { keterangan: string }).keterangan}
                             </span>
                           </div>
                         )}
                         <p>{msg.teks}</p>
                         <div
                           className={`mt-1 flex items-center justify-end gap-1 text-[10px] ${
-                            isUser ? "text-emerald-700 dark:text-emerald-200" : "text-muted-foreground"
+                            isUser
+                              ? "text-emerald-700 dark:text-emerald-200"
+                              : "text-muted-foreground"
                           }`}
                         >
                           <span>{msg.waktu}</span>
@@ -776,7 +782,8 @@ function Landing() {
               3 Langkah Praktis untuk Memulai
             </h2>
             <p className="text-sm text-muted-foreground mt-2">
-              Tidak perlu keahlian teknis. Anda bisa mengaktifkan CS WhatsApp pintar ini dalam hitungan menit.
+              Tidak perlu keahlian teknis. Anda bisa mengaktifkan CS WhatsApp pintar ini dalam
+              hitungan menit.
             </p>
           </div>
 
@@ -791,9 +798,7 @@ function Landing() {
                     {step.nomor}
                   </span>
                   <h3 className="text-lg font-bold mt-2 text-foreground">{step.judul}</h3>
-                  <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
-                    {step.teks}
-                  </p>
+                  <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{step.teks}</p>
                 </div>
               </div>
             ))}
