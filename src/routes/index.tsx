@@ -366,7 +366,7 @@ function Landing() {
       <AmbientBackground />
       <div className="surface-grid min-h-screen">
         {/* Navigation Bar */}
-        <header className="sticky top-0 z-40 mx-auto flex max-w-6xl items-center justify-between border-b border-border/40 bg-background/80 px-6 py-4 backdrop-blur-md">
+        <header className="sticky top-0 z-40 mx-auto flex max-w-6xl items-center justify-between bg-transparent px-6 py-4">
           <Link to="/" className="flex items-center gap-2">
             <BrandLogo size="md" />
           </Link>
