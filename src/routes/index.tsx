@@ -21,6 +21,12 @@ import {
   ShieldCheck,
   QrCode,
   TrendingUp,
+  Star,
+  Clock,
+  XCircle,
+  MessageSquare,
+  Award,
+  Check,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
@@ -67,36 +73,42 @@ const fiturBisnis = [
     judul: "Balas Iklan Super Cepat",
     tagline: "Respon < 2 Detik",
     teks: "Saat calon pembeli klik iklan Instagram, TikTok, atau Facebook, bot langsung menyapa ramah dan mengirim katalog sebelum pembeli berpaling ke toko lain.",
+    metric: "98% Chat Terjawab Instan",
   },
   {
     icon: Bot,
     judul: "Pintar Jawab Pertanyaan",
     tagline: "Hafal Semua Info Toko",
     teks: "AI otomatis menjawab pertanyaan seputar harga, varian produk, stok, hingga syarat komplain berdasarkan template info yang Anda siapkan.",
+    metric: "Multi-Pertanyaan Sekaligus",
   },
   {
     icon: Store,
     judul: "Template Bisnis Siap Pakai",
     tagline: "Tanpa Bingung Menulis",
     teks: "Cukup isi form ringkas: profil toko, jam buka, kurir pengiriman, ketentuan COD, hingga garansi produk. AI langsung memahaminya.",
+    metric: "Setup 1 Menit Selesai",
   },
   {
     icon: QrCode,
     judul: "Sambung WhatsApp 1 Menit",
     tagline: "Tinggal Scan QR",
     teks: "Sama mudahnya seperti login WhatsApp Web di komputer. Cukup pindai QR dari ponsel Anda dan sistem langsung aktif melayani.",
+    metric: "Tanpa Biaya Server",
   },
   {
     icon: TrendingUp,
     judul: "Naikkan Peluang Penjualan",
     tagline: "Closing Lebih Cepat",
     teks: "Pembeli paling suka toko yang membalas instan. Jangan biarkan chat masuk di tengah malam basi karena CS sedang istirahat.",
+    metric: "+45% Rasio Closing",
   },
   {
     icon: ShieldCheck,
     judul: "Data Toko Aman & Privat",
     tagline: "100% Milik Anda",
     teks: "Informasi produk, nomor WhatsApp, dan percakapan pelanggan tersimpan aman dan terenkripsi khusus untuk akun Google Anda.",
+    metric: "Enkripsi End-to-End",
   },
 ];
 
@@ -105,16 +117,19 @@ const langkahMudah = [
     nomor: "01",
     judul: "Pindai QR WhatsApp",
     teks: "Buka menu WhatsApp di ponsel Anda, scan QR code di dashboard. Nomor Anda langsung tersambung secara resmi.",
+    badge: "10 Detik",
   },
   {
     nomor: "02",
     judul: "Pilih Template & Isi Info Toko",
     teks: "Pilih template panduan (jam buka, katalog, cara order, pengiriman COD). Tulis apa adanya, AI yang akan menyusun bahasa ramahnya.",
+    badge: "Fleksibel",
   },
   {
     nomor: "03",
     judul: "AI Siaga Balas 24 Jam Nonstop",
     teks: "Nyalakan tombol otomatis. Setiap ada pesan baru atau klik dari iklan, bot langsung merespons ramah dan tuntas!",
+    badge: "Otomatis 24/7",
   },
 ];
 
@@ -186,27 +201,91 @@ const simulasiChat = {
   },
 };
 
+const testimoniList = [
+  {
+    nama: "Rian Pratama",
+    bisnis: "Owner SneakerPoint (Bandung)",
+    hasil: "Closing naik 40%",
+    isi: "Dulu iklan TikTok boncos karena pas malam hari gak ada yang balas chat pembeli. Pakai Balasin, jam 2 pagi pun langsung direspon dan dikasih katalog. Langsung transfer!",
+    bintang: 5,
+  },
+  {
+    nama: "Siti Rahmawati",
+    bisnis: "Hijab & Gamis Syari (Solo)",
+    hasil: "Hemat 2 CS Manual",
+    isi: "Pertanyaan seputar bahan, ukuran LD, sama ongkir COD semuanya dijawab lancar sama AI. Pembeli ngerasa dilayani personal dan ramah banget.",
+    bintang: 5,
+  },
+  {
+    nama: "Hendro Wijaya",
+    bisnis: "Gadget Accessories (Jakarta)",
+    hasil: "Respon < 2 Detik",
+    isi: "Scan QR 1 menit langsung jalan. Gak perlu laptop nyala seharian, server mereka yang handle. Ini beneran game changer buat jualan online.",
+    bintang: 5,
+  },
+];
+
+const perbandinganFitur = [
+  {
+    fitur: "Kecepatan Respon Pesan",
+    manual: "15 - 60 Menit (Bisa berjam-jam)",
+    balasin: "< 2 Detik (Instan)",
+  },
+  {
+    fitur: "Jam Kerja Operasional",
+    manual: "Maksimal 8 - 10 Jam/Hari",
+    balasin: "24 Jam Nonstop 7 Hari Penuh",
+  },
+  {
+    fitur: "Konsistensi Jawaban",
+    manual: "Sering typo, lelah & lupa promo",
+    balasin: "100% Akurat sesuai template toko",
+  },
+  {
+    fitur: "Biaya Operasional",
+    manual: "Rp 2,5jt - Rp 4jt / CS per bulan",
+    balasin: "Jauh lebih hemat tanpa biaya lembur",
+  },
+  {
+    fitur: "Kapasitas Chat Bersamaan",
+    manual: "Maksimal 3-5 chat sekaligus",
+    balasin: "Ratusan chat terjawab serentak",
+  },
+];
+
 const faqItems = [
   {
     q: "Apakah komputer atau laptop saya harus menyala terus?",
-    a: "Tidak perlu. Sistem Balasin berjalan 100% di server cloud kami. Begitu WhatsApp Anda tersambung lewat scan QR, sistem akan membalas otomatis 24 jam nonstop meskipun ponsel atau laptop Anda mati.",
+    a: "Tidak perlu sama sekali! Sistem Balasin berjalan 100% di cloud server kami. Begitu WhatsApp Anda tersambung lewat scan QR, sistem akan membalas otomatis 24 jam nonstop meskipun ponsel Anda mati atau laptop dimatikan.",
   },
   {
-    q: "Apakah saya masih bisa membalas chat secara manual?",
-    a: "Bisa! Kapan saja Anda mengetik balasan manual di WhatsApp ponsel Anda, sistem AI otomatis memberi prioritas kepada Anda dan tidak akan memotong pembicaraan.",
+    q: "Apakah saya masih bisa membalas chat secara manual di HP?",
+    a: "Bisa banget! Kapan saja Anda mengetik balasan manual di WhatsApp ponsel Anda, sistem AI otomatis memberi prioritas penuh kepada Anda dan tidak akan memotong pembicaraan.",
+  },
+  {
+    q: "Bagaimana jika pembeli bertanya hal di luar info toko?",
+    a: "AI Balasin dilatih khusus untuk bersikap sopan. Jika ada pertanyaan spesifik yang belum ada di template, AI akan menjawab secara bijak dan memberitahu pembeli bahwa CS pemilik toko akan segera mengeceknya.",
   },
   {
     q: "Berapa nomor WhatsApp yang bisa disambungkan?",
     a: "Untuk paket standar, 1 akun terhubung ke 1 nomor WhatsApp bisnis aktif. Anda bisa menambah slot nomor tambahan kapan saja melalui dashboard admin.",
   },
   {
-    q: "Apakah data pelanggan saya aman?",
-    a: "Sangat aman. Percakapan pembeli, data nomor kontak, dan histori katalog Anda diisolasi per akun Google. Kami tidak menjual data pelanggan Anda ke pihak mana pun.",
+    q: "Apakah data pelanggan dan katalog saya aman?",
+    a: "Sangat aman dan terisolasi. Percakapan pembeli, data nomor kontak, dan histori katalog Anda diisolasi per akun Google. Kami tidak menjual data pelanggan Anda ke pihak mana pun.",
   },
   {
-    q: "Apakah ada biaya bulanan atau kontrak?",
-    a: "Anda bisa mulai gratis tanpa kartu kredit. Upgrade ke paket berbayar kapan saja sesuai kebutuhan bisnis Anda, tanpa kontrak jangka panjang.",
+    q: "Apakah ada biaya tersembunyi atau kontrak mengikat?",
+    a: "Tidak ada! Anda bisa mulai gratis tanpa kartu kredit. Anda bebas berhenti kapan saja tanpa komitmen jangka panjang.",
   },
+];
+
+const platformLogos = [
+  { nama: "WhatsApp Business", label: "WhatsApp Official", icon: "💬" },
+  { nama: "Meta Ads (Click-to-WA)", label: "Instagram & FB Ads", icon: "🎯" },
+  { nama: "TikTok Ads", label: "TikTok Shop / Ads", icon: "🎵" },
+  { nama: "Shopee", label: "Shopee Export Chat", icon: "🛍️" },
+  { nama: "Tokopedia", label: "Tokopedia Seller", icon: "📦" },
 ];
 
 function Landing() {
@@ -329,40 +408,84 @@ function Landing() {
       <AmbientBackground />
 
       {/* ══════════════════════════════════════════════════════════ */}
-      {/* STICKY GLASSMORPHIC NAVBAR                                */}
+      {/* 1. STICKY GLASSMORPHIC MODERN NAVBAR                      */}
       {/* ══════════════════════════════════════════════════════════ */}
-      <header className="sticky top-0 z-50 w-full border-b border-zinc-800/80 bg-zinc-950/75 backdrop-blur-xl dark:bg-zinc-950/75 bg-white/75 dark:border-zinc-800/80 border-zinc-200/80">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <img
-              src="/chatbot_wa.png"
-              alt="Balasin Logo"
-              className="h-8 w-8 rounded-lg object-contain transition-transform group-hover:scale-105"
-            />
-            <span className="text-xl font-bold tracking-tight text-zinc-100 dark:text-zinc-100 text-zinc-900">
-              Balas<span className="text-emerald-400">in</span>
-            </span>
-          </Link>
+      <header className="sticky top-0 z-50 w-full backdrop-blur-2xl transition-all duration-300 bg-zinc-950/85 dark:bg-zinc-950/85 bg-white/90 border-b border-zinc-800/60 dark:border-zinc-800/80 border-zinc-200/80 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)]">
+        {/* Animated Gradient Border Beam at Bottom */}
+        <div className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-emerald-400/70 to-transparent animate-border-beam" />
 
-          {/* Center Navigation Links */}
-          <nav className="hidden items-center gap-8 text-sm font-medium text-zinc-400 dark:text-zinc-400 text-zinc-600 md:flex">
-            <a href="#fitur" className="transition-colors hover:text-zinc-100 dark:hover:text-zinc-100 hover:text-zinc-900">Fitur</a>
-            <a href="#simulasi" className="transition-colors hover:text-zinc-100 dark:hover:text-zinc-100 hover:text-zinc-900">Simulasi</a>
-            <a href="#cara-kerja" className="transition-colors hover:text-zinc-100 dark:hover:text-zinc-100 hover:text-zinc-900">Cara Kerja</a>
-            <a href="#faq" className="transition-colors hover:text-zinc-100 dark:hover:text-zinc-100 hover:text-zinc-900">FAQ</a>
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+          {/* Logo & Live Status Chip */}
+          <div className="flex items-center gap-4">
+            <Link to="/" className="flex items-center gap-3 group">
+              <div className="relative">
+                <img
+                  src="/chatbot_wa.png"
+                  alt="Balasin Logo"
+                  className="h-8 w-8 rounded-lg object-contain transition-all duration-300 group-hover:scale-110 group-hover:rotate-3 shadow-md shadow-emerald-500/20"
+                />
+                <span className="absolute -bottom-0.5 -right-0.5 flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
+                </span>
+              </div>
+              <span className="text-xl font-bold tracking-tight text-zinc-100 dark:text-zinc-100 text-zinc-900">
+                Balas<span className="text-emerald-400">in</span>
+              </span>
+            </Link>
+
+            {/* Live Status Badge */}
+            <div className="hidden lg:flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-1 text-[11px] font-semibold text-emerald-400 shadow-inner">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span>AI CS Online 24/7</span>
+            </div>
+          </div>
+
+          {/* Center Navigation Links with Hover Glow */}
+          <nav className="hidden items-center gap-1 rounded-full border border-zinc-800/60 bg-zinc-900/60 p-1 text-xs font-semibold text-zinc-300 dark:border-zinc-800/80 dark:bg-zinc-900/60 border-zinc-200/80 bg-zinc-100/80 text-zinc-700 md:flex">
+            <a
+              href="#fitur"
+              className="rounded-full px-3.5 py-1.5 transition-all hover:bg-emerald-500/15 hover:text-emerald-400 dark:hover:text-emerald-400 hover:text-emerald-600"
+            >
+              Fitur Utama
+            </a>
+            <a
+              href="#perbandingan"
+              className="rounded-full px-3.5 py-1.5 transition-all hover:bg-emerald-500/15 hover:text-emerald-400 dark:hover:text-emerald-400 hover:text-emerald-600"
+            >
+              Kenapa Balasin?
+            </a>
+            <a
+              href="#simulasi"
+              className="rounded-full px-3.5 py-1.5 transition-all hover:bg-emerald-500/15 hover:text-emerald-400 dark:hover:text-emerald-400 hover:text-emerald-600"
+            >
+              Simulasi Chat
+            </a>
+            <a
+              href="#testimoni"
+              className="rounded-full px-3.5 py-1.5 transition-all hover:bg-emerald-500/15 hover:text-emerald-400 dark:hover:text-emerald-400 hover:text-emerald-600"
+            >
+              Testimoni
+            </a>
+            <a
+              href="#faq"
+              className="rounded-full px-3.5 py-1.5 transition-all hover:bg-emerald-500/15 hover:text-emerald-400 dark:hover:text-emerald-400 hover:text-emerald-600"
+            >
+              FAQ
+            </a>
           </nav>
 
           {/* Action Buttons */}
           <div className="flex items-center gap-3">
-            <ThemeToggle className="size-9 rounded-xl" />
+            <ThemeToggle className="size-9 rounded-xl border border-zinc-800 hover:border-emerald-500/40" />
+
             {googleUser ? (
               <div
                 className="relative"
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
               >
-                <button className="flex cursor-pointer items-center gap-2.5 rounded-full border border-border bg-card/60 p-1 pr-3 transition-colors hover:bg-accent focus-visible:outline-none">
+                <button className="flex cursor-pointer items-center gap-2.5 rounded-full border border-emerald-500/30 bg-zinc-900/80 p-1 pr-3 transition-all hover:border-emerald-500/60 hover:bg-zinc-800 focus-visible:outline-none shadow-sm">
                   <span className="relative flex size-8 shrink-0">
                     {avatarSrc && !avatarError ? (
                       <img
@@ -370,33 +493,33 @@ function Landing() {
                         alt="Profile"
                         referrerPolicy="no-referrer"
                         onError={() => setAvatarError(true)}
-                        className="size-8 rounded-full object-cover"
+                        className="size-8 rounded-full object-cover ring-2 ring-emerald-500/30"
                       />
                     ) : (
-                      <span className="flex size-8 items-center justify-center rounded-full bg-emerald-500/10 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
+                      <span className="flex size-8 items-center justify-center rounded-full bg-emerald-500/10 text-[10px] font-bold text-emerald-400">
                         {initials}
                       </span>
                     )}
                   </span>
-                  <span className="hidden text-sm font-medium sm:inline-block">
+                  <span className="hidden text-sm font-semibold sm:inline-block text-zinc-100">
                     {googleUser.name.split(" ")[0]}
                   </span>
-                  <ChevronDown className="size-3.5 text-muted-foreground" />
+                  <ChevronDown className="size-3.5 text-zinc-400" />
                 </button>
                 {isOpen && (
                   <div className="absolute top-full right-0 z-50 pt-2">
-                    <div className="w-56 rounded-xl border bg-card p-1.5 shadow-xl">
-                      <div className="px-2 py-1.5">
-                        <p className="text-sm font-semibold">{googleUser.name}</p>
-                        <p className="mt-0.5 truncate text-xs text-muted-foreground">
+                    <div className="w-56 rounded-2xl border border-zinc-800 bg-zinc-950 p-2 shadow-2xl backdrop-blur-xl">
+                      <div className="px-2.5 py-2">
+                        <p className="text-sm font-bold text-zinc-100">{googleUser.name}</p>
+                        <p className="mt-0.5 truncate text-xs text-zinc-400">
                           {googleUser.email}
                         </p>
                       </div>
-                      <div className="-mx-1 my-1 h-px bg-border" />
+                      <div className="-mx-1 my-1.5 h-px bg-zinc-800" />
                       <Link
                         to="/app"
                         onClick={() => setIsOpen(false)}
-                        className="relative flex w-full cursor-pointer select-none items-center gap-2 rounded-lg px-2 py-1.5 text-sm font-medium text-emerald-600 outline-none hover:bg-emerald-500/10 dark:text-emerald-400"
+                        className="relative flex w-full cursor-pointer select-none items-center gap-2 rounded-xl px-2.5 py-2 text-sm font-semibold text-emerald-400 outline-none hover:bg-emerald-500/10 transition-colors"
                       >
                         <LayoutDashboard className="size-4" />
                         Buka Dashboard
@@ -406,14 +529,14 @@ function Landing() {
                           setIsOpen(false);
                           setShowLogin(true);
                         }}
-                        className="relative flex w-full cursor-pointer select-none items-center gap-2 rounded-lg px-2 py-1.5 text-sm outline-none hover:bg-accent"
+                        className="relative flex w-full cursor-pointer select-none items-center gap-2 rounded-xl px-2.5 py-2 text-sm text-zinc-300 outline-none hover:bg-zinc-900 transition-colors"
                       >
                         <UserPlus className="size-4" />
                         Tambahkan Akun lain
                       </button>
                       <button
                         onClick={() => handleLogout()}
-                        className="relative flex w-full cursor-pointer select-none items-center gap-2 rounded-lg px-2 py-1.5 text-sm text-red-500 outline-none hover:bg-red-500/10"
+                        className="relative flex w-full cursor-pointer select-none items-center gap-2 rounded-xl px-2.5 py-2 text-sm text-red-400 outline-none hover:bg-red-500/10 transition-colors"
                       >
                         <LogOut className="size-4" />
                         Keluar
@@ -426,7 +549,7 @@ function Landing() {
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => setShowLogin(true)}
-                  className="hidden cursor-pointer text-sm font-medium text-zinc-300 transition-colors hover:text-white dark:text-zinc-300 dark:hover:text-white text-zinc-600 hover:text-zinc-900 sm:inline-block"
+                  className="hidden cursor-pointer text-sm font-semibold text-zinc-300 transition-colors hover:text-emerald-400 dark:text-zinc-300 dark:hover:text-emerald-400 text-zinc-700 hover:text-emerald-600 sm:inline-block"
                 >
                   Masuk
                 </button>
@@ -438,10 +561,13 @@ function Landing() {
                       setShowLogin(true);
                     }
                   }}
-                  className="flex cursor-pointer items-center gap-2 rounded-full bg-emerald-400 px-4 py-2 text-sm font-semibold text-zinc-950 shadow-[0_0_20px_rgba(52,211,153,0.3)] transition-all hover:bg-emerald-300 hover:shadow-[0_0_25px_rgba(52,211,153,0.5)]"
+                  className="relative group overflow-hidden flex cursor-pointer items-center gap-2 rounded-full bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-400 px-4 py-2 text-sm font-bold text-zinc-950 shadow-[0_0_20px_rgba(52,211,153,0.35)] transition-all hover:scale-105 hover:shadow-[0_0_28px_rgba(52,211,153,0.6)] active:scale-95"
                 >
-                  <span>Mulai Sekarang</span>
-                  <ArrowRight className="size-4" />
+                  <span className="relative z-10 flex items-center gap-1.5">
+                    <span>Mulai Sekarang</span>
+                    <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+                  </span>
+                  <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/30 to-transparent" />
                 </button>
               </div>
             )}
@@ -574,26 +700,27 @@ function Landing() {
         </DialogContent>
       </Dialog>
 
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-background text-foreground">
         {/* ══════════════════════════════════════════════════════════ */}
-        {/* 1. HERO SECTION — Split Layout with Phone Mockup         */}
+        {/* 2. HERO SECTION — Animated Split Layout with Floating Cards */}
         {/* ══════════════════════════════════════════════════════════ */}
-        <section className="relative overflow-hidden pt-20 pb-16">
-          {/* Background Glow */}
-          <div className="pointer-events-none absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[350px] w-[600px] rounded-full bg-emerald-500/15 blur-[120px]" />
+        <section className="relative overflow-hidden pt-12 pb-20 tech-grid-bg">
+          {/* Ambient Glowing Orbs */}
+          <div className="pointer-events-none absolute top-10 left-1/4 h-[350px] w-[500px] rounded-full bg-emerald-500/15 blur-[130px] animate-pulse-glow" />
+          <div className="pointer-events-none absolute top-32 right-10 h-[300px] w-[450px] rounded-full bg-teal-500/15 blur-[120px] animate-pulse-glow" />
 
           <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12">
-              {/* Left Column: Copywriting & CTA */}
+              {/* Left Column: Copywriting & Social Proof */}
               <div className="space-y-6 text-center lg:col-span-7 lg:text-left">
-                {/* Badge */}
-                <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-semibold tracking-wide text-emerald-400">
-                  <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
-                  Respon Otomatis Kurang dari 2 Detik
+                {/* Announcement Badge */}
+                <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-1 text-xs font-semibold tracking-wide text-emerald-400 shadow-sm backdrop-blur-md">
+                  <Sparkles className="h-3.5 w-3.5 text-emerald-400 animate-spin" style={{ animationDuration: "8s" }} />
+                  <span>Teknologi AI CS WhatsApp untuk Penjual Online</span>
                 </div>
 
-                {/* Headline */}
-                <h1 className="text-4xl font-extrabold leading-[1.15] tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+                {/* Main Headline */}
+                <h1 className="text-4xl font-extrabold leading-[1.12] tracking-tight text-foreground sm:text-5xl lg:text-6xl">
                   CS WhatsApp Pintar{" "}
                   <br className="hidden sm:inline" />
                   <span className="hero-glimmer">
@@ -603,13 +730,12 @@ function Landing() {
                 </h1>
 
                 {/* Description */}
-                <p className="mx-auto max-w-xl text-lg leading-relaxed text-muted-foreground lg:mx-0">
-                  Tingkatkan penjualan online Anda. AI ramah yang otomatis menjawab chat pelanggan,
-                  merespons klik iklan TikTok/Meta Ads, dan melayani katalog tanpa bikin pembeli
-                  kabur.
+                <p className="mx-auto max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg lg:mx-0">
+                  Tingkatkan omset toko Anda. AI ramah yang otomatis merespons klik iklan TikTok &
+                  Instagram Ads, melayani tanya-jawab produk, dan closing pembeli seketika dalam hitungan detik.
                 </p>
 
-                {/* CTA Area */}
+                {/* Primary CTA Area */}
                 <div className="flex flex-col items-center gap-4 pt-2 sm:flex-row lg:justify-start">
                   <button
                     onClick={() => {
@@ -619,7 +745,7 @@ function Landing() {
                         setShowLogin(true);
                       }
                     }}
-                    className="cta-button flex w-full items-center justify-center gap-3 rounded-full bg-emerald-400 px-7 py-3.5 text-base font-bold text-zinc-950 shadow-[0_0_25px_rgba(52,211,153,0.35)] transition-all hover:bg-emerald-300 sm:w-auto"
+                    className="cta-button group flex w-full items-center justify-center gap-3 rounded-full bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-400 px-8 py-4 text-base font-extrabold text-zinc-950 shadow-[0_0_30px_rgba(52,211,153,0.45)] transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(52,211,153,0.7)] sm:w-auto"
                   >
                     <svg className="h-5 w-5" viewBox="0 0 24 24">
                       <path
@@ -628,54 +754,126 @@ function Landing() {
                       />
                     </svg>
                     <span>Hubungkan WhatsApp Sekarang</span>
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </button>
-                  <span className="text-xs font-medium text-muted-foreground">
-                    ✓ Gratis Coba &bull; Tanpa Kartu Kredit &bull; Setup 1 Menit
-                  </span>
+
+                  <a
+                    href="#simulasi"
+                    className="rounded-full border border-zinc-700/80 bg-zinc-900/60 px-5 py-3.5 text-sm font-semibold text-zinc-300 transition-colors hover:border-emerald-500/40 hover:bg-zinc-800 hover:text-white"
+                  >
+                    Lihat Contoh Simulasi
+                  </a>
                 </div>
 
-                {/* Mini Trust Highlights */}
-                <div className="flex flex-wrap items-center justify-center gap-6 border-t border-border pt-6 text-xs text-muted-foreground sm:gap-8 lg:justify-start">
-                  <div className="text-center">
-                    <strong className="block text-base font-bold text-foreground">100%</strong>
-                    Cloud Based
+                {/* Rating & Trust Ribbon */}
+                <div className="flex flex-col items-center justify-center gap-3 pt-2 text-xs text-muted-foreground sm:flex-row lg:justify-start">
+                  <div className="flex -space-x-2">
+                    <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-emerald-600 text-[10px] font-bold text-white ring-2 ring-background">
+                      RP
+                    </span>
+                    <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-teal-600 text-[10px] font-bold text-white ring-2 ring-background">
+                      SR
+                    </span>
+                    <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-sky-600 text-[10px] font-bold text-white ring-2 ring-background">
+                      HW
+                    </span>
+                    <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-indigo-600 text-[10px] font-bold text-white ring-2 ring-background">
+                      +1k
+                    </span>
                   </div>
-                  <div className="hidden h-6 w-px bg-border sm:block" />
-                  <div className="text-center">
-                    <strong className="block text-base font-bold text-foreground">&lt; 2 Detik</strong>
-                    Kecepatan Balas
+                  <div className="flex items-center gap-1.5">
+                    <div className="flex text-amber-400">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="h-3.5 w-3.5 fill-amber-400" />
+                      ))}
+                    </div>
+                    <span className="font-bold text-foreground">4.9/5</span>
+                    <span>dari 1.200+ Penjual Online & UMKM</span>
                   </div>
-                  <div className="hidden h-6 w-px bg-border sm:block" />
-                  <div className="text-center">
-                    <strong className="block text-base font-bold text-foreground">Anti Ribet</strong>
-                    Tanpa Koding
+                </div>
+
+                {/* Highlights Trio */}
+                <div className="grid grid-cols-3 gap-4 border-t border-border/80 pt-6 text-left">
+                  <div>
+                    <strong className="block text-lg font-black text-emerald-400">100%</strong>
+                    <span className="text-xs text-muted-foreground">Cloud Server Tanpa Mati</span>
+                  </div>
+                  <div>
+                    <strong className="block text-lg font-black text-emerald-400">&lt; 2 Detik</strong>
+                    <span className="text-xs text-muted-foreground">Kecepatan Balas Iklan</span>
+                  </div>
+                  <div>
+                    <strong className="block text-lg font-black text-emerald-400">1 Menit</strong>
+                    <span className="text-xs text-muted-foreground">Tinggal Scan QR</span>
                   </div>
                 </div>
               </div>
 
-              {/* Right Column: Phone Mockup with WhatsApp Preview */}
+              {/* Right Column: Phone Mockup with 3 Dynamic Floating Badges */}
               <div className="relative flex justify-center lg:col-span-5">
-                <div className="w-full max-w-[360px] rounded-[38px] border-4 border-zinc-700/80 bg-zinc-800 p-3 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.7)]">
+                {/* Floating Badge 1 (Top Left): Live Chat Incoming */}
+                <div className="absolute -top-6 -left-6 z-20 hidden items-center gap-3 rounded-2xl border border-zinc-700/80 bg-zinc-900/95 p-3 shadow-2xl backdrop-blur-xl animate-float-delayed sm:flex">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-500/20 text-lg">
+                    💬
+                  </div>
+                  <div className="text-left">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[11px] font-bold text-zinc-100">Chat Iklan Masuk</span>
+                      <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
+                    </div>
+                    <p className="text-[10px] text-zinc-400">"Sneakers 42 promo diskon ada?"</p>
+                  </div>
+                </div>
+
+                {/* Floating Badge 2 (Bottom Right): Instant Response */}
+                <div className="absolute -bottom-6 -right-6 z-20 hidden items-center gap-3 rounded-2xl border border-emerald-500/40 bg-zinc-900/95 p-3 shadow-2xl backdrop-blur-xl animate-float sm:flex">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-400 font-bold text-zinc-950">
+                    ⚡
+                  </div>
+                  <div className="text-left">
+                    <div className="flex items-center gap-1.5 text-[11px] font-bold text-emerald-400">
+                      <span>Terbalas 0.8 Detik</span>
+                      <CheckCheck className="h-3.5 w-3.5 text-sky-400" />
+                    </div>
+                    <p className="text-[10px] text-zinc-400">Katalog + Cek Ongkir Terkirim</p>
+                  </div>
+                </div>
+
+                {/* Floating Badge 3 (Bottom Center): Order Conversion */}
+                <div className="absolute -bottom-4 left-6 z-20 flex items-center gap-2 rounded-full border border-emerald-500/30 bg-zinc-900/95 px-3 py-1.5 text-[10px] font-bold text-emerald-300 shadow-xl backdrop-blur-md">
+                  <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span>💰 Order Masuk: Rp 389.000 (COD)</span>
+                </div>
+
+                {/* The Phone Container with gentle float */}
+                <div className="w-full max-w-[350px] rounded-[42px] border-4 border-zinc-700/80 bg-zinc-800 p-3 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] animate-float">
+                  {/* Phone Speaker Notch */}
+                  <div className="mx-auto mb-2 h-1.5 w-16 rounded-full bg-zinc-700" />
+
                   {/* Inner Phone Screen */}
-                  <div className="flex w-full flex-col overflow-hidden rounded-[28px] bg-[#0b141a] text-xs font-sans">
+                  <div className="flex w-full flex-col overflow-hidden rounded-[30px] bg-[#0b141a] text-xs font-sans">
                     {/* WhatsApp App Header */}
                     <div className="flex items-center gap-3 border-b border-zinc-800 bg-[#1f2c34] px-4 py-3">
-                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-600 text-sm font-bold text-white">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-600 text-sm font-bold text-white shadow-sm">
                         👟
                       </div>
                       <div className="min-w-0 flex-1">
                         <p className="truncate font-semibold text-zinc-100">Sneakers Official Store</p>
                         <p className="text-[10px] font-medium text-emerald-400">Online &bull; Balas Otomatis AI</p>
                       </div>
+                      <div className="flex items-center gap-2 text-zinc-400">
+                        <Phone className="h-3.5 w-3.5" />
+                        <MoreVertical className="h-3.5 w-3.5" />
+                      </div>
                     </div>
 
                     {/* Chat Messages Body */}
-                    <div className="min-h-[340px] space-y-3 bg-[#0b141a] p-3">
+                    <div className="min-h-[330px] space-y-3 bg-[#0b141a] p-3">
                       <div className="my-1 text-center">
                         <span className="rounded-md bg-[#182229] px-2 py-0.5 text-[9px] text-zinc-400">Hari Ini</span>
                       </div>
 
-                      {/* Incoming (Customer) */}
+                      {/* Incoming Customer */}
                       <div className="flex justify-start">
                         <div className="relative max-w-[85%] rounded-lg rounded-tl-none bg-[#202c33] p-2.5 text-zinc-200 shadow-sm">
                           <p>Halo min, promo diskon sepatu sportnya masih ada?</p>
@@ -683,7 +881,7 @@ function Landing() {
                         </div>
                       </div>
 
-                      {/* Outgoing (AI Bot) */}
+                      {/* Outgoing AI Bot */}
                       <div className="flex justify-end">
                         <div className="relative max-w-[85%] rounded-lg rounded-tr-none bg-[#005c4b] p-2.5 text-zinc-100 shadow-sm">
                           <p className="mb-0.5 font-semibold text-emerald-200">Halo Kak! 👋</p>
@@ -695,10 +893,10 @@ function Landing() {
                         </div>
                       </div>
 
-                      {/* Outgoing (Follow-up) */}
+                      {/* Outgoing Follow-up */}
                       <div className="flex justify-end">
                         <div className="relative max-w-[85%] rounded-lg rounded-tr-none bg-[#005c4b] p-2.5 text-zinc-100 shadow-sm">
-                          <p>Rencana mau dikirim ke kota mana kak? Biar sekalian kami bantu cek promo Gratis Ongkirnya 😊</p>
+                          <p>Rencana mau dikirim ke kota mana kak? Biar sekalian kami bantu cek promo Gratis Ongkirnya ya kak 😊</p>
                           <div className="mt-1 flex items-center justify-end gap-1 text-[9px] text-emerald-300">
                             <span>13:40</span>
                             <CheckCheck className="h-3.5 w-3.5 text-sky-400" />
@@ -724,39 +922,112 @@ function Landing() {
         </section>
 
         {/* ══════════════════════════════════════════════════════════ */}
-        {/* 2. SOCIAL PROOF & METRICS BAR                            */}
+        {/* 3. PLATFORM INTEGRATION TICKER                            */}
         {/* ══════════════════════════════════════════════════════════ */}
-        <section className="border-y border-border bg-card/40 py-12 backdrop-blur-sm">
-          <div className="mx-auto grid max-w-5xl grid-cols-2 gap-8 px-6 sm:grid-cols-4">
+        <section className="border-y border-border bg-card/30 py-8">
+          <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+              Terintegrasi Mulus dengan Ekosistem Penjualan Anda
+            </p>
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-4 sm:gap-8">
+              {platformLogos.map((p) => (
+                <div
+                  key={p.nama}
+                  className="flex items-center gap-2 rounded-full border border-border bg-card/60 px-4 py-2 text-xs font-semibold text-foreground shadow-xs transition-all hover:border-emerald-500/40 hover:bg-card"
+                >
+                  <span className="text-base">{p.icon}</span>
+                  <span>{p.nama}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ══════════════════════════════════════════════════════════ */}
+        {/* 4. SOCIAL PROOF & KEY METRICS BAR                         */}
+        {/* ══════════════════════════════════════════════════════════ */}
+        <section className="py-16">
+          <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-6 sm:grid-cols-4">
             {[
-              { value: "< 2 Detik", label: "Kecepatan Balas" },
-              { value: "24/7", label: "Respon Nonstop" },
-              { value: "100%", label: "Cloud Based" },
-              { value: "1 Menit", label: "Setup Awal" },
+              { value: "< 2 Detik", label: "Kecepatan Respon", desc: "Langsung balas saat calon pembeli chat" },
+              { value: "24/7", label: "Respon Nonstop", desc: "Siaga tengah malam & hari libur" },
+              { value: "100%", label: "Cloud Based", desc: "Ponsel & laptop bebas dimatikan" },
+              { value: "+45%", label: "Peningkatan Closing", desc: "Calon pembeli gak kabur ke toko lain" },
             ].map((stat) => (
-              <div key={stat.label} className="text-center">
-                <p className="text-2xl font-extrabold text-emerald-500 sm:text-3xl">{stat.value}</p>
-                <p className="mt-1 text-xs font-medium text-muted-foreground sm:text-sm">{stat.label}</p>
+              <div
+                key={stat.label}
+                className="relative overflow-hidden rounded-2xl border border-border bg-card/50 p-6 text-center shadow-sm backdrop-blur-md transition-all hover:border-emerald-500/30"
+              >
+                <p className="text-3xl font-black text-emerald-400 sm:text-4xl">{stat.value}</p>
+                <p className="mt-1 text-sm font-bold text-foreground">{stat.label}</p>
+                <p className="mt-1 text-xs text-muted-foreground">{stat.desc}</p>
               </div>
             ))}
           </div>
         </section>
 
         {/* ══════════════════════════════════════════════════════════ */}
-        {/* 3. INTERACTIVE CHAT SIMULATOR                            */}
+        {/* 5. COMPARISON MATRIX: CS MANUAL VS BALASIN AI             */}
+        {/* ══════════════════════════════════════════════════════════ */}
+        <section id="perbandingan" className="py-20 bg-card/20 border-y border-border">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+            <div className="mx-auto mb-16 max-w-2xl text-center">
+              <span className="text-xs font-bold uppercase tracking-widest text-emerald-400">
+                Perbandingan Nyata
+              </span>
+              <h2 className="mt-2 text-3xl font-extrabold text-foreground sm:text-4xl">
+                Kenapa Harus Beralih ke Balasin AI?
+              </h2>
+              <p className="mt-3 text-sm text-muted-foreground sm:text-base">
+                Lihat perbedaan signifikan performa CS Manual konvensional dibandingkan dengan CS AI Balasin.
+              </p>
+            </div>
+
+            <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-xl">
+              <div className="grid grid-cols-12 border-b border-border bg-muted/60 p-4 text-xs font-bold uppercase tracking-wider sm:p-5 sm:text-sm">
+                <div className="col-span-4 text-muted-foreground">Kriteria</div>
+                <div className="col-span-4 text-red-500">CS Manual Konvensional</div>
+                <div className="col-span-4 text-emerald-400">Balasin CS AI ✨</div>
+              </div>
+
+              <div className="divide-y divide-border text-xs sm:text-sm">
+                {perbandinganFitur.map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="grid grid-cols-12 items-center p-4 transition-colors hover:bg-muted/30 sm:p-5"
+                  >
+                    <div className="col-span-4 font-semibold text-foreground">
+                      {item.fitur}
+                    </div>
+                    <div className="col-span-4 flex items-center gap-2 text-muted-foreground">
+                      <XCircle className="h-4 w-4 shrink-0 text-red-500" />
+                      <span>{item.manual}</span>
+                    </div>
+                    <div className="col-span-4 flex items-center gap-2 font-bold text-emerald-400">
+                      <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-400" />
+                      <span>{item.balasin}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ══════════════════════════════════════════════════════════ */}
+        {/* 6. INTERACTIVE CHAT SIMULATOR                             */}
         {/* ══════════════════════════════════════════════════════════ */}
         <section id="simulasi" className="mx-auto max-w-5xl px-6 py-24">
           <div className="rounded-3xl border border-border bg-card/70 p-6 shadow-2xl backdrop-blur-xl md:p-8">
             <div className="mx-auto mb-8 max-w-xl text-center">
-              <span className="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">
+              <span className="text-xs font-bold uppercase tracking-widest text-emerald-400">
                 Simulasi Langsung
               </span>
               <h2 className="mt-2 text-2xl font-extrabold text-foreground md:text-3xl">
-                Lihat Bagaimana Balasin Bekerja
+                Coba & Rasakan Chat Balasin Bekerja
               </h2>
               <p className="mt-2 text-sm text-muted-foreground">
-                Pilih skenario di bawah untuk melihat contoh percakapan nyata saat calon pembeli
-                menghubungi WhatsApp Anda.
+                Klik tab skenario di bawah untuk melihat bagaimana AI menjawab chat pelanggan dengan bahasa ramah dan katalog visual.
               </p>
             </div>
 
@@ -769,9 +1040,9 @@ function Landing() {
                   <button
                     key={key}
                     onClick={() => setSkenarioAktif(key)}
-                    className={`flex cursor-pointer items-center gap-2 rounded-xl px-4 py-2 text-xs font-medium transition-all sm:text-sm ${
+                    className={`flex cursor-pointer items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-bold transition-all sm:text-sm ${
                       active
-                        ? "bg-emerald-500 text-white shadow-md shadow-emerald-500/20"
+                        ? "bg-emerald-500 text-white shadow-lg shadow-emerald-500/25 scale-105"
                         : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
                     }`}
                   >
@@ -784,8 +1055,8 @@ function Landing() {
               })}
             </div>
 
-            {/* Realistic WhatsApp Mockup */}
-            <div className="mx-auto max-w-md overflow-hidden rounded-2xl border border-border bg-[#e5ddd5] shadow-xl dark:bg-[#0b141a]">
+            {/* Realistic WhatsApp Mockup Frame */}
+            <div className="mx-auto max-w-md overflow-hidden rounded-2xl border border-border bg-[#e5ddd5] shadow-2xl dark:bg-[#0b141a]">
               {/* App Bar */}
               <div className="flex items-center justify-between bg-[#075e54] px-4 py-3 text-white dark:bg-[#202c33]">
                 <div className="flex items-center gap-3">
@@ -878,41 +1149,51 @@ function Landing() {
         </section>
 
         {/* ══════════════════════════════════════════════════════════ */}
-        {/* 4. BENTO GRID FEATURES                                   */}
+        {/* 7. BENTO GRID FEATURES                                    */}
         {/* ══════════════════════════════════════════════════════════ */}
         <section id="fitur" className="py-24">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="mx-auto mb-16 max-w-2xl text-center">
               <span className="text-xs font-bold uppercase tracking-widest text-emerald-400">
-                Keunggulan Utama
+                Fitur Lengkap
               </span>
               <h2 className="mt-2 text-3xl font-extrabold text-foreground sm:text-4xl">
                 Didesain Spesifik untuk Penjual Online
               </h2>
               <p className="mt-3 text-sm text-muted-foreground sm:text-base">
-                Membantu closing pelanggan lebih cepat tanpa perlu standby 24 jam di depan HP.
+                Semua instrumen yang Anda butuhkan untuk meningkatkan omset dan melayani ribuan pembeli tanpa repot.
               </p>
             </div>
 
             {/* Bento Grid */}
             <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
               {fiturBisnis.map((f, idx) => {
-                // First (Zap) and last (ShieldCheck) items span 2 columns
                 const isWide = idx === 0 || idx === 5;
                 return (
                   <div
                     key={f.judul}
-                    className={`feature-card group relative overflow-hidden rounded-2xl border border-border bg-card/50 p-8 transition-all hover:border-emerald-500/40 ${
+                    className={`feature-card group relative overflow-hidden rounded-3xl border border-border bg-card/60 p-8 shadow-sm transition-all hover:border-emerald-500/50 hover:shadow-xl ${
                       isWide ? "md:col-span-2" : ""
                     }`}
                   >
-                    <div className="feature-icon mb-6 flex h-12 w-12 items-center justify-center rounded-xl border border-emerald-500/20 bg-emerald-500/10 text-emerald-400">
-                      <f.icon className="size-5" />
+                    <div className="flex items-center justify-between mb-6">
+                      <div className="feature-icon flex h-12 w-12 items-center justify-center rounded-2xl border border-emerald-500/20 bg-emerald-500/10 text-emerald-400">
+                        <f.icon className="size-6" />
+                      </div>
+                      <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-[11px] font-bold text-emerald-400">
+                        {f.tagline}
+                      </span>
                     </div>
+
                     <h3 className="mb-2 text-xl font-bold text-foreground">{f.judul}</h3>
-                    <p className={`text-sm leading-relaxed text-muted-foreground ${isWide ? "max-w-lg" : ""}`}>
+                    <p className={`text-sm leading-relaxed text-muted-foreground ${isWide ? "max-w-xl" : ""}`}>
                       {f.teks}
                     </p>
+
+                    <div className="mt-6 flex items-center gap-2 text-xs font-semibold text-emerald-400">
+                      <Check className="h-4 w-4" />
+                      <span>{f.metric}</span>
+                    </div>
                   </div>
                 );
               })}
@@ -921,19 +1202,69 @@ function Landing() {
         </section>
 
         {/* ══════════════════════════════════════════════════════════ */}
-        {/* 5. HOW IT WORKS — 3 Steps                                */}
+        {/* 8. TESTIMONIALS / PROVEN SUCCESS                          */}
+        {/* ══════════════════════════════════════════════════════════ */}
+        <section id="testimoni" className="py-20 border-y border-border bg-card/30">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="mx-auto mb-16 max-w-2xl text-center">
+              <span className="text-xs font-bold uppercase tracking-widest text-emerald-400">
+                Kisah Sukses
+              </span>
+              <h2 className="mt-2 text-3xl font-extrabold text-foreground sm:text-4xl">
+                Dipercaya oleh Penjual Online di Seluruh Indonesia
+              </h2>
+              <p className="mt-3 text-sm text-muted-foreground">
+                Cerita nyata mereka yang omsetnya melesat setelah menggunakan Balasin AI.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+              {testimoniList.map((t, idx) => (
+                <div
+                  key={idx}
+                  className="flex flex-col justify-between rounded-3xl border border-border bg-card p-7 shadow-sm transition-all hover:border-emerald-500/40 hover:-translate-y-1"
+                >
+                  <div>
+                    <div className="flex text-amber-400 mb-4">
+                      {[...Array(t.bintang)].map((_, i) => (
+                        <Star key={i} className="h-4 w-4 fill-amber-400" />
+                      ))}
+                    </div>
+                    <p className="text-sm leading-relaxed text-zinc-300 dark:text-zinc-300 text-zinc-700">
+                      "{t.isi}"
+                    </p>
+                  </div>
+
+                  <div className="mt-6 border-t border-border pt-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h4 className="font-bold text-foreground text-sm">{t.nama}</h4>
+                        <p className="text-xs text-muted-foreground">{t.bisnis}</p>
+                      </div>
+                      <span className="rounded-full bg-emerald-500/10 px-2.5 py-1 text-[10px] font-bold text-emerald-400">
+                        {t.hasil}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ══════════════════════════════════════════════════════════ */}
+        {/* 9. HOW IT WORKS — 3 Steps                                 */}
         {/* ══════════════════════════════════════════════════════════ */}
         <section id="cara-kerja" className="mx-auto max-w-6xl px-6 py-20">
           <div className="mx-auto mb-12 max-w-2xl text-center">
-            <span className="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">
+            <span className="text-xs font-bold uppercase tracking-widest text-emerald-400">
               Sangat Mudah
             </span>
-            <h2 className="mt-2 text-3xl font-extrabold text-foreground">
+            <h2 className="mt-2 text-3xl font-extrabold text-foreground sm:text-4xl">
               3 Langkah Praktis untuk Memulai
             </h2>
             <p className="mt-2 text-sm text-muted-foreground">
-              Tidak perlu keahlian teknis. Anda bisa mengaktifkan CS WhatsApp pintar ini dalam
-              hitungan menit.
+              Tidak perlu keahlian koding atau sewa server. Sambungkan nomor Anda dan bot langsung aktif.
             </p>
           </div>
 
@@ -941,13 +1272,18 @@ function Landing() {
             {langkahMudah.map((step) => (
               <div
                 key={step.nomor}
-                className="relative flex flex-col justify-between rounded-2xl border border-border bg-card/50 p-6 transition-colors hover:border-emerald-500/50"
+                className="group relative flex flex-col justify-between rounded-3xl border border-border bg-card/60 p-7 shadow-sm transition-all hover:border-emerald-500/50 hover:bg-card"
               >
                 <div>
-                  <span className="font-mono text-3xl font-black text-emerald-600/30 dark:text-emerald-400/20">
-                    {step.nomor}
-                  </span>
-                  <h3 className="mt-2 text-lg font-bold text-foreground">{step.judul}</h3>
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="font-mono text-3xl font-black text-emerald-400/30">
+                      {step.nomor}
+                    </span>
+                    <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 text-[11px] font-bold text-emerald-400">
+                      {step.badge}
+                    </span>
+                  </div>
+                  <h3 className="text-lg font-bold text-foreground">{step.judul}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{step.teks}</p>
                 </div>
               </div>
@@ -956,12 +1292,15 @@ function Landing() {
         </section>
 
         {/* ══════════════════════════════════════════════════════════ */}
-        {/* 6. FAQ ACCORDION                                         */}
+        {/* 10. FAQ ACCORDION                                         */}
         {/* ══════════════════════════════════════════════════════════ */}
         <section id="faq" className="border-t border-border py-20">
           <div className="mx-auto max-w-4xl px-4 sm:px-6">
             <div className="mb-12 text-center">
-              <h2 className="text-3xl font-extrabold text-foreground">
+              <span className="text-xs font-bold uppercase tracking-widest text-emerald-400">
+                Punya Pertanyaan?
+              </span>
+              <h2 className="mt-1 text-3xl font-extrabold text-foreground sm:text-4xl">
                 Pertanyaan Sering Diajukan
               </h2>
               <p className="mt-2 text-sm text-muted-foreground">
@@ -973,12 +1312,12 @@ function Landing() {
               {faqItems.map((faq, idx) => (
                 <details
                   key={idx}
-                  className="group rounded-xl border border-border bg-card/40 p-5 [&_summary::-webkit-details-marker]:hidden"
+                  className="group rounded-2xl border border-border bg-card/40 p-5 shadow-xs transition-all hover:border-emerald-500/30 [&_summary::-webkit-details-marker]:hidden"
                 >
                   <summary className="flex cursor-pointer items-center justify-between text-base font-semibold text-foreground">
                     <span>{faq.q}</span>
                     <span className="ml-4 shrink-0 transition duration-300 group-open:-rotate-180">
-                      <ChevronDown className="size-5 text-muted-foreground" />
+                      <ChevronDown className="size-5 text-emerald-400" />
                     </span>
                   </summary>
                   <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
@@ -991,23 +1330,32 @@ function Landing() {
         </section>
 
         {/* ══════════════════════════════════════════════════════════ */}
-        {/* 7. FINAL HIGH-CONVERSION CTA                             */}
+        {/* 11. FINAL HIGH-CONVERSION CTA BANNER                      */}
         {/* ══════════════════════════════════════════════════════════ */}
         <section className="mx-auto max-w-5xl px-6 pb-24">
-          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-emerald-600 to-teal-700 p-8 text-center text-white shadow-2xl md:p-12">
-            <div className="pointer-events-none absolute -top-12 -right-12 size-48 rounded-full bg-white/10 blur-2xl" />
+          <div className="relative overflow-hidden rounded-[36px] bg-gradient-to-br from-emerald-600 via-teal-700 to-emerald-800 p-8 text-center text-white shadow-2xl md:p-14">
+            {/* Background Glows */}
+            <div className="pointer-events-none absolute -top-12 -right-12 size-60 rounded-full bg-white/15 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-12 -left-12 size-60 rounded-full bg-black/20 blur-3xl" />
+
             <div className="relative z-10 mx-auto max-w-2xl">
-              <h2 className="text-3xl font-extrabold tracking-tight md:text-4xl">
+              <span className="rounded-full bg-white/20 px-3.5 py-1 text-xs font-bold uppercase tracking-wider backdrop-blur-md">
+                Mulai Gratis Hari Ini
+              </span>
+
+              <h2 className="mt-4 text-3xl font-black tracking-tight sm:text-4xl md:text-5xl leading-tight">
                 Siap Melayani Pelanggan 24 Jam Tanpa Pegal?
               </h2>
-              <p className="mt-4 text-sm leading-relaxed text-emerald-100 md:text-base">
-                Sambungkan WhatsApp Anda sekarang. Biarkan AI membalas chat pembeli secepat kilat
-                sehingga omset penjualan bisnis Anda terus mengalir.
+
+              <p className="mt-4 text-sm leading-relaxed text-emerald-100 sm:text-base">
+                Sambungkan WhatsApp Anda sekarang. Biarkan AI membalas pesan pembeli secepat kilat
+                sehingga omset penjualan bisnis Anda terus mengalir tanpa henti.
               </p>
-              <div className="mt-8 flex justify-center">
+
+              <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Button
                   size="lg"
-                  className="rounded-xl bg-white px-8 font-bold text-emerald-800 shadow-lg transition-all hover:bg-emerald-50 hover:shadow-xl"
+                  className="rounded-full bg-white px-8 py-6 font-extrabold text-emerald-900 shadow-xl transition-all hover:bg-emerald-50 hover:scale-105 active:scale-95 text-base"
                   onClick={() => {
                     if (googleUser) {
                       navigate({ to: "/app" });
@@ -1017,31 +1365,37 @@ function Landing() {
                   }}
                   type="button"
                 >
-                  Buka Dashboard Sekarang
-                  <ArrowRight className="ml-2 size-4" />
+                  Hubungkan WhatsApp Sekarang
+                  <ArrowRight className="ml-2 size-5" />
                 </Button>
               </div>
+
+              <p className="mt-4 text-xs text-emerald-200">
+                ✓ Setup 1 Menit &bull; Tanpa Kartu Kredit &bull; Tanpa Sewa Server
+              </p>
             </div>
           </div>
         </section>
 
         {/* ══════════════════════════════════════════════════════════ */}
-        {/* FOOTER                                                   */}
+        {/* 12. FOOTER                                                */}
         {/* ══════════════════════════════════════════════════════════ */}
-        <footer className="border-t border-border/50 py-10">
-          <div className="mx-auto flex max-w-7xl flex-col items-center gap-4 px-6 sm:flex-row sm:justify-between">
-            <div className="flex items-center gap-2">
-              <img src="/chatbot_wa.png" alt="Balasin" className="h-6 w-6 rounded-md object-contain" />
-              <span className="text-sm font-semibold text-foreground">
-                Balas<span className="text-emerald-500">in</span>
+        <footer className="border-t border-border/60 py-12 bg-card/20">
+          <div className="mx-auto flex max-w-7xl flex-col items-center gap-6 px-6 sm:flex-row sm:justify-between">
+            <div className="flex items-center gap-2.5">
+              <img src="/chatbot_wa.png" alt="Balasin" className="h-7 w-7 rounded-lg object-contain" />
+              <span className="text-base font-bold text-foreground">
+                Balas<span className="text-emerald-400">in</span>
               </span>
             </div>
-            <p className="text-xs text-muted-foreground">
-              © {new Date().getFullYear()} Balasin — Solusi Cerdas Customer Service WhatsApp.
+
+            <p className="text-xs text-muted-foreground text-center">
+              © {new Date().getFullYear()} Balasin — Solusi Customer Service AI WhatsApp untuk UMKM & Penjual Online.
             </p>
-            <div className="flex items-center gap-4 text-xs text-muted-foreground">
-              <a href="#" className="transition-colors hover:text-foreground">Syarat & Ketentuan</a>
-              <a href="#" className="transition-colors hover:text-foreground">Kebijakan Privasi</a>
+
+            <div className="flex items-center gap-5 text-xs text-muted-foreground">
+              <a href="#" className="transition-colors hover:text-emerald-400">Syarat & Ketentuan</a>
+              <a href="#" className="transition-colors hover:text-emerald-400">Kebijakan Privasi</a>
             </div>
           </div>
         </footer>
