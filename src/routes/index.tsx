@@ -408,11 +408,11 @@ function Landing() {
       <AmbientBackground />
 
       {/* ══════════════════════════════════════════════════════════ */}
-      {/* 1. STICKY GLASSMORPHIC MODERN NAVBAR                      */}
+      {/* 1. BRIGHT & CLEAN GLASSMORPHIC MODERN NAVBAR             */}
       {/* ══════════════════════════════════════════════════════════ */}
-      <header className="sticky top-0 z-50 w-full backdrop-blur-2xl transition-all duration-300 bg-zinc-950/85 dark:bg-zinc-950/85 bg-white/90 border-b border-zinc-800/60 dark:border-zinc-800/80 border-zinc-200/80 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)]">
+      <header className="sticky top-0 z-50 w-full backdrop-blur-2xl transition-all duration-300 bg-white/95 dark:bg-zinc-900/95 border-b border-zinc-200/80 dark:border-zinc-800/80 shadow-[0_4px_25px_-5px_rgba(0,0,0,0.06)] dark:shadow-[0_4px_25px_-5px_rgba(0,0,0,0.3)]">
         {/* Animated Gradient Border Beam at Bottom */}
-        <div className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-emerald-400/70 to-transparent animate-border-beam" />
+        <div className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-emerald-500/60 to-transparent animate-border-beam" />
 
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           {/* Logo & Live Status Chip */}
@@ -425,51 +425,51 @@ function Landing() {
                   className="h-8 w-8 rounded-lg object-contain transition-all duration-300 group-hover:scale-110 group-hover:rotate-3 shadow-md shadow-emerald-500/20"
                 />
                 <span className="absolute -bottom-0.5 -right-0.5 flex h-2.5 w-2.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-600" />
                 </span>
               </div>
-              <span className="text-xl font-bold tracking-tight text-zinc-100 dark:text-zinc-100 text-zinc-900">
-                Balas<span className="text-emerald-400">in</span>
+              <span className="text-xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-100">
+                Balas<span className="text-emerald-500">in</span>
               </span>
             </Link>
 
             {/* Live Status Badge */}
-            <div className="hidden lg:flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-1 text-[11px] font-semibold text-emerald-400 shadow-inner">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <div className="hidden lg:flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-50 dark:bg-emerald-950/40 px-2.5 py-1 text-[11px] font-semibold text-emerald-700 dark:text-emerald-300 shadow-xs">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
               <span>AI CS Online 24/7</span>
             </div>
           </div>
 
-          {/* Center Navigation Links with Hover Glow */}
-          <nav className="hidden items-center gap-1 rounded-full border border-zinc-800/60 bg-zinc-900/60 p-1 text-xs font-semibold text-zinc-300 dark:border-zinc-800/80 dark:bg-zinc-900/60 border-zinc-200/80 bg-zinc-100/80 text-zinc-700 md:flex">
+          {/* Center Navigation Links with Bright Hover Pill */}
+          <nav className="hidden items-center gap-1 rounded-full border border-zinc-200/80 bg-zinc-100/90 dark:border-zinc-700/80 dark:bg-zinc-800/80 p-1 text-xs font-semibold text-zinc-700 dark:text-zinc-200 md:flex shadow-xs">
             <a
               href="#fitur"
-              className="rounded-full px-3.5 py-1.5 transition-all hover:bg-emerald-500/15 hover:text-emerald-400 dark:hover:text-emerald-400 hover:text-emerald-600"
+              className="rounded-full px-3.5 py-1.5 transition-all hover:bg-white hover:text-emerald-600 hover:shadow-xs dark:hover:bg-zinc-700 dark:hover:text-emerald-400"
             >
               Fitur Utama
             </a>
             <a
               href="#perbandingan"
-              className="rounded-full px-3.5 py-1.5 transition-all hover:bg-emerald-500/15 hover:text-emerald-400 dark:hover:text-emerald-400 hover:text-emerald-600"
+              className="rounded-full px-3.5 py-1.5 transition-all hover:bg-white hover:text-emerald-600 hover:shadow-xs dark:hover:bg-zinc-700 dark:hover:text-emerald-400"
             >
               Kenapa Balasin?
             </a>
             <a
               href="#simulasi"
-              className="rounded-full px-3.5 py-1.5 transition-all hover:bg-emerald-500/15 hover:text-emerald-400 dark:hover:text-emerald-400 hover:text-emerald-600"
+              className="rounded-full px-3.5 py-1.5 transition-all hover:bg-white hover:text-emerald-600 hover:shadow-xs dark:hover:bg-zinc-700 dark:hover:text-emerald-400"
             >
               Simulasi Chat
             </a>
             <a
               href="#testimoni"
-              className="rounded-full px-3.5 py-1.5 transition-all hover:bg-emerald-500/15 hover:text-emerald-400 dark:hover:text-emerald-400 hover:text-emerald-600"
+              className="rounded-full px-3.5 py-1.5 transition-all hover:bg-white hover:text-emerald-600 hover:shadow-xs dark:hover:bg-zinc-700 dark:hover:text-emerald-400"
             >
               Testimoni
             </a>
             <a
               href="#faq"
-              className="rounded-full px-3.5 py-1.5 transition-all hover:bg-emerald-500/15 hover:text-emerald-400 dark:hover:text-emerald-400 hover:text-emerald-600"
+              className="rounded-full px-3.5 py-1.5 transition-all hover:bg-white hover:text-emerald-600 hover:shadow-xs dark:hover:bg-zinc-700 dark:hover:text-emerald-400"
             >
               FAQ
             </a>
@@ -477,7 +477,7 @@ function Landing() {
 
           {/* Action Buttons */}
           <div className="flex items-center gap-3">
-            <ThemeToggle className="size-9 rounded-xl border border-zinc-800 hover:border-emerald-500/40" />
+            <ThemeToggle className="size-9 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-200 hover:border-emerald-500/40 shadow-xs" />
 
             {googleUser ? (
               <div
@@ -485,7 +485,7 @@ function Landing() {
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
               >
-                <button className="flex cursor-pointer items-center gap-2.5 rounded-full border border-emerald-500/30 bg-zinc-900/80 p-1 pr-3 transition-all hover:border-emerald-500/60 hover:bg-zinc-800 focus-visible:outline-none shadow-sm">
+                <button className="flex cursor-pointer items-center gap-2.5 rounded-full border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 p-1 pr-3 transition-all hover:border-emerald-500/60 hover:bg-zinc-50 dark:hover:bg-zinc-700 focus-visible:outline-none shadow-xs">
                   <span className="relative flex size-8 shrink-0">
                     {avatarSrc && !avatarError ? (
                       <img
@@ -496,30 +496,30 @@ function Landing() {
                         className="size-8 rounded-full object-cover ring-2 ring-emerald-500/30"
                       />
                     ) : (
-                      <span className="flex size-8 items-center justify-center rounded-full bg-emerald-500/10 text-[10px] font-bold text-emerald-400">
+                      <span className="flex size-8 items-center justify-center rounded-full bg-emerald-500/10 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
                         {initials}
                       </span>
                     )}
                   </span>
-                  <span className="hidden text-sm font-semibold sm:inline-block text-zinc-100">
+                  <span className="hidden text-sm font-semibold sm:inline-block text-zinc-800 dark:text-zinc-100">
                     {googleUser.name.split(" ")[0]}
                   </span>
-                  <ChevronDown className="size-3.5 text-zinc-400" />
+                  <ChevronDown className="size-3.5 text-zinc-500 dark:text-zinc-400" />
                 </button>
                 {isOpen && (
                   <div className="absolute top-full right-0 z-50 pt-2">
-                    <div className="w-56 rounded-2xl border border-zinc-800 bg-zinc-950 p-2 shadow-2xl backdrop-blur-xl">
+                    <div className="w-56 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-2 shadow-2xl backdrop-blur-xl">
                       <div className="px-2.5 py-2">
-                        <p className="text-sm font-bold text-zinc-100">{googleUser.name}</p>
-                        <p className="mt-0.5 truncate text-xs text-zinc-400">
+                        <p className="text-sm font-bold text-zinc-900 dark:text-zinc-100">{googleUser.name}</p>
+                        <p className="mt-0.5 truncate text-xs text-zinc-500 dark:text-zinc-400">
                           {googleUser.email}
                         </p>
                       </div>
-                      <div className="-mx-1 my-1.5 h-px bg-zinc-800" />
+                      <div className="-mx-1 my-1.5 h-px bg-zinc-200 dark:bg-zinc-800" />
                       <Link
                         to="/app"
                         onClick={() => setIsOpen(false)}
-                        className="relative flex w-full cursor-pointer select-none items-center gap-2 rounded-xl px-2.5 py-2 text-sm font-semibold text-emerald-400 outline-none hover:bg-emerald-500/10 transition-colors"
+                        className="relative flex w-full cursor-pointer select-none items-center gap-2 rounded-xl px-2.5 py-2 text-sm font-semibold text-emerald-600 dark:text-emerald-400 outline-none hover:bg-emerald-50 dark:hover:bg-emerald-500/10 transition-colors"
                       >
                         <LayoutDashboard className="size-4" />
                         Buka Dashboard
@@ -529,14 +529,14 @@ function Landing() {
                           setIsOpen(false);
                           setShowLogin(true);
                         }}
-                        className="relative flex w-full cursor-pointer select-none items-center gap-2 rounded-xl px-2.5 py-2 text-sm text-zinc-300 outline-none hover:bg-zinc-900 transition-colors"
+                        className="relative flex w-full cursor-pointer select-none items-center gap-2 rounded-xl px-2.5 py-2 text-sm text-zinc-700 dark:text-zinc-300 outline-none hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors"
                       >
                         <UserPlus className="size-4" />
                         Tambahkan Akun lain
                       </button>
                       <button
                         onClick={() => handleLogout()}
-                        className="relative flex w-full cursor-pointer select-none items-center gap-2 rounded-xl px-2.5 py-2 text-sm text-red-400 outline-none hover:bg-red-500/10 transition-colors"
+                        className="relative flex w-full cursor-pointer select-none items-center gap-2 rounded-xl px-2.5 py-2 text-sm text-red-500 dark:text-red-400 outline-none hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors"
                       >
                         <LogOut className="size-4" />
                         Keluar
@@ -549,7 +549,7 @@ function Landing() {
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => setShowLogin(true)}
-                  className="hidden cursor-pointer text-sm font-semibold text-zinc-300 transition-colors hover:text-emerald-400 dark:text-zinc-300 dark:hover:text-emerald-400 text-zinc-700 hover:text-emerald-600 sm:inline-block"
+                  className="hidden cursor-pointer text-sm font-bold text-zinc-700 transition-colors hover:text-emerald-600 dark:text-zinc-200 dark:hover:text-emerald-400 sm:inline-block"
                 >
                   Masuk
                 </button>
@@ -561,7 +561,7 @@ function Landing() {
                       setShowLogin(true);
                     }
                   }}
-                  className="relative group overflow-hidden flex cursor-pointer items-center gap-2 rounded-full bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-400 px-4 py-2 text-sm font-bold text-zinc-950 shadow-[0_0_20px_rgba(52,211,153,0.35)] transition-all hover:scale-105 hover:shadow-[0_0_28px_rgba(52,211,153,0.6)] active:scale-95"
+                  className="relative group overflow-hidden flex cursor-pointer items-center gap-2 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 text-sm font-bold shadow-[0_0_20px_rgba(16,185,129,0.35)] transition-all hover:scale-105 active:scale-95"
                 >
                   <span className="relative z-10 flex items-center gap-1.5">
                     <span>Mulai Sekarang</span>
