@@ -171,6 +171,31 @@ function TenantOverview() {
         }
       />
 
+      {/* BANNER NOTIFIKASI AKTIVASI LISENSI VIA ADMIN */}
+      {!activeLicense && (
+        <div className="mb-4 rounded-xl border border-emerald-500/30 bg-emerald-50/80 dark:bg-emerald-950/30 p-3.5 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-xs">
+          <div className="flex items-center gap-2.5">
+            <span className="flex h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+            <p className="text-foreground">
+              <strong>Aktivasi Lisensi Diperlukan:</strong> Dapatkan kode aktivasi resmi dari Admin via WhatsApp (<strong>0852-1590-2047</strong>) untuk mengaktifkan AI &amp; fitur Balas Iklan.
+            </p>
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            <a
+              href="https://wa.me/6285215902047?text=Halo%20Admin%20Balasin%2C%20saya%20ingin%20aktivasi%20lisensi%20WhatsApp%20saya."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 font-bold transition-all shadow-xs text-xs"
+            >
+              Chat Admin WA (0852-1590-2047)
+            </a>
+            <Button asChild size="sm" variant="outline" className="rounded-lg h-7 text-xs">
+              <Link to="/app/lisensi">Input Kode</Link>
+            </Button>
+          </div>
+        </div>
+      )}
+
       {/* STAT CARDS ROW */}
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard

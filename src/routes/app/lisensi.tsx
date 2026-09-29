@@ -178,6 +178,34 @@ function LisensiPage() {
         />
       </div>
 
+      {/* Info Aktivasi Admin & Tombol WhatsApp */}
+      <div className="mt-4 rounded-xl border border-emerald-500/30 bg-emerald-50/70 dark:bg-emerald-950/20 p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs">
+        <div className="flex items-start gap-3">
+          <div className="size-10 rounded-xl bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+            <KeyRound className="size-5" />
+          </div>
+          <div>
+            <h3 className="text-sm font-bold text-foreground">
+              Aktivasi & Perpanjangan Lisensi Diperoleh dari Admin
+            </h3>
+            <p className="text-xs text-muted-foreground mt-0.5 max-w-xl">
+              Kode lisensi untuk mengaktifkan AI atau menambah masa berlaku diperoleh resmi dari Admin via WhatsApp. Hubungi admin kami di <strong className="text-foreground">0852-1590-2047</strong> untuk klaim atau perpanjang lisensi Anda.
+            </p>
+          </div>
+        </div>
+        <a
+          href="https://wa.me/6285215902047?text=Halo%20Admin%20Balasin%2C%20saya%20ingin%20aktivasi%20%2F%20perpanjang%20kode%20lisensi%20WhatsApp%20saya."
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 text-xs font-bold transition-all shadow-sm shrink-0 hover:scale-105 active:scale-95"
+        >
+          <svg className="size-4 shrink-0 fill-current" viewBox="0 0 24 24">
+            <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.634.044-1.282-.128-.85-.226-1.523-.626-2.196-1.299-.958-.958-1.554-2.146-1.637-2.316-.083-.17-.234-.488-.234-.933 0-.445.234-.664.318-.749.085-.085.185-.106.247-.106.062 0 .125.001.179.003.058.002.136-.022.213.161.085.202.289.704.314.756.025.053.042.115.008.183-.034.068-.051.11-.102.17-.051.06-.107.133-.153.179-.051.051-.104.106-.045.207.06.101.265.438.568.708.391.349.721.457.823.508.102.051.162.043.222-.026.06-.068.256-.298.324-.4.068-.102.137-.085.23-.051.094.034.596.281.698.332.102.051.17.077.196.12.025.042.025.247-.119.652z" />
+          </svg>
+          <span>Chat Admin WhatsApp (0852-1590-2047)</span>
+        </a>
+      </div>
+
       <div className="mt-4 rounded-lg border border-border/60 bg-muted/20 p-4 text-xs text-muted-foreground flex items-center justify-between">
         <span>
           💡 <strong>Catatan:</strong> Seluruh data bisnis Anda (nomor WhatsApp, riwayat chat, dokumen pengetahuan, dan template iklan) tersimpan permanen di akun Anda dan tidak akan hilang saat masa lisensi habis. Lisensi hanya berfungsi menyalakan fitur AI dan balas iklan.
@@ -287,15 +315,28 @@ function LisensiPage() {
           </div>
         </div>
       ) : (
-        <div className="panel mt-6 flex flex-col items-center justify-center p-12 text-center">
+        <div className="panel mt-6 flex flex-col items-center justify-center p-10 text-center">
           <KeyRound className="size-12 text-muted-foreground opacity-30 mb-3" />
           <h2 className="text-base font-semibold">Belum Ada Lisensi Aktif</h2>
-          <p className="mt-1 text-xs text-muted-foreground max-w-sm">
-            Silakan masukkan kode lisensi yang Anda peroleh dari admin untuk mengaktifkan AI dan fitur bot WhatsApp.
+          <p className="mt-1 text-xs text-muted-foreground max-w-md">
+            Kode lisensi resmi untuk mengaktifkan AI dan fitur Balas Iklan diperoleh langsung dari Admin via WhatsApp (<strong>0852-1590-2047</strong>).
           </p>
-          <Button className="mt-4" onClick={() => setDialogOpen(true)}>
-            <KeyRound className="size-4" /> Masukkan Kode Lisensi
-          </Button>
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
+            <Button onClick={() => setDialogOpen(true)}>
+              <KeyRound className="size-4" /> Masukkan Kode Lisensi
+            </Button>
+            <a
+              href="https://wa.me/6285215902047?text=Halo%20Admin%20Balasin%2C%20saya%20ingin%20aktivasi%20lisensi%20WhatsApp%20saya."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 text-sm font-semibold transition-all shadow-xs"
+            >
+              <svg className="size-4 shrink-0 fill-current" viewBox="0 0 24 24">
+                <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.634.044-1.282-.128-.85-.226-1.523-.626-2.196-1.299-.958-.958-1.554-2.146-1.637-2.316-.083-.17-.234-.488-.234-.933 0-.445.234-.664.318-.749.085-.085.185-.106.247-.106.062 0 .125.001.179.003.058.002.136-.022.213.161.085.202.289.704.314.756.025.053.042.115.008.183-.034.068-.051.11-.102.17-.051.06-.107.133-.153.179-.051.051-.104.106-.045.207.06.101.265.438.568.708.391.349.721.457.823.508.102.051.162.043.222-.026.06-.068.256-.298.324-.4.068-.102.137-.085.23-.051.094.034.596.281.698.332.102.051.17.077.196.12.025.042.025.247-.119.652z" />
+              </svg>
+              <span>Chat Admin untuk Aktivasi (0852-1590-2047)</span>
+            </a>
+          </div>
         </div>
       )}
     </>

@@ -27,6 +27,8 @@ import {
   MessageSquare,
   Award,
   Check,
+  KeyRound,
+  ExternalLink,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
@@ -255,6 +257,10 @@ const perbandinganFitur = [
 
 const faqItems = [
   {
+    q: "Bagaimana cara mendapatkan kode lisensi dan aktivasi bot WhatsApp?",
+    a: "Sangat mudah! Lisensi dan aktivasi akun didapatkan resmi langsung dari Admin melalui WhatsApp di nomor 0852-1590-2047. Anda cukup login dengan akun Google, lalu klik tombol 'Chat Admin untuk Aktivasi'. Admin akan memberikan kode lisensi resmi yang bisa langsung Anda masukkan di dashboard.",
+  },
+  {
     q: "Apakah komputer atau laptop saya harus menyala terus?",
     a: "Tidak perlu sama sekali! Sistem Balasin berjalan 100% di cloud server kami. Begitu WhatsApp Anda tersambung lewat scan QR, sistem akan membalas otomatis 24 jam nonstop meskipun ponsel Anda mati atau laptop dimatikan.",
   },
@@ -268,24 +274,12 @@ const faqItems = [
   },
   {
     q: "Berapa nomor WhatsApp yang bisa disambungkan?",
-    a: "Untuk paket standar, 1 akun terhubung ke 1 nomor WhatsApp bisnis aktif. Anda bisa menambah slot nomor tambahan kapan saja melalui dashboard admin.",
+    a: "Untuk paket standar, 1 akun terhubung ke 1 nomor WhatsApp bisnis aktif. Anda bisa menambah slot nomor tambahan kapan saja dengan menghubungi Admin.",
   },
   {
     q: "Apakah data pelanggan dan katalog saya aman?",
     a: "Sangat aman dan terisolasi. Percakapan pembeli, data nomor kontak, dan histori katalog Anda diisolasi per akun Google. Kami tidak menjual data pelanggan Anda ke pihak mana pun.",
   },
-  {
-    q: "Apakah ada biaya tersembunyi atau kontrak mengikat?",
-    a: "Tidak ada! Anda bisa mulai gratis tanpa kartu kredit. Anda bebas berhenti kapan saja tanpa komitmen jangka panjang.",
-  },
-];
-
-const platformLogos = [
-  { nama: "WhatsApp Business", label: "WhatsApp Official", icon: "💬" },
-  { nama: "Meta Ads (Click-to-WA)", label: "Instagram & FB Ads", icon: "🎯" },
-  { nama: "TikTok Ads", label: "TikTok Shop / Ads", icon: "🎵" },
-  { nama: "Shopee", label: "Shopee Export Chat", icon: "🛍️" },
-  { nama: "Tokopedia", label: "Tokopedia Seller", icon: "📦" },
 ];
 
 function Landing() {
@@ -312,6 +306,14 @@ function Landing() {
     timeoutRef.current = setTimeout(() => {
       setIsOpen(false);
     }, 200);
+  };
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    e.preventDefault();
+    const el = document.getElementById(targetId);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   };
 
   useEffect(() => {
@@ -403,6 +405,76 @@ function Landing() {
         .join("") || "?"
     : "?";
 
+  // Platform items with official SVGs and animations
+  const platformItems = [
+    {
+      nama: "TikTok Shop & Ads",
+      desc: "Balas Chat Otomatis",
+      logo: (
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-black text-white shadow-md shadow-cyan-500/20 animate-spin-slow">
+          <svg className="size-5 fill-current text-white" viewBox="0 0 24 24">
+            <path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-5.201 1.743l-.068-.102a2.895 2.895 0 0 1 2.373-4.512c.277 0 .542.039.794.111V9.41a6.326 6.326 0 0 0-.794-.05 6.339 6.339 0 0 0-6.34 6.34 6.34 6.34 0 0 0 10.68 4.606l.128-.127a6.3 6.3 0 0 0 1.872-4.479V8.402a8.214 8.214 0 0 0 4.771 1.733V6.69c-.334-.002-.668-.004-1-.004z" />
+          </svg>
+        </div>
+      ),
+    },
+    {
+      nama: "WhatsApp Business",
+      desc: "Pusat CS & Transaksi",
+      logo: (
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-[#25D366] to-[#128C7E] text-white shadow-md shadow-emerald-500/30 animate-wiggle">
+          <svg className="size-5 fill-current" viewBox="0 0 24 24">
+            <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.634.044-1.282-.128-.85-.226-1.523-.626-2.196-1.299-.958-.958-1.554-2.146-1.637-2.316-.083-.17-.234-.488-.234-.933 0-.445.234-.664.318-.749.085-.085.185-.106.247-.106.062 0 .125.001.179.003.058.002.136-.022.213.161.085.202.289.704.314.756.025.053.042.115.008.183-.034.068-.051.11-.102.17-.051.06-.107.133-.153.179-.051.051-.104.106-.045.207.06.101.265.438.568.708.391.349.721.457.823.508.102.051.162.043.222-.026.06-.068.256-.298.324-.4.068-.102.137-.085.23-.051.094.034.596.281.698.332.102.051.17.077.196.12.025.042.025.247-.119.652z" />
+          </svg>
+        </div>
+      ),
+    },
+    {
+      nama: "Meta Ads (Click-to-WA)",
+      desc: "Instagram & Facebook",
+      logo: (
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] text-white shadow-md shadow-pink-500/20 animate-pulse-glow">
+          <svg className="size-5 fill-current" viewBox="0 0 24 24">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+          </svg>
+        </div>
+      ),
+    },
+    {
+      nama: "Shopee Seller Export",
+      desc: "Katalog & Pengiriman",
+      logo: (
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-[#EE4D2D] to-[#ff7337] text-white shadow-md shadow-orange-500/20 animate-wiggle">
+          <svg className="size-5 fill-current" viewBox="0 0 24 24">
+            <path d="M19.98 10.82c-.05-.28-.27-.49-.55-.52l-3.32-.32-1.39-3.03c-.23-.51-.92-.51-1.15 0L12.18 10l-3.32.32c-.28.03-.5.24-.55.52-.05.28.07.57.3.73l2.49 1.79-.81 3.24c-.08.31.06.63.33.78.27.16.61.12.84-.09l2.74-2.45 2.74 2.45c.16.14.36.21.57.21.09 0 .19-.02.27-.06.27-.15.41-.47.33-.78l-.81-3.24 2.49-1.79c.23-.16.35-.45.3-.73z" />
+          </svg>
+        </div>
+      ),
+    },
+    {
+      nama: "Tokopedia Merchant",
+      desc: "Info Stok & Variasi",
+      logo: (
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-[#03AC0E] to-[#42b549] text-white shadow-md shadow-emerald-500/20 animate-float-delayed">
+          <svg className="size-5 fill-current" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15.5h-2v-7h2v7zm4 0h-2v-7h2v7zm-2-9c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z" />
+          </svg>
+        </div>
+      ),
+    },
+    {
+      nama: "Facebook Marketplace",
+      desc: "Respon Kilat Iklan",
+      logo: (
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#1877F2] text-white shadow-md shadow-blue-500/20 animate-spin-slow">
+          <svg className="size-5 fill-current" viewBox="0 0 24 24">
+            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+          </svg>
+        </div>
+      ),
+    },
+  ];
+
   return (
     <>
       <AmbientBackground />
@@ -441,34 +513,46 @@ function Landing() {
             </div>
           </div>
 
-          {/* Center Navigation Links with Bright Hover Pill */}
+          {/* Center Navigation Links with Smooth Animated Clicks */}
           <nav className="hidden items-center gap-1 rounded-full border border-zinc-200/80 bg-zinc-100/90 dark:border-zinc-700/80 dark:bg-zinc-800/80 p-1 text-xs font-semibold text-zinc-700 dark:text-zinc-200 md:flex shadow-xs">
             <a
               href="#fitur"
+              onClick={(e) => handleNavClick(e, "fitur")}
               className="rounded-full px-3.5 py-1.5 transition-all hover:bg-white hover:text-emerald-600 hover:shadow-xs dark:hover:bg-zinc-700 dark:hover:text-emerald-400"
             >
               Fitur Utama
             </a>
             <a
               href="#perbandingan"
+              onClick={(e) => handleNavClick(e, "perbandingan")}
               className="rounded-full px-3.5 py-1.5 transition-all hover:bg-white hover:text-emerald-600 hover:shadow-xs dark:hover:bg-zinc-700 dark:hover:text-emerald-400"
             >
               Kenapa Balasin?
             </a>
             <a
               href="#simulasi"
+              onClick={(e) => handleNavClick(e, "simulasi")}
               className="rounded-full px-3.5 py-1.5 transition-all hover:bg-white hover:text-emerald-600 hover:shadow-xs dark:hover:bg-zinc-700 dark:hover:text-emerald-400"
             >
               Simulasi Chat
             </a>
             <a
+              href="#aktivasi"
+              onClick={(e) => handleNavClick(e, "aktivasi")}
+              className="rounded-full px-3.5 py-1.5 transition-all hover:bg-white hover:text-emerald-600 hover:shadow-xs dark:hover:bg-zinc-700 dark:hover:text-emerald-400 text-emerald-600 dark:text-emerald-400"
+            >
+              🔑 Aktivasi Lisensi
+            </a>
+            <a
               href="#testimoni"
+              onClick={(e) => handleNavClick(e, "testimoni")}
               className="rounded-full px-3.5 py-1.5 transition-all hover:bg-white hover:text-emerald-600 hover:shadow-xs dark:hover:bg-zinc-700 dark:hover:text-emerald-400"
             >
               Testimoni
             </a>
             <a
               href="#faq"
+              onClick={(e) => handleNavClick(e, "faq")}
               className="rounded-full px-3.5 py-1.5 transition-all hover:bg-white hover:text-emerald-600 hover:shadow-xs dark:hover:bg-zinc-700 dark:hover:text-emerald-400"
             >
               FAQ
@@ -478,6 +562,20 @@ function Landing() {
           {/* Action Buttons */}
           <div className="flex items-center gap-3">
             <ThemeToggle className="size-9 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-200 hover:border-emerald-500/40 shadow-xs" />
+
+            {/* Direct WhatsApp Chat Admin Button in Navbar */}
+            <a
+              href="https://wa.me/6285215902047?text=Halo%20Admin%20Balasin%2C%20saya%20ingin%20aktivasi%20lisensi%20WhatsApp%20saya."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden lg:inline-flex items-center gap-1.5 rounded-full border border-emerald-500/40 bg-emerald-50 dark:bg-emerald-950/40 px-3 py-1.5 text-xs font-bold text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 transition-all hover:scale-105 active:scale-95 shadow-xs"
+              title="Hubungi Admin untuk Aktivasi Lisensi via WhatsApp"
+            >
+              <svg className="size-3.5 fill-current text-[#25D366]" viewBox="0 0 24 24">
+                <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.634.044-1.282-.128-.85-.226-1.523-.626-2.196-1.299-.958-.958-1.554-2.146-1.637-2.316-.083-.17-.234-.488-.234-.933 0-.445.234-.664.318-.749.085-.085.185-.106.247-.106.062 0 .125.001.179.003.058.002.136-.022.213.161.085.202.289.704.314.756.025.053.042.115.008.183-.034.068-.051.11-.102.17-.051.06-.107.133-.153.179-.051.051-.104.106-.045.207.06.101.265.438.568.708.391.349.721.457.823.508.102.051.162.043.222-.026.06-.068.256-.298.324-.4.068-.102.137-.085.23-.051.094.034.596.281.698.332.102.051.17.077.196.12.025.042.025.247-.119.652z" />
+              </svg>
+              <span>Chat Admin (0852-1590-2047)</span>
+            </a>
 
             {googleUser ? (
               <div
@@ -714,8 +812,8 @@ function Landing() {
               {/* Left Column: Copywriting & Social Proof */}
               <div className="space-y-6 text-center lg:col-span-7 lg:text-left">
                 {/* Announcement Badge */}
-                <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-1 text-xs font-semibold tracking-wide text-emerald-400 shadow-sm backdrop-blur-md">
-                  <Sparkles className="h-3.5 w-3.5 text-emerald-400 animate-spin" style={{ animationDuration: "8s" }} />
+                <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-1 text-xs font-semibold tracking-wide text-emerald-600 dark:text-emerald-400 shadow-sm backdrop-blur-md">
+                  <Sparkles className="h-3.5 w-3.5 text-emerald-500 animate-spin" style={{ animationDuration: "8s" }} />
                   <span>Teknologi AI CS WhatsApp untuk Penjual Online</span>
                 </div>
 
@@ -757,11 +855,17 @@ function Landing() {
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </button>
 
+                  {/* Chat Admin WhatsApp Button */}
                   <a
-                    href="#simulasi"
-                    className="rounded-full border border-zinc-700/80 bg-zinc-900/60 px-5 py-3.5 text-sm font-semibold text-zinc-300 transition-colors hover:border-emerald-500/40 hover:bg-zinc-800 hover:text-white"
+                    href="https://wa.me/6285215902047?text=Halo%20Admin%20Balasin%2C%20saya%20ingin%20aktivasi%20lisensi%20WhatsApp%20saya."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 rounded-full border border-emerald-500/40 bg-emerald-50/80 dark:bg-emerald-950/40 px-5 py-3.5 text-sm font-bold text-emerald-700 dark:text-emerald-300 transition-all hover:scale-105 hover:bg-emerald-100 shadow-xs"
                   >
-                    Lihat Contoh Simulasi
+                    <svg className="h-4 w-4 fill-current text-[#25D366]" viewBox="0 0 24 24">
+                      <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.634.044-1.282-.128-.85-.226-1.523-.626-2.196-1.299-.958-.958-1.554-2.146-1.637-2.316-.083-.17-.234-.488-.234-.933 0-.445.234-.664.318-.749.085-.085.185-.106.247-.106.062 0 .125.001.179.003.058.002.136-.022.213.161.085.202.289.704.314.756.025.053.042.115.008.183-.034.068-.051.11-.102.17-.051.06-.107.133-.153.179-.051.051-.104.106-.045.207.06.101.265.438.568.708.391.349.721.457.823.508.102.051.162.043.222-.026.06-.068.256-.298.324-.4.068-.102.137-.085.23-.051.094.034.596.281.698.332.102.051.17.077.196.12.025.042.025.247-.119.652z" />
+                    </svg>
+                    <span>Chat Admin untuk Aktivasi</span>
                   </a>
                 </div>
 
@@ -795,15 +899,15 @@ function Landing() {
                 {/* Highlights Trio */}
                 <div className="grid grid-cols-3 gap-4 border-t border-border/80 pt-6 text-left">
                   <div>
-                    <strong className="block text-lg font-black text-emerald-400">100%</strong>
+                    <strong className="block text-lg font-black text-emerald-500">100%</strong>
                     <span className="text-xs text-muted-foreground">Cloud Server Tanpa Mati</span>
                   </div>
                   <div>
-                    <strong className="block text-lg font-black text-emerald-400">&lt; 2 Detik</strong>
+                    <strong className="block text-lg font-black text-emerald-500">&lt; 2 Detik</strong>
                     <span className="text-xs text-muted-foreground">Kecepatan Balas Iklan</span>
                   </div>
                   <div>
-                    <strong className="block text-lg font-black text-emerald-400">1 Menit</strong>
+                    <strong className="block text-lg font-black text-emerald-500">1 Menit</strong>
                     <span className="text-xs text-muted-foreground">Tinggal Scan QR</span>
                   </div>
                 </div>
@@ -812,36 +916,36 @@ function Landing() {
               {/* Right Column: Phone Mockup with 3 Dynamic Floating Badges */}
               <div className="relative flex justify-center lg:col-span-5">
                 {/* Floating Badge 1 (Top Left): Live Chat Incoming */}
-                <div className="absolute -top-6 -left-6 z-20 hidden items-center gap-3 rounded-2xl border border-zinc-700/80 bg-zinc-900/95 p-3 shadow-2xl backdrop-blur-xl animate-float-delayed sm:flex">
+                <div className="absolute -top-6 -left-6 z-20 hidden items-center gap-3 rounded-2xl border border-zinc-200 dark:border-zinc-700/80 bg-white/95 dark:bg-zinc-900/95 p-3 shadow-2xl backdrop-blur-xl animate-float-delayed sm:flex">
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-500/20 text-lg">
                     💬
                   </div>
                   <div className="text-left">
                     <div className="flex items-center gap-2">
-                      <span className="text-[11px] font-bold text-zinc-100">Chat Iklan Masuk</span>
-                      <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
+                      <span className="text-[11px] font-bold text-zinc-900 dark:text-zinc-100">Chat Iklan Masuk</span>
+                      <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-ping" />
                     </div>
-                    <p className="text-[10px] text-zinc-400">"Sneakers 42 promo diskon ada?"</p>
+                    <p className="text-[10px] text-zinc-500 dark:text-zinc-400">"Sneakers 42 promo diskon ada?"</p>
                   </div>
                 </div>
 
                 {/* Floating Badge 2 (Bottom Right): Instant Response */}
-                <div className="absolute -bottom-6 -right-6 z-20 hidden items-center gap-3 rounded-2xl border border-emerald-500/40 bg-zinc-900/95 p-3 shadow-2xl backdrop-blur-xl animate-float sm:flex">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-400 font-bold text-zinc-950">
+                <div className="absolute -bottom-6 -right-6 z-20 hidden items-center gap-3 rounded-2xl border border-emerald-500/40 bg-white/95 dark:bg-zinc-900/95 p-3 shadow-2xl backdrop-blur-xl animate-float sm:flex">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-500 font-bold text-white">
                     ⚡
                   </div>
                   <div className="text-left">
-                    <div className="flex items-center gap-1.5 text-[11px] font-bold text-emerald-400">
+                    <div className="flex items-center gap-1.5 text-[11px] font-bold text-emerald-600 dark:text-emerald-400">
                       <span>Terbalas 0.8 Detik</span>
-                      <CheckCheck className="h-3.5 w-3.5 text-sky-400" />
+                      <CheckCheck className="h-3.5 w-3.5 text-sky-500" />
                     </div>
-                    <p className="text-[10px] text-zinc-400">Katalog + Cek Ongkir Terkirim</p>
+                    <p className="text-[10px] text-zinc-500 dark:text-zinc-400">Katalog + Cek Ongkir Terkirim</p>
                   </div>
                 </div>
 
                 {/* Floating Badge 3 (Bottom Center): Order Conversion */}
-                <div className="absolute -bottom-4 left-6 z-20 flex items-center gap-2 rounded-full border border-emerald-500/30 bg-zinc-900/95 px-3 py-1.5 text-[10px] font-bold text-emerald-300 shadow-xl backdrop-blur-md">
-                  <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+                <div className="absolute -bottom-4 left-6 z-20 flex items-center gap-2 rounded-full border border-emerald-500/30 bg-white/95 dark:bg-zinc-900/95 px-3 py-1.5 text-[10px] font-bold text-emerald-700 dark:text-emerald-300 shadow-xl backdrop-blur-md">
+                  <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
                   <span>💰 Order Masuk: Rp 389.000 (COD)</span>
                 </div>
 
@@ -922,21 +1026,31 @@ function Landing() {
         </section>
 
         {/* ══════════════════════════════════════════════════════════ */}
-        {/* 3. PLATFORM INTEGRATION TICKER                            */}
+        {/* 3. PLATFORM INTEGRATION CONTINUOUS INFINITE MOVING MARQUEE */}
         {/* ══════════════════════════════════════════════════════════ */}
-        <section className="border-y border-border bg-card/30 py-8">
-          <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-              Terintegrasi Mulus dengan Ekosistem Penjualan Anda
+        <section className="border-y border-border bg-card/40 py-8 overflow-hidden relative">
+          <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8 mb-5">
+            <p className="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">
+              ⚡ Terintegrasi Otomatis dengan Platform Favorit Anda
             </p>
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-4 sm:gap-8">
-              {platformLogos.map((p) => (
+          </div>
+
+          {/* Marquee Wrapper with Gradient Fade on Sides */}
+          <div className="relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+            <div className="animate-marquee flex gap-6 items-center">
+              {/* Duplicate array twice for seamless continuous infinite loop */}
+              {[...platformItems, ...platformItems].map((p, idx) => (
                 <div
-                  key={p.nama}
-                  className="flex items-center gap-2 rounded-full border border-border bg-card/60 px-4 py-2 text-xs font-semibold text-foreground shadow-xs transition-all hover:border-emerald-500/40 hover:bg-card"
+                  key={idx}
+                  className="flex items-center gap-3.5 rounded-2xl border border-border bg-card/90 px-5 py-3 shadow-xs backdrop-blur-md transition-all hover:scale-105 hover:border-emerald-500/50 hover:shadow-md cursor-pointer shrink-0 group"
                 >
-                  <span className="text-base">{p.icon}</span>
-                  <span>{p.nama}</span>
+                  <div className="transition-transform duration-500 group-hover:scale-120 group-hover:rotate-6">
+                    {p.logo}
+                  </div>
+                  <div className="text-left">
+                    <p className="text-xs font-bold text-foreground">{p.nama}</p>
+                    <p className="text-[10px] text-muted-foreground">{p.desc}</p>
+                  </div>
                 </div>
               ))}
             </div>
@@ -956,9 +1070,9 @@ function Landing() {
             ].map((stat) => (
               <div
                 key={stat.label}
-                className="relative overflow-hidden rounded-2xl border border-border bg-card/50 p-6 text-center shadow-sm backdrop-blur-md transition-all hover:border-emerald-500/30"
+                className="relative overflow-hidden rounded-2xl border border-border bg-card/50 p-6 text-center shadow-sm backdrop-blur-md transition-all hover:border-emerald-500/30 hover:-translate-y-1"
               >
-                <p className="text-3xl font-black text-emerald-400 sm:text-4xl">{stat.value}</p>
+                <p className="text-3xl font-black text-emerald-500 sm:text-4xl">{stat.value}</p>
                 <p className="mt-1 text-sm font-bold text-foreground">{stat.label}</p>
                 <p className="mt-1 text-xs text-muted-foreground">{stat.desc}</p>
               </div>
@@ -972,7 +1086,7 @@ function Landing() {
         <section id="perbandingan" className="py-20 bg-card/20 border-y border-border">
           <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
             <div className="mx-auto mb-16 max-w-2xl text-center">
-              <span className="text-xs font-bold uppercase tracking-widest text-emerald-400">
+              <span className="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">
                 Perbandingan Nyata
               </span>
               <h2 className="mt-2 text-3xl font-extrabold text-foreground sm:text-4xl">
@@ -987,7 +1101,7 @@ function Landing() {
               <div className="grid grid-cols-12 border-b border-border bg-muted/60 p-4 text-xs font-bold uppercase tracking-wider sm:p-5 sm:text-sm">
                 <div className="col-span-4 text-muted-foreground">Kriteria</div>
                 <div className="col-span-4 text-red-500">CS Manual Konvensional</div>
-                <div className="col-span-4 text-emerald-400">Balasin CS AI ✨</div>
+                <div className="col-span-4 text-emerald-600 dark:text-emerald-400">Balasin CS AI ✨</div>
               </div>
 
               <div className="divide-y divide-border text-xs sm:text-sm">
@@ -1003,8 +1117,8 @@ function Landing() {
                       <XCircle className="h-4 w-4 shrink-0 text-red-500" />
                       <span>{item.manual}</span>
                     </div>
-                    <div className="col-span-4 flex items-center gap-2 font-bold text-emerald-400">
-                      <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-400" />
+                    <div className="col-span-4 flex items-center gap-2 font-bold text-emerald-600 dark:text-emerald-400">
+                      <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-500" />
                       <span>{item.balasin}</span>
                     </div>
                   </div>
@@ -1020,7 +1134,7 @@ function Landing() {
         <section id="simulasi" className="mx-auto max-w-5xl px-6 py-24">
           <div className="rounded-3xl border border-border bg-card/70 p-6 shadow-2xl backdrop-blur-xl md:p-8">
             <div className="mx-auto mb-8 max-w-xl text-center">
-              <span className="text-xs font-bold uppercase tracking-widest text-emerald-400">
+              <span className="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">
                 Simulasi Langsung
               </span>
               <h2 className="mt-2 text-2xl font-extrabold text-foreground md:text-3xl">
@@ -1154,7 +1268,7 @@ function Landing() {
         <section id="fitur" className="py-24">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="mx-auto mb-16 max-w-2xl text-center">
-              <span className="text-xs font-bold uppercase tracking-widest text-emerald-400">
+              <span className="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">
                 Fitur Lengkap
               </span>
               <h2 className="mt-2 text-3xl font-extrabold text-foreground sm:text-4xl">
@@ -1177,10 +1291,10 @@ function Landing() {
                     }`}
                   >
                     <div className="flex items-center justify-between mb-6">
-                      <div className="feature-icon flex h-12 w-12 items-center justify-center rounded-2xl border border-emerald-500/20 bg-emerald-500/10 text-emerald-400">
+                      <div className="feature-icon flex h-12 w-12 items-center justify-center rounded-2xl border border-emerald-500/20 bg-emerald-500/10 text-emerald-500">
                         <f.icon className="size-6" />
                       </div>
-                      <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-[11px] font-bold text-emerald-400">
+                      <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-[11px] font-bold text-emerald-600 dark:text-emerald-400">
                         {f.tagline}
                       </span>
                     </div>
@@ -1190,7 +1304,7 @@ function Landing() {
                       {f.teks}
                     </p>
 
-                    <div className="mt-6 flex items-center gap-2 text-xs font-semibold text-emerald-400">
+                    <div className="mt-6 flex items-center gap-2 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
                       <Check className="h-4 w-4" />
                       <span>{f.metric}</span>
                     </div>
@@ -1202,12 +1316,79 @@ function Landing() {
         </section>
 
         {/* ══════════════════════════════════════════════════════════ */}
-        {/* 8. TESTIMONIALS / PROVEN SUCCESS                          */}
+        {/* 8. DEDICATED LICENSE ACTIVATION NOTICE SECTION             */}
+        {/* ══════════════════════════════════════════════════════════ */}
+        <section id="aktivasi" className="py-20 bg-gradient-to-b from-card/30 to-card/70 border-t border-border">
+          <div className="mx-auto max-w-5xl px-6">
+            <div className="rounded-3xl border-2 border-emerald-500/30 bg-card p-8 md:p-12 shadow-2xl relative overflow-hidden">
+              <div className="absolute top-0 right-0 h-40 w-40 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+
+              <div className="grid gap-8 md:grid-cols-12 items-center">
+                <div className="md:col-span-7 space-y-4 text-left">
+                  <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                    <span className="h-2 w-2 rounded-full bg-emerald-500 animate-ping" />
+                    <span>Informasi Lisensi Resmi Balasin</span>
+                  </div>
+
+                  <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground leading-tight">
+                    Kode Aktivasi & Lisensi Didapatkan Langsung dari Admin
+                  </h2>
+
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Untuk menjamin kestabilan server dan keamanan nomor WhatsApp bisnis Anda, seluruh aktivasi akun dan penerbitan kode lisensi resmi dilakukan secara langsung oleh Admin melalui WhatsApp.
+                  </p>
+
+                  <div className="space-y-3 pt-2 text-xs text-foreground font-medium">
+                    <div className="flex items-center gap-2.5">
+                      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-bold text-[11px]">1</span>
+                      <span>Daftar / Masuk akun menggunakan akun Google Anda</span>
+                    </div>
+                    <div className="flex items-center gap-2.5">
+                      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-bold text-[11px]">2</span>
+                      <span>Chat Admin via WhatsApp ke nomor <strong className="text-emerald-600 dark:text-emerald-400">0852-1590-2047</strong> untuk klaim kode lisensi</span>
+                    </div>
+                    <div className="flex items-center gap-2.5">
+                      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-bold text-[11px]">3</span>
+                      <span>Masukkan kode di Dashboard &amp; AI langsung aktif membalas pelanggan 24/7!</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="md:col-span-5 flex flex-col items-center justify-center text-center p-6 rounded-2xl border border-emerald-500/30 bg-emerald-50/50 dark:bg-emerald-950/20">
+                  <div className="h-16 w-16 rounded-2xl bg-gradient-to-tr from-[#25D366] to-[#128C7E] flex items-center justify-center text-white shadow-lg shadow-emerald-500/30 mb-4 animate-wiggle">
+                    <svg className="h-9 w-9 fill-current" viewBox="0 0 24 24">
+                      <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.634.044-1.282-.128-.85-.226-1.523-.626-2.196-1.299-.958-.958-1.554-2.146-1.637-2.316-.083-.17-.234-.488-.234-.933 0-.445.234-.664.318-.749.085-.085.185-.106.247-.106.062 0 .125.001.179.003.058.002.136-.022.213.161.085.202.289.704.314.756.025.053.042.115.008.183-.034.068-.051.11-.102.17-.051.06-.107.133-.153.179-.051.051-.104.106-.045.207.06.101.265.438.568.708.391.349.721.457.823.508.102.051.162.043.222-.026.06-.068.256-.298.324-.4.068-.102.137-.085.23-.051.094.034.596.281.698.332.102.051.17.077.196.12.025.042.025.247-.119.652z" />
+                    </svg>
+                  </div>
+                  <h3 className="font-extrabold text-foreground text-base">WhatsApp Resmi Admin</h3>
+                  <p className="text-xl font-black text-emerald-600 dark:text-emerald-400 mt-1 font-mono tracking-wider">
+                    0852-1590-2047
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-1 mb-5">
+                    Respon cepat &bull; Layanan aktivasi setiap hari
+                  </p>
+                  <a
+                    href="https://wa.me/6285215902047?text=Halo%20Admin%20Balasin%2C%20saya%20ingin%20aktivasi%20lisensi%20WhatsApp%20saya."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-extrabold py-3 px-5 text-sm shadow-md transition-all hover:scale-105 active:scale-95"
+                  >
+                    <span>Chat Admin untuk Aktivasi</span>
+                    <ArrowRight className="size-4" />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ══════════════════════════════════════════════════════════ */}
+        {/* 9. TESTIMONIALS / PROVEN SUCCESS                          */}
         {/* ══════════════════════════════════════════════════════════ */}
         <section id="testimoni" className="py-20 border-y border-border bg-card/30">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="mx-auto mb-16 max-w-2xl text-center">
-              <span className="text-xs font-bold uppercase tracking-widest text-emerald-400">
+              <span className="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">
                 Kisah Sukses
               </span>
               <h2 className="mt-2 text-3xl font-extrabold text-foreground sm:text-4xl">
@@ -1230,7 +1411,7 @@ function Landing() {
                         <Star key={i} className="h-4 w-4 fill-amber-400" />
                       ))}
                     </div>
-                    <p className="text-sm leading-relaxed text-zinc-300 dark:text-zinc-300 text-zinc-700">
+                    <p className="text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
                       "{t.isi}"
                     </p>
                   </div>
@@ -1241,7 +1422,7 @@ function Landing() {
                         <h4 className="font-bold text-foreground text-sm">{t.nama}</h4>
                         <p className="text-xs text-muted-foreground">{t.bisnis}</p>
                       </div>
-                      <span className="rounded-full bg-emerald-500/10 px-2.5 py-1 text-[10px] font-bold text-emerald-400">
+                      <span className="rounded-full bg-emerald-500/10 px-2.5 py-1 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
                         {t.hasil}
                       </span>
                     </div>
@@ -1253,11 +1434,11 @@ function Landing() {
         </section>
 
         {/* ══════════════════════════════════════════════════════════ */}
-        {/* 9. HOW IT WORKS — 3 Steps                                 */}
+        {/* 10. HOW IT WORKS — 3 Steps                                */}
         {/* ══════════════════════════════════════════════════════════ */}
         <section id="cara-kerja" className="mx-auto max-w-6xl px-6 py-20">
           <div className="mx-auto mb-12 max-w-2xl text-center">
-            <span className="text-xs font-bold uppercase tracking-widest text-emerald-400">
+            <span className="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">
               Sangat Mudah
             </span>
             <h2 className="mt-2 text-3xl font-extrabold text-foreground sm:text-4xl">
@@ -1272,14 +1453,14 @@ function Landing() {
             {langkahMudah.map((step) => (
               <div
                 key={step.nomor}
-                className="group relative flex flex-col justify-between rounded-3xl border border-border bg-card/60 p-7 shadow-sm transition-all hover:border-emerald-500/50 hover:bg-card"
+                className="group relative flex flex-col justify-between rounded-3xl border border-border bg-card/60 p-7 shadow-sm transition-all hover:border-emerald-500/50 hover:bg-card hover:-translate-y-1"
               >
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <span className="font-mono text-3xl font-black text-emerald-400/30">
+                    <span className="font-mono text-3xl font-black text-emerald-500/30">
                       {step.nomor}
                     </span>
-                    <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 text-[11px] font-bold text-emerald-400">
+                    <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 text-[11px] font-bold text-emerald-600 dark:text-emerald-400">
                       {step.badge}
                     </span>
                   </div>
@@ -1292,19 +1473,19 @@ function Landing() {
         </section>
 
         {/* ══════════════════════════════════════════════════════════ */}
-        {/* 10. FAQ ACCORDION                                         */}
+        {/* 11. FAQ ACCORDION                                         */}
         {/* ══════════════════════════════════════════════════════════ */}
         <section id="faq" className="border-t border-border py-20">
           <div className="mx-auto max-w-4xl px-4 sm:px-6">
             <div className="mb-12 text-center">
-              <span className="text-xs font-bold uppercase tracking-widest text-emerald-400">
+              <span className="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">
                 Punya Pertanyaan?
               </span>
               <h2 className="mt-1 text-3xl font-extrabold text-foreground sm:text-4xl">
                 Pertanyaan Sering Diajukan
               </h2>
               <p className="mt-2 text-sm text-muted-foreground">
-                Semua hal yang perlu Anda ketahui sebelum menggunakan Balasin.
+                Semua hal yang perlu Anda ketahui tentang Balasin &amp; aktivasi lisensi.
               </p>
             </div>
 
@@ -1317,7 +1498,7 @@ function Landing() {
                   <summary className="flex cursor-pointer items-center justify-between text-base font-semibold text-foreground">
                     <span>{faq.q}</span>
                     <span className="ml-4 shrink-0 transition duration-300 group-open:-rotate-180">
-                      <ChevronDown className="size-5 text-emerald-400" />
+                      <ChevronDown className="size-5 text-emerald-500" />
                     </span>
                   </summary>
                   <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
@@ -1330,7 +1511,7 @@ function Landing() {
         </section>
 
         {/* ══════════════════════════════════════════════════════════ */}
-        {/* 11. FINAL HIGH-CONVERSION CTA BANNER                      */}
+        {/* 12. FINAL HIGH-CONVERSION CTA BANNER                      */}
         {/* ══════════════════════════════════════════════════════════ */}
         <section className="mx-auto max-w-5xl px-6 pb-24">
           <div className="relative overflow-hidden rounded-[36px] bg-gradient-to-br from-emerald-600 via-teal-700 to-emerald-800 p-8 text-center text-white shadow-2xl md:p-14">
@@ -1340,7 +1521,7 @@ function Landing() {
 
             <div className="relative z-10 mx-auto max-w-2xl">
               <span className="rounded-full bg-white/20 px-3.5 py-1 text-xs font-bold uppercase tracking-wider backdrop-blur-md">
-                Mulai Gratis Hari Ini
+                Mulai Sekarang Juga
               </span>
 
               <h2 className="mt-4 text-3xl font-black tracking-tight sm:text-4xl md:text-5xl leading-tight">
@@ -1348,8 +1529,7 @@ function Landing() {
               </h2>
 
               <p className="mt-4 text-sm leading-relaxed text-emerald-100 sm:text-base">
-                Sambungkan WhatsApp Anda sekarang. Biarkan AI membalas pesan pembeli secepat kilat
-                sehingga omset penjualan bisnis Anda terus mengalir tanpa henti.
+                Hubungkan WhatsApp bisnis Anda dan hubungi Admin untuk aktivasi lisensi resmi. Omset penjualan terus mengalir tanpa bikin pembeli menunggu!
               </p>
 
               <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -1365,41 +1545,87 @@ function Landing() {
                   }}
                   type="button"
                 >
-                  Hubungkan WhatsApp Sekarang
+                  Buka Dashboard Sekarang
                   <ArrowRight className="ml-2 size-5" />
                 </Button>
+
+                <a
+                  href="https://wa.me/6285215902047?text=Halo%20Admin%20Balasin%2C%20saya%20ingin%20aktivasi%20lisensi%20WhatsApp%20saya."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full bg-[#25D366] hover:bg-[#128C7E] px-8 py-4 font-extrabold text-white shadow-xl transition-all hover:scale-105 active:scale-95 text-base flex items-center justify-center gap-2"
+                >
+                  <svg className="size-5 fill-current" viewBox="0 0 24 24">
+                    <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.634.044-1.282-.128-.85-.226-1.523-.626-2.196-1.299-.958-.958-1.554-2.146-1.637-2.316-.083-.17-.234-.488-.234-.933 0-.445.234-.664.318-.749.085-.085.185-.106.247-.106.062 0 .125.001.179.003.058.002.136-.022.213.161.085.202.289.704.314.756.025.053.042.115.008.183-.034.068-.051.11-.102.17-.051.06-.107.133-.153.179-.051.051-.104.106-.045.207.06.101.265.438.568.708.391.349.721.457.823.508.102.051.162.043.222-.026.06-.068.256-.298.324-.4.068-.102.137-.085.23-.051.094.034.596.281.698.332.102.051.17.077.196.12.025.042.025.247-.119.652z" />
+                  </svg>
+                  <span>Chat Admin (0852-1590-2047)</span>
+                </a>
               </div>
 
               <p className="mt-4 text-xs text-emerald-200">
-                ✓ Setup 1 Menit &bull; Tanpa Kartu Kredit &bull; Tanpa Sewa Server
+                ✓ Aktivasi Cepat via Admin &bull; 0852-1590-2047 &bull; Layanan Setiap Hari
               </p>
             </div>
           </div>
         </section>
 
         {/* ══════════════════════════════════════════════════════════ */}
-        {/* 12. FOOTER                                                */}
+        {/* 13. FOOTER                                                */}
         {/* ══════════════════════════════════════════════════════════ */}
         <footer className="border-t border-border/60 py-12 bg-card/20">
           <div className="mx-auto flex max-w-7xl flex-col items-center gap-6 px-6 sm:flex-row sm:justify-between">
             <div className="flex items-center gap-2.5">
               <img src="/chatbot_wa.png" alt="Balasin" className="h-7 w-7 rounded-lg object-contain" />
               <span className="text-base font-bold text-foreground">
-                Balas<span className="text-emerald-400">in</span>
+                Balas<span className="text-emerald-500">in</span>
               </span>
             </div>
 
             <p className="text-xs text-muted-foreground text-center">
-              © {new Date().getFullYear()} Balasin — Solusi Customer Service AI WhatsApp untuk UMKM & Penjual Online.
+              © {new Date().getFullYear()} Balasin — Solusi Customer Service AI WhatsApp untuk UMKM &amp; Penjual Online.
             </p>
 
             <div className="flex items-center gap-5 text-xs text-muted-foreground">
-              <a href="#" className="transition-colors hover:text-emerald-400">Syarat & Ketentuan</a>
-              <a href="#" className="transition-colors hover:text-emerald-400">Kebijakan Privasi</a>
+              <a
+                href="https://wa.me/6285215902047?text=Halo%20Admin%20Balasin%2C%20saya%20ingin%20tanya%20aktivasi%20lisensi."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-colors hover:text-emerald-500 font-semibold"
+              >
+                Kontak Admin WhatsApp: 0852-1590-2047
+              </a>
             </div>
           </div>
         </footer>
       </div>
+
+      {/* ══════════════════════════════════════════════════════════ */}
+      {/* 14. FLOATING STICKY WHATSAPP ADMIN BUTTON                  */}
+      {/* ══════════════════════════════════════════════════════════ */}
+      <aside aria-label="Bantuan WhatsApp Admin" className="fixed bottom-6 right-6 z-50 flex items-center">
+        <a
+          href="https://wa.me/6285215902047?text=Halo%20Admin%20Balasin%2C%20saya%20ingin%20aktivasi%20lisensi%20akun%20WhatsApp%20saya."
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group relative flex items-center gap-3 rounded-full bg-gradient-to-r from-[#25D366] to-[#128C7E] px-4 py-3 text-white shadow-[0_4px_25px_rgba(37,211,102,0.5)] transition-all hover:scale-105 hover:shadow-[0_6px_35px_rgba(37,211,102,0.7)] active:scale-95"
+          title="Chat Admin WhatsApp untuk Aktivasi Lisensi"
+        >
+          {/* Animated Pulsing Ring */}
+          <span className="absolute -inset-1 rounded-full bg-[#25D366] opacity-40 blur-xs animate-pulse-ring pointer-events-none" />
+
+          {/* WhatsApp Icon with Wiggle Animation */}
+          <div className="relative flex h-8 w-8 items-center justify-center rounded-full bg-white/20 text-white shrink-0">
+            <svg className="h-5 w-5 fill-current animate-wiggle" viewBox="0 0 24 24">
+              <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.634.044-1.282-.128-.85-.226-1.523-.626-2.196-1.299-.958-.958-1.554-2.146-1.637-2.316-.083-.17-.234-.488-.234-.933 0-.445.234-.664.318-.749.085-.085.185-.106.247-.106.062 0 .125.001.179.003.058.002.136-.022.213.161.085.202.289.704.314.756.025.053.042.115.008.183-.034.068-.051.11-.102.17-.051.06-.107.133-.153.179-.051.051-.104.106-.045.207.06.101.265.438.568.708.391.349.721.457.823.508.102.051.162.043.222-.026.06-.068.256-.298.324-.4.068-.102.137-.085.23-.051.094.034.596.281.698.332.102.051.17.077.196.12.025.042.025.247-.119.652z" />
+            </svg>
+          </div>
+
+          <div className="hidden sm:block text-left pr-1">
+            <p className="text-[10px] font-semibold leading-none text-emerald-100">Butuh Aktivasi Lisensi?</p>
+            <p className="text-xs font-black leading-tight text-white mt-0.5">Chat Admin (0852-1590-2047)</p>
+          </div>
+        </a>
+      </aside>
     </>
   );
 }
