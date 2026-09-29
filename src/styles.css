@@ -418,6 +418,16 @@
   animation-play-state: paused;
 }
 
+.animate-marquee-testimonials {
+  display: flex;
+  width: max-content;
+  animation: marquee 38s linear infinite;
+}
+
+.animate-marquee-testimonials:hover {
+  animation-play-state: paused;
+}
+
 @keyframes spin-slow {
   0% {
     transform: rotate(0deg);

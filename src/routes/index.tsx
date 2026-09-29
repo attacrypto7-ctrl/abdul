@@ -28,7 +28,6 @@ import {
   Award,
   Check,
   KeyRound,
-  ExternalLink,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
@@ -210,6 +209,7 @@ const testimoniList = [
     hasil: "Closing naik 40%",
     isi: "Dulu iklan TikTok boncos karena pas malam hari gak ada yang balas chat pembeli. Pakai Balasin, jam 2 pagi pun langsung direspon dan dikasih katalog. Langsung transfer!",
     bintang: 5,
+    foto: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&h=120&fit=crop&crop=face",
   },
   {
     nama: "Siti Rahmawati",
@@ -217,6 +217,7 @@ const testimoniList = [
     hasil: "Hemat 2 CS Manual",
     isi: "Pertanyaan seputar bahan, ukuran LD, sama ongkir COD semuanya dijawab lancar sama AI. Pembeli ngerasa dilayani personal dan ramah banget.",
     bintang: 5,
+    foto: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=120&h=120&fit=crop&crop=face",
   },
   {
     nama: "Hendro Wijaya",
@@ -224,6 +225,23 @@ const testimoniList = [
     hasil: "Respon < 2 Detik",
     isi: "Scan QR 1 menit langsung jalan. Gak perlu laptop nyala seharian, server mereka yang handle. Ini beneran game changer buat jualan online.",
     bintang: 5,
+    foto: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&h=120&fit=crop&crop=face",
+  },
+  {
+    nama: "Dewi Lestari",
+    bisnis: "Glow Skincare Official (Surabaya)",
+    hasil: "Konversi Iklan +55%",
+    isi: "Iklan Meta CTWA jadi maksimal banget hasilnya. Customer yang tanya variasi paket langsung dijelaskan detail lengkap dengan panduan pakai.",
+    bintang: 5,
+    foto: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&h=120&fit=crop&crop=face",
+  },
+  {
+    nama: "Budi Santoso",
+    bisnis: "Kopi Nusantara Roastery (Malang)",
+    hasil: "Order COD Melesat",
+    isi: "Pelanggan paling suka toko yang fast respon. Pembeli repeat order makin banyak karena bot sigap kasih info promo terbaru setiap saat.",
+    bintang: 5,
+    foto: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120&h=120&fit=crop&crop=face",
   },
 ];
 
@@ -258,7 +276,7 @@ const perbandinganFitur = [
 const faqItems = [
   {
     q: "Bagaimana cara mendapatkan kode lisensi dan aktivasi bot WhatsApp?",
-    a: "Sangat mudah! Lisensi dan aktivasi akun didapatkan resmi langsung dari Admin melalui WhatsApp di nomor 0852-1590-2047. Anda cukup login dengan akun Google, lalu klik tombol 'Chat Admin untuk Aktivasi'. Admin akan memberikan kode lisensi resmi yang bisa langsung Anda masukkan di dashboard.",
+    a: "Sangat mudah! Lisensi dan aktivasi akun didapatkan resmi langsung dari Admin melalui WhatsApp. Anda cukup login dengan akun Google, lalu klik tombol 'Chat Admin untuk Aktivasi'. Admin akan memberikan kode lisensi resmi yang bisa langsung Anda masukkan di dashboard.",
   },
   {
     q: "Apakah komputer atau laptop saya harus menyala terus?",
@@ -274,7 +292,7 @@ const faqItems = [
   },
   {
     q: "Berapa nomor WhatsApp yang bisa disambungkan?",
-    a: "Untuk paket standar, 1 akun terhubung ke 1 nomor WhatsApp bisnis aktif. Anda bisa menambah slot nomor tambahan kapan saja dengan menghubungi Admin.",
+    a: "Untuk paket standar, 1 akun terhubung ke 1 nomor WhatsApp bisnis aktif. Anda bisa menambah slot nomor tambahan kapan saja dengan menghubungi Admin via WhatsApp.",
   },
   {
     q: "Apakah data pelanggan dan katalog saya aman?",
@@ -480,102 +498,67 @@ function Landing() {
       <AmbientBackground />
 
       {/* ══════════════════════════════════════════════════════════ */}
-      {/* 1. BRIGHT & CLEAN GLASSMORPHIC MODERN NAVBAR             */}
+      {/* 1. BRIGHT & CLEAN GLASSMORPHIC NAVBAR (CLEAN ORIGINAL)    */}
       {/* ══════════════════════════════════════════════════════════ */}
       <header className="sticky top-0 z-50 w-full backdrop-blur-2xl transition-all duration-300 bg-white/95 dark:bg-zinc-900/95 border-b border-zinc-200/80 dark:border-zinc-800/80 shadow-[0_4px_25px_-5px_rgba(0,0,0,0.06)] dark:shadow-[0_4px_25px_-5px_rgba(0,0,0,0.3)]">
         {/* Animated Gradient Border Beam at Bottom */}
         <div className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-emerald-500/60 to-transparent animate-border-beam" />
 
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          {/* Logo & Live Status Chip */}
-          <div className="flex items-center gap-4">
-            <Link to="/" className="flex items-center gap-3 group">
-              <div className="relative">
-                <img
-                  src="/chatbot_wa.png"
-                  alt="Balasin Logo"
-                  className="h-8 w-8 rounded-lg object-contain transition-all duration-300 group-hover:scale-110 group-hover:rotate-3 shadow-md shadow-emerald-500/20"
-                />
-                <span className="absolute -bottom-0.5 -right-0.5 flex h-2.5 w-2.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-600" />
-                </span>
-              </div>
-              <span className="text-xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-100">
-                Balas<span className="text-emerald-500">in</span>
-              </span>
-            </Link>
+          {/* Logo (Original Clean) */}
+          <Link to="/" className="flex items-center gap-3 group">
+            <img
+              src="/chatbot_wa.png"
+              alt="Balasin Logo"
+              className="h-8 w-8 rounded-lg object-contain transition-all duration-300 group-hover:scale-105 shadow-xs"
+            />
+            <span className="text-xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-100">
+              Balas<span className="text-emerald-500">in</span>
+            </span>
+          </Link>
 
-            {/* Live Status Badge */}
-            <div className="hidden lg:flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-50 dark:bg-emerald-950/40 px-2.5 py-1 text-[11px] font-semibold text-emerald-700 dark:text-emerald-300 shadow-xs">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span>AI CS Online 24/7</span>
-            </div>
-          </div>
-
-          {/* Center Navigation Links with Smooth Animated Clicks */}
+          {/* Center Navigation Links (Clean Original Layout) */}
           <nav className="hidden items-center gap-1 rounded-full border border-zinc-200/80 bg-zinc-100/90 dark:border-zinc-700/80 dark:bg-zinc-800/80 p-1 text-xs font-semibold text-zinc-700 dark:text-zinc-200 md:flex shadow-xs">
             <a
               href="#fitur"
               onClick={(e) => handleNavClick(e, "fitur")}
-              className="rounded-full px-3.5 py-1.5 transition-all hover:bg-white hover:text-emerald-600 hover:shadow-xs dark:hover:bg-zinc-700 dark:hover:text-emerald-400"
+              className="rounded-full px-4 py-1.5 transition-all hover:bg-white hover:text-emerald-600 hover:shadow-xs dark:hover:bg-zinc-700 dark:hover:text-emerald-400"
             >
-              Fitur Utama
-            </a>
-            <a
-              href="#perbandingan"
-              onClick={(e) => handleNavClick(e, "perbandingan")}
-              className="rounded-full px-3.5 py-1.5 transition-all hover:bg-white hover:text-emerald-600 hover:shadow-xs dark:hover:bg-zinc-700 dark:hover:text-emerald-400"
-            >
-              Kenapa Balasin?
+              Fitur
             </a>
             <a
               href="#simulasi"
               onClick={(e) => handleNavClick(e, "simulasi")}
-              className="rounded-full px-3.5 py-1.5 transition-all hover:bg-white hover:text-emerald-600 hover:shadow-xs dark:hover:bg-zinc-700 dark:hover:text-emerald-400"
+              className="rounded-full px-4 py-1.5 transition-all hover:bg-white hover:text-emerald-600 hover:shadow-xs dark:hover:bg-zinc-700 dark:hover:text-emerald-400"
             >
-              Simulasi Chat
+              Simulasi
             </a>
             <a
-              href="#aktivasi"
-              onClick={(e) => handleNavClick(e, "aktivasi")}
-              className="rounded-full px-3.5 py-1.5 transition-all hover:bg-white hover:text-emerald-600 hover:shadow-xs dark:hover:bg-zinc-700 dark:hover:text-emerald-400 text-emerald-600 dark:text-emerald-400"
+              href="#cara-kerja"
+              onClick={(e) => handleNavClick(e, "cara-kerja")}
+              className="rounded-full px-4 py-1.5 transition-all hover:bg-white hover:text-emerald-600 hover:shadow-xs dark:hover:bg-zinc-700 dark:hover:text-emerald-400"
             >
-              🔑 Aktivasi Lisensi
+              Cara Kerja
             </a>
             <a
               href="#testimoni"
               onClick={(e) => handleNavClick(e, "testimoni")}
-              className="rounded-full px-3.5 py-1.5 transition-all hover:bg-white hover:text-emerald-600 hover:shadow-xs dark:hover:bg-zinc-700 dark:hover:text-emerald-400"
+              className="rounded-full px-4 py-1.5 transition-all hover:bg-white hover:text-emerald-600 hover:shadow-xs dark:hover:bg-zinc-700 dark:hover:text-emerald-400"
             >
               Testimoni
             </a>
             <a
               href="#faq"
               onClick={(e) => handleNavClick(e, "faq")}
-              className="rounded-full px-3.5 py-1.5 transition-all hover:bg-white hover:text-emerald-600 hover:shadow-xs dark:hover:bg-zinc-700 dark:hover:text-emerald-400"
+              className="rounded-full px-4 py-1.5 transition-all hover:bg-white hover:text-emerald-600 hover:shadow-xs dark:hover:bg-zinc-700 dark:hover:text-emerald-400"
             >
               FAQ
             </a>
           </nav>
 
-          {/* Action Buttons */}
+          {/* Action Buttons (Original Clean Layout) */}
           <div className="flex items-center gap-3">
             <ThemeToggle className="size-9 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-200 hover:border-emerald-500/40 shadow-xs" />
-
-            {/* Direct WhatsApp Chat Admin Button in Navbar */}
-            <a
-              href="https://wa.me/6285215902047?text=Halo%20Admin%20Balasin%2C%20saya%20ingin%20aktivasi%20lisensi%20WhatsApp%20saya."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hidden lg:inline-flex items-center gap-1.5 rounded-full border border-emerald-500/40 bg-emerald-50 dark:bg-emerald-950/40 px-3 py-1.5 text-xs font-bold text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 transition-all hover:scale-105 active:scale-95 shadow-xs"
-              title="Hubungi Admin untuk Aktivasi Lisensi via WhatsApp"
-            >
-              <svg className="size-3.5 fill-current text-[#25D366]" viewBox="0 0 24 24">
-                <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.634.044-1.282-.128-.85-.226-1.523-.626-2.196-1.299-.958-.958-1.554-2.146-1.637-2.316-.083-.17-.234-.488-.234-.933 0-.445.234-.664.318-.749.085-.085.185-.106.247-.106.062 0 .125.001.179.003.058.002.136-.022.213.161.085.202.289.704.314.756.025.053.042.115.008.183-.034.068-.051.11-.102.17-.051.06-.107.133-.153.179-.051.051-.104.106-.045.207.06.101.265.438.568.708.391.349.721.457.823.508.102.051.162.043.222-.026.06-.068.256-.298.324-.4.068-.102.137-.085.23-.051.094.034.596.281.698.332.102.051.17.077.196.12.025.042.025.247-.119.652z" />
-              </svg>
-              <span>Chat Admin (0852-1590-2047)</span>
-            </a>
 
             {googleUser ? (
               <div
@@ -829,7 +812,7 @@ function Landing() {
 
                 {/* Description */}
                 <p className="mx-auto max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg lg:mx-0">
-                  Tingkatkan omset toko Anda. AI ramah yang otomatis merespons klik iklan TikTok &
+                  Tingkatkan omset toko Anda. AI ramah yang otomatis merespons klik iklan TikTok &amp;
                   Instagram Ads, melayani tanya-jawab produk, dan closing pembeli seketika dalam hitungan detik.
                 </p>
 
@@ -892,7 +875,7 @@ function Landing() {
                       ))}
                     </div>
                     <span className="font-bold text-foreground">4.9/5</span>
-                    <span>dari 1.200+ Penjual Online & UMKM</span>
+                    <span>dari 1.200+ Penjual Online &amp; UMKM</span>
                   </div>
                 </div>
 
@@ -1064,8 +1047,8 @@ function Landing() {
           <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-6 sm:grid-cols-4">
             {[
               { value: "< 2 Detik", label: "Kecepatan Respon", desc: "Langsung balas saat calon pembeli chat" },
-              { value: "24/7", label: "Respon Nonstop", desc: "Siaga tengah malam & hari libur" },
-              { value: "100%", label: "Cloud Based", desc: "Ponsel & laptop bebas dimatikan" },
+              { value: "24/7", label: "Respon Nonstop", desc: "Siaga tengah malam &amp; hari libur" },
+              { value: "100%", label: "Cloud Based", desc: "Ponsel &amp; laptop bebas dimatikan" },
               { value: "+45%", label: "Peningkatan Closing", desc: "Calon pembeli gak kabur ke toko lain" },
             ].map((stat) => (
               <div
@@ -1138,7 +1121,7 @@ function Landing() {
                 Simulasi Langsung
               </span>
               <h2 className="mt-2 text-2xl font-extrabold text-foreground md:text-3xl">
-                Coba & Rasakan Chat Balasin Bekerja
+                Coba &amp; Rasakan Chat Balasin Bekerja
               </h2>
               <p className="mt-2 text-sm text-muted-foreground">
                 Klik tab skenario di bawah untuk melihat bagaimana AI menjawab chat pelanggan dengan bahasa ramah dan katalog visual.
@@ -1331,7 +1314,7 @@ function Landing() {
                   </div>
 
                   <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground leading-tight">
-                    Kode Aktivasi & Lisensi Didapatkan Langsung dari Admin
+                    Kode Aktivasi &amp; Lisensi Didapatkan Langsung dari Admin
                   </h2>
 
                   <p className="text-sm text-muted-foreground leading-relaxed">
@@ -1345,7 +1328,7 @@ function Landing() {
                     </div>
                     <div className="flex items-center gap-2.5">
                       <span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-bold text-[11px]">2</span>
-                      <span>Chat Admin via WhatsApp ke nomor <strong className="text-emerald-600 dark:text-emerald-400">0852-1590-2047</strong> untuk klaim kode lisensi</span>
+                      <span>Chat Admin via WhatsApp untuk klaim atau perpanjangan kode lisensi</span>
                     </div>
                     <div className="flex items-center gap-2.5">
                       <span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-bold text-[11px]">3</span>
@@ -1361,11 +1344,8 @@ function Landing() {
                     </svg>
                   </div>
                   <h3 className="font-extrabold text-foreground text-base">WhatsApp Resmi Admin</h3>
-                  <p className="text-xl font-black text-emerald-600 dark:text-emerald-400 mt-1 font-mono tracking-wider">
-                    0852-1590-2047
-                  </p>
                   <p className="text-xs text-muted-foreground mt-1 mb-5">
-                    Respon cepat &bull; Layanan aktivasi setiap hari
+                    Respon cepat &bull; Layanan aktivasi lisensi setiap hari
                   </p>
                   <a
                     href="https://wa.me/6285215902047?text=Halo%20Admin%20Balasin%2C%20saya%20ingin%20aktivasi%20lisensi%20WhatsApp%20saya."
@@ -1383,48 +1363,55 @@ function Landing() {
         </section>
 
         {/* ══════════════════════════════════════════════════════════ */}
-        {/* 9. TESTIMONIALS / PROVEN SUCCESS                          */}
+        {/* 9. TESTIMONIALS CONTINUOUS MOVING LOOP (NOT STATIC)       */}
         {/* ══════════════════════════════════════════════════════════ */}
-        <section id="testimoni" className="py-20 border-y border-border bg-card/30">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="mx-auto mb-16 max-w-2xl text-center">
-              <span className="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">
-                Kisah Sukses
-              </span>
-              <h2 className="mt-2 text-3xl font-extrabold text-foreground sm:text-4xl">
-                Dipercaya oleh Penjual Online di Seluruh Indonesia
-              </h2>
-              <p className="mt-3 text-sm text-muted-foreground">
-                Cerita nyata mereka yang omsetnya melesat setelah menggunakan Balasin AI.
-              </p>
-            </div>
+        <section id="testimoni" className="py-20 border-y border-border bg-card/30 overflow-hidden relative">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center mb-12">
+            <span className="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">
+              Kisah Sukses Nyata
+            </span>
+            <h2 className="mt-2 text-3xl font-extrabold text-foreground sm:text-4xl">
+              Dipercaya oleh Penjual Online di Seluruh Indonesia
+            </h2>
+            <p className="mt-3 text-sm text-muted-foreground">
+              Cerita nyata mereka yang omsetnya melesat setelah membalas chat otomatis dengan Balasin AI.
+            </p>
+          </div>
 
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-              {testimoniList.map((t, idx) => (
+          {/* Continuous Infinite Moving Testimonials Marquee */}
+          <div className="relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
+            <div className="animate-marquee-testimonials flex gap-6 items-stretch">
+              {[...testimoniList, ...testimoniList].map((t, idx) => (
                 <div
                   key={idx}
-                  className="flex flex-col justify-between rounded-3xl border border-border bg-card p-7 shadow-sm transition-all hover:border-emerald-500/40 hover:-translate-y-1"
+                  className="flex w-[350px] shrink-0 flex-col justify-between rounded-3xl border border-border bg-card/95 p-6 shadow-md backdrop-blur-md transition-all hover:scale-105 hover:border-emerald-500/50 hover:shadow-xl cursor-pointer"
                 >
                   <div>
-                    <div className="flex text-amber-400 mb-4">
-                      {[...Array(t.bintang)].map((_, i) => (
-                        <Star key={i} className="h-4 w-4 fill-amber-400" />
-                      ))}
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex text-amber-400">
+                        {[...Array(t.bintang)].map((_, i) => (
+                          <Star key={i} className="h-4 w-4 fill-amber-400" />
+                        ))}
+                      </div>
+                      <span className="rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
+                        {t.hasil}
+                      </span>
                     </div>
-                    <p className="text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
+
+                    <p className="text-xs sm:text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
                       "{t.isi}"
                     </p>
                   </div>
 
-                  <div className="mt-6 border-t border-border pt-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h4 className="font-bold text-foreground text-sm">{t.nama}</h4>
-                        <p className="text-xs text-muted-foreground">{t.bisnis}</p>
-                      </div>
-                      <span className="rounded-full bg-emerald-500/10 px-2.5 py-1 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
-                        {t.hasil}
-                      </span>
+                  <div className="mt-6 border-t border-border/80 pt-4 flex items-center gap-3">
+                    <img
+                      src={t.foto}
+                      alt={t.nama}
+                      className="size-11 rounded-full object-cover ring-2 ring-emerald-500/30 shrink-0 shadow-xs"
+                    />
+                    <div className="min-w-0 flex-1 text-left">
+                      <h4 className="font-bold text-foreground text-sm truncate">{t.nama}</h4>
+                      <p className="text-[11px] text-muted-foreground truncate">{t.bisnis}</p>
                     </div>
                   </div>
                 </div>
@@ -1558,12 +1545,12 @@ function Landing() {
                   <svg className="size-5 fill-current" viewBox="0 0 24 24">
                     <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.634.044-1.282-.128-.85-.226-1.523-.626-2.196-1.299-.958-.958-1.554-2.146-1.637-2.316-.083-.17-.234-.488-.234-.933 0-.445.234-.664.318-.749.085-.085.185-.106.247-.106.062 0 .125.001.179.003.058.002.136-.022.213.161.085.202.289.704.314.756.025.053.042.115.008.183-.034.068-.051.11-.102.17-.051.06-.107.133-.153.179-.051.051-.104.106-.045.207.06.101.265.438.568.708.391.349.721.457.823.508.102.051.162.043.222-.026.06-.068.256-.298.324-.4.068-.102.137-.085.23-.051.094.034.596.281.698.332.102.051.17.077.196.12.025.042.025.247-.119.652z" />
                   </svg>
-                  <span>Chat Admin (0852-1590-2047)</span>
+                  <span>Chat Admin via WhatsApp</span>
                 </a>
               </div>
 
               <p className="mt-4 text-xs text-emerald-200">
-                ✓ Aktivasi Cepat via Admin &bull; 0852-1590-2047 &bull; Layanan Setiap Hari
+                ✓ Layanan Aktivasi Cepat &bull; Admin Siap Membantu Setiap Hari
               </p>
             </div>
           </div>
@@ -1592,7 +1579,7 @@ function Landing() {
                 rel="noopener noreferrer"
                 className="transition-colors hover:text-emerald-500 font-semibold"
               >
-                Kontak Admin WhatsApp: 0852-1590-2047
+                Hubungi Admin via WhatsApp
               </a>
             </div>
           </div>
@@ -1622,7 +1609,7 @@ function Landing() {
 
           <div className="hidden sm:block text-left pr-1">
             <p className="text-[10px] font-semibold leading-none text-emerald-100">Butuh Aktivasi Lisensi?</p>
-            <p className="text-xs font-black leading-tight text-white mt-0.5">Chat Admin (0852-1590-2047)</p>
+            <p className="text-xs font-black leading-tight text-white mt-0.5">Chat Admin via WhatsApp</p>
           </div>
         </a>
       </aside>
