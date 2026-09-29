@@ -144,11 +144,7 @@ export function DashboardShell({
                     onClick={() => {
                       setIsOpen(false);
                       const origin = encodeURIComponent(window.location.origin);
-                      window.open(
-                        `${API_BASE}/auth/google?origin=${origin}`,
-                        "google_oauth",
-                        "width=500,height=600,left=200,top=100",
-                      );
+                      window.location.href = `${API_BASE}/auth/google?origin=${origin}`;
                     }}
                     className="relative flex w-full cursor-pointer select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-accent hover:text-accent-foreground"
                   >

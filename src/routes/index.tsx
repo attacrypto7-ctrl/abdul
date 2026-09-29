@@ -262,73 +262,13 @@ function Landing() {
     setAvatarError(false);
   }, [googleUser?.avatarUrl, googleUser?.picture]);
 
-  useEffect(() => {
-    const handler = (event: MessageEvent) => {
-      try {
-        if (event.data?.type === "GOOGLE_AUTH_SUCCESS") {
-          const { token, user } = event.data as {
-            token: string;
-            user: { name: string; email: string; picture: string; avatarUrl?: string | null };
-          };
-          setOauthError(null);
-          try {
-            saveSession(token, "tenant");
-            saveGoogleUser({
-              ...user,
-              avatarUrl: user.avatarUrl ?? user.picture ?? null,
-              picture: user.picture || user.avatarUrl || "",
-            });
-          } catch {
-            setOauthError("Gagal menyimpan sesi, coba lagi");
-            return;
-          }
-          toast.success("Berhasil masuk dengan Google");
-          setShowLogin(false);
-          googleClickLockRef.current = false;
-          navigate({ to: "/app" });
-        }
-        if (event.data?.type === "GOOGLE_AUTH_ERROR") {
-          const msg = (event.data?.message as string) || "Autentikasi Google gagal";
-          setOauthError(msg);
-          toast.error(msg);
-          googleClickLockRef.current = false;
-        }
-      } catch {
-        setOauthError("Terjadi kesalahan saat memproses login Google");
-        googleClickLockRef.current = false;
-      }
-    };
-    window.addEventListener("message", handler);
-    return () => window.removeEventListener("message", handler);
-  }, [navigate]);
-
   const handleGoogleClick = () => {
     if (googleClickLockRef.current) return;
     googleClickLockRef.current = true;
     setOauthError(null);
     try {
       const origin = encodeURIComponent(window.location.origin);
-      const popup = window.open(
-        `${API_BASE}/auth/google?origin=${origin}`,
-        "google_oauth",
-        "width=500,height=600,left=200,top=100",
-      );
-      if (!popup) {
-        setOauthError("Popup diblokir browser. Izinkan popup untuk login Google.");
-        toast.error("Popup diblokir browser");
-        googleClickLockRef.current = false;
-        return;
-      }
-      const timer = window.setInterval(() => {
-        if (popup.closed) {
-          window.clearInterval(timer);
-          googleClickLockRef.current = false;
-        }
-      }, 800);
-      window.setTimeout(() => {
-        googleClickLockRef.current = false;
-        window.clearInterval(timer);
-      }, 30000);
+      window.location.href = `${API_BASE}/auth/google?origin=${origin}`;
     } catch {
       setOauthError("Gagal membuka login Google. Coba lagi.");
       toast.error("Gagal membuka login Google");

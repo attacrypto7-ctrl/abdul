@@ -67,7 +67,7 @@ function AuthCallbackPage() {
         }
         setStatus("success");
         toast.success("Berhasil masuk dengan Google");
-        setTimeout(() => navigate({ to: "/" }), 400);
+        setTimeout(() => navigate({ to: "/app" }), 400);
         return;
       } catch {
         void 0;
@@ -89,7 +89,7 @@ function AuthCallbackPage() {
       }
       setStatus("success");
       toast.success("Berhasil masuk dengan Google");
-      setTimeout(() => navigate({ to: "/" }), 400);
+      setTimeout(() => navigate({ to: "/app" }), 400);
       return;
     }
 
