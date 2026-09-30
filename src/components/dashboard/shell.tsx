@@ -90,9 +90,9 @@ export function DashboardShell({
 
   return (
     <div className="flex min-h-screen bg-background text-foreground transition-colors duration-200">
-      <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-sidebar-border bg-sidebar px-4 py-5 md:flex">
+      <aside className="sticky top-0 hidden h-[100vh] supports-[height:100dvh]:h-[100dvh] w-64 shrink-0 flex-col overflow-hidden border-r border-sidebar-border bg-sidebar px-4 py-4 md:flex">
         {/* Brand Logo & Header */}
-        <div className="mb-6 flex items-center justify-between px-2">
+        <div className="mb-4 flex shrink-0 items-center justify-between px-2">
           <Link to="/" className="transition-opacity hover:opacity-90">
             <BrandLogo size="md" badge={title.includes("Admin") ? "Admin" : undefined} />
           </Link>
@@ -101,7 +101,7 @@ export function DashboardShell({
 
         {googleUser ? (
           <div
-            className="relative mb-6 rounded-xl border border-border/60 bg-card/60 p-2 shadow-xs"
+            className="relative mb-4 shrink-0 rounded-xl border border-border/60 bg-card/60 p-2 shadow-xs"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
@@ -164,7 +164,7 @@ export function DashboardShell({
           </div>
         ) : null}
 
-        <nav className="flex flex-1 flex-col gap-1">
+        <nav className="flex flex-1 flex-col justify-between gap-1.5 min-h-0 overflow-y-auto overflow-x-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {items.map((item) => {
             const active =
               pathname === item.to ||
@@ -174,7 +174,7 @@ export function DashboardShell({
                 key={item.to}
                 to={item.to}
                 className={cn(
-                  "group flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-all duration-200",
+                  "group flex flex-1 min-h-[34px] max-h-[52px] items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-all duration-200",
                   active
                     ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-xs"
                     : "text-muted-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground hover:translate-x-1",
@@ -187,7 +187,7 @@ export function DashboardShell({
           })}
         </nav>
 
-        <div className="mt-auto flex flex-col gap-2.5 pt-4">
+        <div className="mt-auto flex shrink-0 flex-col gap-2.5 pt-3">
           <Link
             to="/"
             onClick={onBackToHome}
@@ -205,6 +205,10 @@ export function DashboardShell({
           {footer ? <div className="border-t border-sidebar-border pt-2.5">{footer}</div> : null}
         </div>
       </aside>
+
+      <style>{`@media (max-height: 650px) {
+  aside nav > a { min-height: 30px !important; }
+}`}</style>
 
       <div className="min-w-0 flex-1">
         {/* Mobile top header bar */}
