@@ -37,6 +37,8 @@ export function DashboardShell({
   const [imgError, setImgError] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [backRipples, setBackRipples] = useState<{ id: number; x: number; y: number; size: number }[]>([]);
+  const backRippleId = useRef(0);
 
   const handleMouseEnter = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -191,15 +193,32 @@ export function DashboardShell({
           <Link
             to="/"
             onClick={onBackToHome}
-            className="sidebar-back-glow group flex w-full items-center justify-between rounded-xl border border-blue-500/20 bg-blue-50/50 px-3 py-2.5 text-[11px] font-semibold text-blue-700 transition-all duration-300 hover:translate-y-[-1px] hover:border-blue-500/40 hover:bg-blue-100/50 hover:shadow-sm dark:border-blue-400/20 dark:bg-blue-900/20 dark:text-blue-300 dark:hover:bg-blue-900/30 active:scale-[0.98]"
+            onPointerDown={(e) => {
+              const el = e.currentTarget as HTMLElement;
+              const r = el.getBoundingClientRect();
+              const x = e.clientX - r.left;
+              const y = e.clientY - r.top;
+              const size = Math.max(r.width, r.height) * 2.2;
+              const id = ++backRippleId.current;
+              setBackRipples((p) => [...p, { id, x, y, size }]);
+            }}
+            className="sidebar-back-glow group flex w-full items-center justify-between rounded-xl border border-blue-500/20 bg-blue-50/50 px-3 py-2.5 text-[11px] font-semibold text-blue-700 dark:border-blue-400/20 dark:bg-blue-900/20 dark:text-blue-300"
           >
-            <span className="flex items-center gap-2.5">
+            <span className="relative z-[1] flex items-center gap-2.5">
               <Home className="size-3.5 text-blue-600 transition-transform duration-300 ease-out group-hover:scale-110 dark:text-blue-400" />
               <span>Kembali ke beranda</span>
             </span>
-            <span className="text-blue-500/60 transition-transform duration-300 ease-out group-hover:translate-x-0.5 dark:text-blue-400/60">
+            <span className="sidebar-back-arrow relative z-[1] text-blue-500/60 transition-transform duration-300 ease-out group-hover:translate-x-0.5 dark:text-blue-400/60">
               ←
             </span>
+            {backRipples.map((rp) => (
+              <span
+                key={rp.id}
+                className="sidebar-back-ripple"
+                style={{ left: rp.x, top: rp.y, width: rp.size, height: rp.size }}
+                onAnimationEnd={() => setBackRipples((p) => p.filter((v) => v.id !== rp.id))}
+              />
+            ))}
           </Link>
 
           {footer ? <div className="border-t border-sidebar-border pt-2.5">{footer}</div> : null}
@@ -209,14 +228,26 @@ export function DashboardShell({
       <style>{`@media (max-height: 650px) {
   aside nav > a { min-height: 30px !important; }
 }
-.sidebar-back-glow{position:relative;overflow:hidden;pointer-events:auto;transition:border-color 300ms cubic-bezier(.4,0,.2,1),box-shadow 300ms cubic-bezier(.4,0,.2,1),color 300ms cubic-bezier(.4,0,.2,1),text-shadow 300ms cubic-bezier(.4,0,.2,1)}
-.sidebar-back-glow::after{content:"";position:absolute;top:-50%;left:-85%;width:50%;height:200%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.58),transparent);transform:skewX(-20deg);opacity:0;pointer-events:none}
-.sidebar-back-glow:hover,.sidebar-back-glow:focus-visible{border-color:rgba(125,211,252,.70)!important;color:#0ea5e9!important;text-shadow:0 0 8px rgba(125,211,252,.45);box-shadow:0 0 0 1px rgba(125,211,252,.55),0 0 12px rgba(56,189,248,.45),0 0 28px rgba(56,189,248,.30),0 0 56px rgba(56,189,248,.18),inset 0 0 14px rgba(125,211,252,.12)!important;animation:sidebar-back-glow-pulse 1.8s ease-in-out infinite}
-.dark .sidebar-back-glow:hover,.dark .sidebar-back-glow:focus-visible{border-color:rgba(125,211,252,.75)!important;box-shadow:0 0 0 1px rgba(125,211,252,.65),0 0 14px rgba(56,189,248,.55),0 0 32px rgba(56,189,248,.38),0 0 64px rgba(56,189,248,.24),inset 0 0 16px rgba(125,211,252,.16)!important;text-shadow:0 0 10px rgba(125,211,252,.55)}
-.sidebar-back-glow:hover::after{animation:sidebar-back-glow-shimmer 680ms cubic-bezier(.4,0,.2,1) forwards}
+.sidebar-back-glow{position:relative;overflow:hidden;border-radius:0.75rem;isolation:isolate;-webkit-tap-highlight-color:transparent;user-select:none;transform:scale(1);transition:transform 200ms cubic-bezier(.34,1.2,.64,1),border-color 300ms cubic-bezier(.4,0,.2,1),box-shadow 300ms cubic-bezier(.4,0,.2,1),color 300ms cubic-bezier(.4,0,.2,1),text-shadow 300ms cubic-bezier(.4,0,.2,1),filter 200ms cubic-bezier(.4,0,.2,1)}
+.sidebar-back-glow::after{content:"";position:absolute;top:-50%;left:-85%;width:34%;height:200%;background:linear-gradient(105deg,transparent 0%,transparent 42%,rgba(255,255,255,.32) 50%,transparent 58%,transparent 100%);transform:skewX(-16deg);opacity:0;pointer-events:none;z-index:0;border-radius:inherit}
+@media (hover: hover){
+  .sidebar-back-glow:hover{border-color:rgba(125,211,252,.70)!important;color:#0ea5e9!important;text-shadow:0 0 8px rgba(125,211,252,.45);box-shadow:0 0 0 1px rgba(125,211,252,.55),0 0 12px rgba(56,189,248,.45),0 0 28px rgba(56,189,248,.30),0 0 56px rgba(56,189,248,.18),inset 0 0 14px rgba(125,211,252,.12)!important;animation:sidebar-back-glow-pulse 1.8s ease-in-out infinite}
+  .dark .sidebar-back-glow:hover{border-color:rgba(125,211,252,.75)!important;box-shadow:0 0 0 1px rgba(125,211,252,.65),0 0 14px rgba(56,189,248,.55),0 0 32px rgba(56,189,248,.38),0 0 64px rgba(56,189,248,.24),inset 0 0 16px rgba(125,211,252,.16)!important;text-shadow:0 0 10px rgba(125,211,252,.55)}
+  .sidebar-back-glow:hover::after{animation:sidebar-back-glow-shimmer 620ms cubic-bezier(.4,0,.2,1) forwards;animation-delay:0s}
+}
+.sidebar-back-glow:focus{outline:none}
+.sidebar-back-glow:focus-visible{outline:2px solid rgba(125,211,252,.9);outline-offset:2px;border-color:rgba(125,211,252,.70)!important;box-shadow:0 0 0 1px rgba(125,211,252,.55),0 0 12px rgba(56,189,248,.45),0 0 28px rgba(56,189,248,.30),0 0 56px rgba(56,189,248,.18),inset 0 0 14px rgba(125,211,252,.12)!important}
+.sidebar-back-glow:focus:not(:focus-visible){outline:none}
+.sidebar-back-glow:active{transform:scale(0.97);transition:transform 100ms cubic-bezier(.4,0,.2,1),border-color 100ms cubic-bezier(.4,0,.2,1),box-shadow 100ms cubic-bezier(.4,0,.2,1),filter 100ms cubic-bezier(.4,0,.2,1);border-color:rgba(125,211,252,.85)!important;box-shadow:0 0 0 1px rgba(125,211,252,.80),0 0 10px rgba(56,189,248,.60),0 0 20px rgba(56,189,248,.45),inset 0 0 10px rgba(125,211,252,.18)!important;filter:brightness(1.06)}
+.sidebar-back-glow:active .sidebar-back-arrow{transform:translateX(-4px)}
+.sidebar-back-ripple{position:absolute;border-radius:9999px;background:rgba(125,211,252,.28);pointer-events:none;z-index:0;transform:translate(-50%,-50%) scale(0);opacity:.9;animation:sidebar-back-ripple 550ms ease-out forwards}
+.dark .sidebar-back-ripple{background:rgba(125,211,252,.35)}
+.sidebar-back-glow:disabled,.sidebar-back-glow[aria-disabled="true"]{cursor:not-allowed;transform:none!important;animation:none!important;filter:none!important;pointer-events:none}
+.sidebar-back-glow:disabled::after,.sidebar-back-glow[aria-disabled="true"]::after{display:none!important}
 @keyframes sidebar-back-glow-pulse{0%,100%{box-shadow:0 0 0 1px rgba(125,211,252,.55),0 0 12px rgba(56,189,248,.45),0 0 28px rgba(56,189,248,.30),0 0 56px rgba(56,189,248,.18),inset 0 0 14px rgba(125,211,252,.12)}50%{box-shadow:0 0 0 1px rgba(125,211,252,.72),0 0 16px rgba(56,189,248,.60),0 0 36px rgba(56,189,248,.42),0 0 68px rgba(56,189,248,.26),inset 0 0 18px rgba(125,211,252,.18)}}
 @keyframes sidebar-back-glow-shimmer{0%{left:-85%;opacity:0}18%{opacity:1}100%{left:135%;opacity:0}}
-@media (prefers-reduced-motion:reduce){.sidebar-back-glow:hover,.sidebar-back-glow:focus-visible{animation:none!important}.sidebar-back-glow::after{display:none!important}.sidebar-back-glow:hover{box-shadow:0 0 0 1px rgba(125,211,252,.55),0 0 12px rgba(56,189,248,.45),0 0 28px rgba(56,189,248,.30),0 0 56px rgba(56,189,248,.18),inset 0 0 14px rgba(125,211,252,.12)!important}}
+@keyframes sidebar-back-ripple{0%{transform:translate(-50%,-50%) scale(0);opacity:.9}100%{transform:translate(-50%,-50%) scale(1);opacity:0}}
+@media (prefers-reduced-motion: reduce){.sidebar-back-glow,.sidebar-back-glow:hover,.sidebar-back-glow:focus-visible,.sidebar-back-glow:active{animation:none!important;transition:none!important;transform:none!important}.sidebar-back-glow::after{display:none!important}.sidebar-back-ripple{display:none!important}.sidebar-back-glow:hover,.sidebar-back-glow:focus-visible{box-shadow:0 0 0 1px rgba(125,211,252,.55),0 0 12px rgba(56,189,248,.45),0 0 28px rgba(56,189,248,.30),0 0 56px rgba(56,189,248,.18),inset 0 0 14px rgba(125,211,252,.12)!important}.sidebar-back-glow:focus-visible{outline:2px solid rgba(125,211,252,.9);outline-offset:2px}}
 `}</style>
 
       <div className="min-w-0 flex-1">
