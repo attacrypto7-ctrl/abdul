@@ -171,7 +171,8 @@ const testimoniList = [
     hasil: "Closing Naik 40% & Iklan Anti-Boncos",
     isi: "Jujur awalnya skeptis, apa iya bot bisa ngelayanin pembeli senatural CS asli. Pas dicoba di iklan TikTok & IG Ads, kaget banget. Jam 1 sampai jam 4 subuh yang biasanya chat dianggurin sampe pagi dan leads pada kabur ke toko sebelah, langsung dibalas detik itu juga sama katalognya. Pas bangun jam 6 pagi, tau-tau udah ada 18 orderan COD baru masuk di mutasi. Iklan gak pernah boncos lagi!",
     bintang: 5,
-    foto: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=160&h=160&fit=crop&crop=face",
+    inisial: "RP",
+    gradien: "linear-gradient(135deg, #059669, #34d399)",
     lokasi: "Bandung, Jawa Barat",
   },
   {
@@ -180,7 +181,8 @@ const testimoniList = [
     hasil: "Hemat Biaya 2 CS Tiap Bulan",
     isi: "Admin saya dulu keteteran tiap kali live TikTok kelar, bisa 300+ chat numpuk nanyain LD, panjang baju, sama bahan gerah apa nggak. Semenjak pake Balasin, template info toko kita input sekali aja, AI-nya pinter banget ngejawabnya luwes kayak manusia asli, nyebut 'Kakak' ramah banget. Kita bisa hemat gaji 2 CS manual dan pembeli gak nunggu berjam-jam.",
     bintang: 5,
-    foto: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=160&h=160&fit=crop&crop=face",
+    inisial: "SR",
+    gradien: "linear-gradient(135deg, #7c3aed, #a78bfa)",
     lokasi: "Solo, Jawa Tengah",
   },
   {
@@ -189,7 +191,8 @@ const testimoniList = [
     hasil: "Konversi Naik dari 12% ke 38%",
     isi: "Yang paling saya suka itu gak perlu nyalain laptop seharian di toko. Cukup scan QR dari HP sekali, sistem jalan di cloud mereka. Pembeli marketplace yang klik iklan Click-to-WA langsung ditangkep, dikasih link variasi warna, langsung checkout transfer BCA. Pembeli paling benci toko yang slow respon, begitu langsung dibalas, closing rate melesat.",
     bintang: 5,
-    foto: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=160&h=160&fit=crop&crop=face",
+    inisial: "HW",
+    gradien: "linear-gradient(135deg, #0284c7, #38bdf8)",
     lokasi: "Jakarta Barat",
   },
   {
@@ -198,7 +201,8 @@ const testimoniList = [
     hasil: "Orderan Tanggal Kembar Tembus 3x",
     isi: "Customer skincare itu detail banget, nanya nomor BPOM, urutan pemakaian krim siang malam, cocok gak buat jerawat batu. AI Balasin jawabnya runtut dan meyakinkan banget. Yang tadinya cuma iseng nanya-nanya malah jadi beli sepaket lengkap 4 produk. Ngebantu banget pas promo tanggal kembar!",
     bintang: 5,
-    foto: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=160&h=160&fit=crop&crop=face",
+    inisial: "DL",
+    gradien: "linear-gradient(135deg, #e11d48, #fb7185)",
     lokasi: "Surabaya, Jawa Timur",
   },
   {
@@ -207,7 +211,8 @@ const testimoniList = [
     hasil: "Repeat Order Langganan Naik 2x",
     isi: "Paling kesel kalo pembeli nanya 'Kak ada beans arabika giling halus?' pas kita lagi sibuk roasting kopi di dapur. Begitu lambat 10 menit aja pembelinya udah pindah toko sebelah. Sekarang gak pernah kejadian lagi. Balasan < 2 detik bikin pembeli ngerasa dihargai, repeat order langganan cafe naik 2x lipat.",
     bintang: 5,
-    foto: "https://images.unsplash.com/photo-1628157582853-a796fa650a6a?w=160&h=160&fit=crop&crop=face",
+    inisial: "BS",
+    gradien: "linear-gradient(135deg, #d97706, #fbbf24)",
     lokasi: "Malang, Jawa Timur",
   },
 ];
@@ -425,6 +430,28 @@ export function Landing() {
   useEffect(() => {
     setAvatarError(false);
   }, [googleUser?.avatarUrl, googleUser?.picture]);
+
+  // Scroll Reveal: animate elements into view when they enter the viewport
+  useEffect(() => {
+    const revealSelectors = '.scroll-reveal, .scroll-reveal-left, .scroll-reveal-right, .scroll-reveal-scale';
+    const els = document.querySelectorAll(revealSelectors);
+    if (!els.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.08, rootMargin: '0px 0px -60px 0px' }
+    );
+
+    els.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
 
   const handleGoogleClick = () => {
     if (googleClickLockRef.current) return;
@@ -1054,7 +1081,7 @@ export function Landing() {
         {/* ══════════════════════════════════════════════════════════ */}
         {/* 3. INFINITE TRUST & RESEARCH-BACKED METRIC MARQUEE         */}
         {/* ══════════════════════════════════════════════════════════ */}
-        <section className="border-y border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-100/50 dark:bg-zinc-950/50 py-10 overflow-hidden relative">
+        <section className="scroll-reveal border-y border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-100/50 dark:bg-zinc-950/50 py-10 overflow-hidden relative">
           <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8 mb-6">
             <p className="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">
               ⚡ Terintegrasi Otomatis dengan Ekosistem Penjualan Anda
@@ -1131,7 +1158,7 @@ export function Landing() {
         {/* ══════════════════════════════════════════════════════════ */}
         {/* 4. REVISI FITUR UNGGULAN: DATA RISET & RICH 3D ICONS       */}
         {/* ══════════════════════════════════════════════════════════ */}
-        <section id="fitur" className="py-24">
+        <section id="fitur" className="scroll-reveal py-24">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="mx-auto mb-16 max-w-3xl text-center">
               <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-1 text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400 mb-3">
@@ -1399,7 +1426,7 @@ export function Landing() {
         {/* ══════════════════════════════════════════════════════════ */}
         {/* 5. REVISI SIMULASI CHAT INTERAKTIF LEBIH HIDUP & FLEKSIBEL  */}
         {/* ══════════════════════════════════════════════════════════ */}
-        <section id="simulasi" className="mx-auto max-w-5xl px-4 sm:px-6 py-24">
+        <section id="simulasi" className="scroll-reveal-scale mx-auto max-w-5xl px-4 sm:px-6 py-24">
           <div className="rounded-[40px] border border-zinc-200 dark:border-zinc-800 bg-white/85 dark:bg-zinc-950/85 p-6 shadow-2xl backdrop-blur-2xl md:p-10">
             <div className="mx-auto mb-8 max-w-2xl text-center">
               <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-1 text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400 mb-3">
@@ -1617,7 +1644,7 @@ export function Landing() {
         {/* ══════════════════════════════════════════════════════════ */}
         {/* 6. REVISI TATA CARA PEMAKAIAN / AKTIVASI DENGAN GAMBARAN    */}
         {/* ══════════════════════════════════════════════════════════ */}
-        <section id="cara-kerja" className="mx-auto max-w-6xl px-4 sm:px-6 py-24">
+        <section id="cara-kerja" className="scroll-reveal mx-auto max-w-6xl px-4 sm:px-6 py-24">
           <div className="mx-auto mb-16 max-w-3xl text-center">
             <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-1 text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400 mb-3">
               <Sliders className="size-3.5 text-emerald-400" />
@@ -1713,7 +1740,7 @@ export function Landing() {
         {/* ══════════════════════════════════════════════════════════ */}
         {/* 7. IMPACT & ROI COMPARISON CARDS (CONVENTIONAL VS BALASIN) */}
         {/* ══════════════════════════════════════════════════════════ */}
-        <section id="perbandingan" className="py-24 border-y border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-100/50 dark:bg-zinc-950/50">
+        <section id="perbandingan" className="scroll-reveal py-24 border-y border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-100/50 dark:bg-zinc-950/50">
           <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
             <div className="mx-auto mb-16 max-w-2xl text-center">
               <span className="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">
@@ -1794,7 +1821,7 @@ export function Landing() {
         {/* ══════════════════════════════════════════════════════════ */}
         {/* 8. REVISI TESTIMONI ASLI SELLER INDONESIA (BUKAN AI)       */}
         {/* ══════════════════════════════════════════════════════════ */}
-        <section id="testimoni" className="py-24 overflow-hidden relative">
+        <section id="testimoni" className="scroll-reveal py-24 overflow-hidden relative">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center mb-12">
             <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-1 text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400 mb-3">
               <Star className="size-3.5 fill-current text-amber-400" />
@@ -1834,11 +1861,13 @@ export function Landing() {
                   </div>
 
                   <div className="mt-6 border-t border-zinc-200 dark:border-zinc-800/80 pt-4 flex items-center gap-3">
-                    <img
-                      src={t.foto}
-                      alt={t.nama}
-                      className="size-12 rounded-full object-cover ring-2 ring-emerald-500/40 shrink-0 shadow-xs"
-                    />
+                    <div
+                      className="size-12 rounded-full shrink-0 shadow-lg ring-2 ring-emerald-500/40 flex items-center justify-center font-bold text-sm select-none text-white"
+                      style={{ background: t.gradien }}
+                      aria-hidden="true"
+                    >
+                      {t.inisial}
+                    </div>
                     <div className="min-w-0 flex-1 text-left">
                       <div className="flex items-center gap-1.5">
                         <h4 className="font-bold text-zinc-900 dark:text-zinc-100 text-sm truncate">{t.nama}</h4>
@@ -1857,7 +1886,7 @@ export function Landing() {
         {/* ══════════════════════════════════════════════════════════ */}
         {/* 9. FAQ ACCORDION                                           */}
         {/* ══════════════════════════════════════════════════════════ */}
-        <section id="faq" className="border-t border-zinc-200/80 dark:border-zinc-800/80 py-24">
+        <section id="faq" className="scroll-reveal border-t border-zinc-200/80 dark:border-zinc-800/80 py-24">
           <div className="mx-auto max-w-4xl px-4 sm:px-6">
             <div className="mb-12 text-center">
               <span className="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">
@@ -1895,7 +1924,7 @@ export function Landing() {
         {/* ══════════════════════════════════════════════════════════ */}
         {/* 10. BOLD HIGH-CONVERSION BANNER & CLEAN FOOTER             */}
         {/* ══════════════════════════════════════════════════════════ */}
-        <section className="mx-auto max-w-5xl px-4 sm:px-6 pb-24">
+        <section className="scroll-reveal-scale mx-auto max-w-5xl px-4 sm:px-6 pb-24">
           <div className="relative overflow-hidden rounded-[40px] bg-gradient-to-br from-emerald-600 via-teal-700 to-emerald-900 p-8 text-center text-white shadow-2xl md:p-14">
             {/* Background Glows */}
             <div className="pointer-events-none absolute -top-12 -right-12 size-64 rounded-full bg-white/15 blur-3xl" />
