@@ -227,24 +227,20 @@ function AdminLogin({ onLogin }: { onLogin: () => void }) {
                 disabled={isLoading}
                 className="w-full relative overflow-hidden h-11 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-md transition-all active:scale-[0.98] mt-2"
               >
-                {isLoading ? (
-                  <Loader2 className="size-5 animate-spin" />
-                ) : (
-                  "Masuk ke Panel Admin"
-                )}
+                {isLoading ? <Loader2 className="size-5 animate-spin" /> : "Masuk ke Panel Admin"}
               </Button>
             </form>
 
             <div className="mt-6 flex items-center justify-between pt-4 border-t border-border/60">
               <Link
                 to="/"
-                className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
+                className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
               >
                 ← Kembali ke Beranda
               </Link>
               <Link
                 to="/app"
-                className="flex items-center gap-1.5 text-xs font-medium text-emerald-600 dark:text-emerald-400 hover:underline transition-colors"
+                className="flex items-center gap-1.5 text-xs font-medium text-emerald-600 dark:text-emerald-400 hover:underline transition-colors cursor-pointer"
               >
                 Dashboard Tenant →
               </Link>

@@ -89,7 +89,7 @@ function MasukPage() {
             </Button>
           </form>
           <p className="text-center text-xs text-muted-foreground">
-            <Link to="/" className="hover:text-foreground">
+            <Link to="/" className="hover:text-foreground cursor-pointer">
               ← Kembali ke beranda
             </Link>
           </p>

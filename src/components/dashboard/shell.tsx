@@ -90,9 +90,9 @@ export function DashboardShell({
 
   return (
     <div className="flex min-h-screen bg-background text-foreground transition-colors duration-200">
-      <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-sidebar-border bg-sidebar px-4 py-5 md:flex">
+      <aside className="sticky top-0 hidden h-[100vh] supports-[height:100dvh]:h-[100dvh] w-64 shrink-0 flex-col overflow-hidden border-r border-sidebar-border bg-sidebar px-4 py-4 md:flex">
         {/* Brand Logo & Header */}
-        <div className="mb-6 flex items-center justify-between px-2">
+        <div className="mb-4 flex shrink-0 items-center justify-between px-2">
           <Link to="/" className="transition-opacity hover:opacity-90">
             <BrandLogo size="md" badge={title.includes("Admin") ? "Admin" : undefined} />
           </Link>
@@ -101,7 +101,7 @@ export function DashboardShell({
 
         {googleUser ? (
           <div
-            className="relative mb-6 rounded-xl border border-border/60 bg-card/60 p-2 shadow-xs"
+            className="relative mb-4 shrink-0 rounded-xl border border-border/60 bg-card/60 p-2 shadow-xs"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
@@ -137,7 +137,9 @@ export function DashboardShell({
                 <div className="w-64 rounded-md border bg-popover p-1 shadow-md">
                   <div className="px-2 py-2">
                     <p className="text-sm font-semibold leading-none">{googleUser.name}</p>
-                    <p className="text-xs text-muted-foreground truncate mt-1">{googleUser.email}</p>
+                    <p className="text-xs text-muted-foreground truncate mt-1">
+                      {googleUser.email}
+                    </p>
                   </div>
                   <div className="-mx-1 my-1 h-px bg-muted" />
                   <button
@@ -164,7 +166,7 @@ export function DashboardShell({
           </div>
         ) : null}
 
-        <nav className="flex flex-1 flex-col gap-1">
+        <nav className="flex flex-1 flex-col justify-between gap-1.5 min-h-0 overflow-y-auto overflow-x-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {items.map((item) => {
             const active =
               pathname === item.to ||
@@ -174,30 +176,35 @@ export function DashboardShell({
                 key={item.to}
                 to={item.to}
                 className={cn(
-                  "group flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-all duration-200",
+                  "group flex flex-1 min-h-[34px] max-h-[52px] items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-all duration-150 cursor-pointer",
                   active
                     ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-xs"
                     : "text-muted-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground hover:translate-x-1",
                 )}
               >
-                <item.icon className={cn("size-4 transition-transform duration-200 group-hover:scale-110", active && "text-primary")} />
+                <item.icon
+                  className={cn(
+                    "size-4 transition-transform duration-200 group-hover:scale-110",
+                    active && "text-primary",
+                  )}
+                />
                 {item.label}
               </Link>
             );
           })}
         </nav>
 
-        <div className="mt-auto flex flex-col gap-2.5 pt-4">
+        <div className="mt-auto flex shrink-0 flex-col gap-2.5 pt-3">
           <Link
             to="/"
             onClick={onBackToHome}
-            className="group flex w-full items-center justify-between rounded-xl border border-blue-500/20 bg-blue-50/50 px-3 py-2.5 text-[11px] font-semibold text-blue-700 transition-all duration-300 hover:translate-y-[-1px] hover:border-blue-500/40 hover:bg-blue-100/50 hover:shadow-sm dark:border-blue-400/20 dark:bg-blue-900/20 dark:text-blue-300 dark:hover:bg-blue-900/30 active:scale-[0.98]"
+            className="sidebar-back-glow group flex w-full cursor-pointer items-center justify-between rounded-xl border border-blue-500/20 bg-blue-50/50 px-3 py-2.5 text-[11px] font-semibold text-blue-700 dark:border-blue-400/20 dark:bg-blue-900/20 dark:text-blue-300"
           >
-            <span className="flex items-center gap-2.5">
+            <span className="relative z-[1] flex items-center gap-2.5">
               <Home className="size-3.5 text-blue-600 transition-transform duration-300 ease-out group-hover:scale-110 dark:text-blue-400" />
               <span>Kembali ke beranda</span>
             </span>
-            <span className="text-blue-500/60 transition-transform duration-300 ease-out group-hover:translate-x-0.5 dark:text-blue-400/60">
+            <span className="sidebar-back-arrow relative z-[1] text-blue-500/60 transition-transform duration-300 ease-out group-hover:translate-x-0.5 dark:text-blue-400/60">
               ←
             </span>
           </Link>
@@ -205,6 +212,29 @@ export function DashboardShell({
           {footer ? <div className="border-t border-sidebar-border pt-2.5">{footer}</div> : null}
         </div>
       </aside>
+
+      <style>{`@property --sb-angle{syntax:"<angle>";inherits:false;initial-value:0deg}
+@media (max-height: 650px){aside nav > a{min-height:30px!important}}
+.sidebar-back-glow{position:relative;overflow:hidden;border-radius:0.75rem;isolation:isolate;-webkit-tap-highlight-color:transparent;user-select:none;transform:scale(1);transition:transform 200ms cubic-bezier(.34,1.2,.64,1),border-color 300ms cubic-bezier(.4,0,.2,1),box-shadow 300ms cubic-bezier(.4,0,.2,1),color 300ms cubic-bezier(.4,0,.2,1),text-shadow 300ms cubic-bezier(.4,0,.2,1),filter 200ms cubic-bezier(.4,0,.2,1)}
+.sidebar-back-glow::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;border-radius:inherit;opacity:0;transition:opacity 300ms cubic-bezier(.4,0,.2,1);background:radial-gradient(circle 2.2px at 18% 28%,rgba(255,255,255,.95) 0,transparent 70%),radial-gradient(circle 1.6px at 72% 22%,rgba(186,230,253,.95) 0,transparent 70%),radial-gradient(circle 2px at 85% 68%,rgba(255,255,255,.9) 0,transparent 70%),radial-gradient(circle 1.6px at 30% 78%,rgba(125,211,252,.95) 0,transparent 70%)}
+.sidebar-back-glow::after{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:conic-gradient(from var(--sb-angle),rgba(186,230,253,0) 0deg,rgba(186,230,253,.95) 58deg,rgba(255,255,255,1) 92deg,rgba(56,189,248,.9) 128deg,rgba(186,230,253,0) 210deg,rgba(186,230,253,0) 360deg);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask-composite:exclude;opacity:0;pointer-events:none;z-index:0;transition:opacity 300ms cubic-bezier(.4,0,.2,1)}
+@media (hover: hover){
+  .sidebar-back-glow:hover{border-color:rgba(186,230,253,.70)!important;color:#0ea5e9!important;text-shadow:0 0 10px rgba(125,211,252,.55),0 0 20px rgba(125,211,252,.3);box-shadow:0 0 0 1px rgba(186,230,253,.7),0 0 10px rgba(125,211,252,.65),0 0 24px rgba(56,189,248,.5),0 0 48px rgba(56,189,248,.32),0 0 90px rgba(14,165,233,.2),inset 0 0 14px rgba(125,211,252,.14)!important;animation:sidebar-back-bloom 2s ease-in-out infinite}
+  .dark .sidebar-back-glow:hover{box-shadow:0 0 0 1px rgba(186,230,253,.75),0 0 12px rgba(125,211,252,.7),0 0 28px rgba(56,189,248,.55),0 0 56px rgba(56,189,248,.36),0 0 96px rgba(14,165,233,.24),inset 0 0 16px rgba(125,211,252,.18)!important}
+  .sidebar-back-glow:hover::before{opacity:1;animation:sidebar-back-twinkle 1.8s ease-in-out infinite}
+  .sidebar-back-glow:hover::after{opacity:1;animation:sidebar-back-rotate 5s linear infinite}
+}
+.sidebar-back-glow:focus{outline:none}
+.sidebar-back-glow:focus-visible{outline:2px solid rgba(125,211,252,.9);outline-offset:2px;border-color:rgba(186,230,253,.70)!important;box-shadow:0 0 0 1px rgba(186,230,253,.7),0 0 10px rgba(125,211,252,.65),0 0 24px rgba(56,189,248,.5),0 0 48px rgba(56,189,248,.32),0 0 90px rgba(14,165,233,.2),inset 0 0 14px rgba(125,211,252,.14)!important}
+.sidebar-back-glow:focus:not(:focus-visible){outline:none}
+.sidebar-back-glow:active{transform:scale(0.97);transition:transform 100ms cubic-bezier(.4,0,.2,1),border-color 100ms cubic-bezier(.4,0,.2,1),box-shadow 100ms cubic-bezier(.4,0,.2,1)}
+.sidebar-back-glow:active .sidebar-back-arrow{transform:translateX(-4px)}
+@supports not (background:conic-gradient(from 0deg,red,blue)){.sidebar-back-glow::after{display:none!important}}
+@keyframes sidebar-back-rotate{to{--sb-angle:360deg}}
+@keyframes sidebar-back-bloom{0%,100%{transform:scale(1)}50%{transform:scale(1.012)}}
+@keyframes sidebar-back-twinkle{0%,100%{opacity:.55}50%{opacity:1}}
+@media (prefers-reduced-motion: reduce){.sidebar-back-glow,.sidebar-back-glow:hover,.sidebar-back-glow:focus-visible{animation:none!important;transform:none!important}.sidebar-back-glow::before,.sidebar-back-glow::after{display:none!important}.sidebar-back-glow:hover,.sidebar-back-glow:focus-visible{box-shadow:0 0 0 1px rgba(186,230,253,.7),0 0 10px rgba(125,211,252,.65),0 0 24px rgba(56,189,248,.5),0 0 48px rgba(56,189,248,.32),0 0 90px rgba(14,165,233,.2),inset 0 0 14px rgba(125,211,252,.14)!important}}
+`}</style>
 
       <div className="min-w-0 flex-1">
         {/* Mobile top header bar */}
@@ -222,15 +252,17 @@ export function DashboardShell({
               key={item.to}
               to={item.to}
               className="flex items-center gap-2 whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-medium text-muted-foreground"
-              activeProps={{ className: "bg-sidebar-accent text-sidebar-accent-foreground font-semibold" }}
+              activeProps={{
+                className: "bg-sidebar-accent text-sidebar-accent-foreground font-semibold",
+              }}
             >
               <item.icon className="size-3.5" />
               {item.label}
             </Link>
           ))}
         </div>
-        <main className="surface-grid min-h-screen px-5 py-8 md:px-10">
-          <Outlet />
+        <main className="surface-grid gb-page-enter min-h-screen px-5 py-8 md:px-10">
+          <Outlet key={pathname} />
         </main>
       </div>
     </div>

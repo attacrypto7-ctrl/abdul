@@ -307,19 +307,19 @@ function AutoAdsPage() {
                 {templates.length} template
               </span>
             </div>
-            <Table>
+            <Table className="balas-iklan-table">
               <TableHeader>
-                <TableRow>
-                  <TableHead className="w-[200px]">Pemicu / Pertanyaan</TableHead>
+                <TableRow className="hover:bg-transparent">
+                  <TableHead className="table-head-200">Pemicu / Pertanyaan</TableHead>
                   <TableHead>Rangkaian Balasan (Teks / Media)</TableHead>
-                  <TableHead className="w-[120px]">Kecocokan</TableHead>
-                  <TableHead className="w-[80px]">Dipakai</TableHead>
-                  <TableHead className="w-[90px] text-right">Aksi</TableHead>
+                  <TableHead className="table-head-120">Kecocokan</TableHead>
+                  <TableHead className="table-head-80">Dipakai</TableHead>
+                  <TableHead className="table-head-90 text-right">Aksi</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {templates.map((t: any) => (
-                  <TableRow key={t.id} className={!t.aktif ? "opacity-60 bg-secondary/10" : ""}>
+                  <TableRow key={t.id} className={!t.aktif ? "opacity-60 bg-secondary/10 hover:bg-transparent" : "hover:bg-transparent"}>
                     <TableCell className="align-top font-medium">
                       <p className="text-sm">{t.pertanyaan}</p>
                       <div className="mt-2 flex items-center gap-2">
