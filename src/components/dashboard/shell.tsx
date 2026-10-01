@@ -176,10 +176,10 @@ export function DashboardShell({
                 key={item.to}
                 to={item.to}
                 className={cn(
-                  "group flex flex-1 min-h-[34px] max-h-[52px] items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-all duration-150 cursor-pointer",
+                  "group flex flex-1 min-h-[34px] max-h-[52px] items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium cursor-pointer transition-[transform,background-color] duration-100 active:scale-[0.97]",
                   active
                     ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-xs"
-                    : "text-muted-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground hover:translate-x-1",
+                    : "text-muted-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground",
                 )}
               >
                 <item.icon
@@ -198,13 +198,14 @@ export function DashboardShell({
           <Link
             to="/"
             onClick={onBackToHome}
-            className="sidebar-back-glow group flex w-full cursor-pointer items-center justify-between rounded-xl border border-blue-500/20 bg-blue-50/50 px-3 py-2.5 text-[11px] font-semibold text-blue-700 dark:border-blue-400/20 dark:bg-blue-900/20 dark:text-blue-300"
+            data-no-ripple
+            className="sidebar-back-glow group flex w-full cursor-pointer items-center justify-between rounded-xl border px-3 py-2.5 text-[11px] font-semibold"
           >
             <span className="relative z-[1] flex items-center gap-2.5">
-              <Home className="size-3.5 text-blue-600 transition-transform duration-300 ease-out group-hover:scale-110 dark:text-blue-400" />
+              <Home className="size-3.5 transition-transform duration-100 ease-out group-hover:scale-110" />
               <span>Kembali ke beranda</span>
             </span>
-            <span className="sidebar-back-arrow relative z-[1] text-blue-500/60 transition-transform duration-300 ease-out group-hover:translate-x-0.5 dark:text-blue-400/60">
+            <span className="sidebar-back-arrow relative z-[1] transition-transform duration-100 ease-out group-hover:translate-x-0.5">
               ←
             </span>
           </Link>
@@ -215,24 +216,15 @@ export function DashboardShell({
 
       <style>{`@property --sb-angle{syntax:"<angle>";inherits:false;initial-value:0deg}
 @media (max-height: 650px){aside nav > a{min-height:30px!important}}
-.sidebar-back-glow{position:relative;overflow:hidden;border-radius:0.75rem;isolation:isolate;-webkit-tap-highlight-color:transparent;user-select:none;transform:scale(1);transition:transform 200ms cubic-bezier(.34,1.2,.64,1),border-color 300ms cubic-bezier(.4,0,.2,1),box-shadow 300ms cubic-bezier(.4,0,.2,1),color 300ms cubic-bezier(.4,0,.2,1),text-shadow 300ms cubic-bezier(.4,0,.2,1),filter 200ms cubic-bezier(.4,0,.2,1)}
-.sidebar-back-glow::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;border-radius:inherit;opacity:0;transition:opacity 300ms cubic-bezier(.4,0,.2,1);background:radial-gradient(circle 2.2px at 18% 28%,rgba(255,255,255,.95) 0,transparent 70%),radial-gradient(circle 1.6px at 72% 22%,rgba(186,230,253,.95) 0,transparent 70%),radial-gradient(circle 2px at 85% 68%,rgba(255,255,255,.9) 0,transparent 70%),radial-gradient(circle 1.6px at 30% 78%,rgba(125,211,252,.95) 0,transparent 70%)}
-.sidebar-back-glow::after{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:conic-gradient(from var(--sb-angle),rgba(186,230,253,0) 0deg,rgba(186,230,253,.95) 58deg,rgba(255,255,255,1) 92deg,rgba(56,189,248,.9) 128deg,rgba(186,230,253,0) 210deg,rgba(186,230,253,0) 360deg);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask-composite:exclude;opacity:0;pointer-events:none;z-index:0;transition:opacity 300ms cubic-bezier(.4,0,.2,1)}
-@media (hover: hover){
-  .sidebar-back-glow:hover{border-color:rgba(186,230,253,.70)!important;color:#0ea5e9!important;text-shadow:0 0 10px rgba(125,211,252,.55),0 0 20px rgba(125,211,252,.3);box-shadow:0 0 0 1px rgba(186,230,253,.7),0 0 10px rgba(125,211,252,.65),0 0 24px rgba(56,189,248,.5),0 0 48px rgba(56,189,248,.32),0 0 90px rgba(14,165,233,.2),inset 0 0 14px rgba(125,211,252,.14)!important;animation:sidebar-back-bloom 2s ease-in-out infinite}
-  .dark .sidebar-back-glow:hover{box-shadow:0 0 0 1px rgba(186,230,253,.75),0 0 12px rgba(125,211,252,.7),0 0 28px rgba(56,189,248,.55),0 0 56px rgba(56,189,248,.36),0 0 96px rgba(14,165,233,.24),inset 0 0 16px rgba(125,211,252,.18)!important}
-  .sidebar-back-glow:hover::before{opacity:1;animation:sidebar-back-twinkle 1.8s ease-in-out infinite}
-  .sidebar-back-glow:hover::after{opacity:1;animation:sidebar-back-rotate 5s linear infinite}
-}
+.sidebar-back-glow{position:relative;overflow:hidden;border-radius:0.75rem;isolation:isolate;-webkit-tap-highlight-color:transparent;user-select:none;transform:scale(1);background-color:#e0f2fe!important;transition:transform 100ms cubic-bezier(.4,0,.2,1),background-color 100ms ease,box-shadow 100ms ease,border-color 100ms ease;cursor:pointer!important;color:#0284c7!important;border-color:rgba(186,230,253,.6)!important;}
+.dark .sidebar-back-glow{background-color:#e0f2fe!important;color:#0284c7!important;border-color:rgba(186,230,253,.6)!important;}
+.sidebar-back-glow:hover{background-color:#bae6fd!important;border-color:rgba(186,230,253,.9)!important;box-shadow:0 0 12px rgba(125,211,252,.35)!important;}
+.dark .sidebar-back-glow:hover{background-color:#bae6fd!important;border-color:rgba(186,230,253,.9)!important;box-shadow:0 0 12px rgba(125,211,252,.35)!important;}
 .sidebar-back-glow:focus{outline:none}
-.sidebar-back-glow:focus-visible{outline:2px solid rgba(125,211,252,.9);outline-offset:2px;border-color:rgba(186,230,253,.70)!important;box-shadow:0 0 0 1px rgba(186,230,253,.7),0 0 10px rgba(125,211,252,.65),0 0 24px rgba(56,189,248,.5),0 0 48px rgba(56,189,248,.32),0 0 90px rgba(14,165,233,.2),inset 0 0 14px rgba(125,211,252,.14)!important}
-.sidebar-back-glow:focus:not(:focus-visible){outline:none}
-.sidebar-back-glow:active{transform:scale(0.97);transition:transform 100ms cubic-bezier(.4,0,.2,1),border-color 100ms cubic-bezier(.4,0,.2,1),box-shadow 100ms cubic-bezier(.4,0,.2,1)}
-.sidebar-back-glow:active .sidebar-back-arrow{transform:translateX(-4px)}
-@supports not (background:conic-gradient(from 0deg,red,blue)){.sidebar-back-glow::after{display:none!important}}
-@keyframes sidebar-back-rotate{to{--sb-angle:360deg}}
-@keyframes sidebar-back-bloom{0%,100%{transform:scale(1)}50%{transform:scale(1.012)}}
-@keyframes sidebar-back-twinkle{0%,100%{opacity:.55}50%{opacity:1}}
+.sidebar-back-glow:focus-visible{outline:2px solid #0ea5e9;outline-offset:2px;background-color:#e0f2fe!important;}
+.dark .sidebar-back-glow:focus-visible{background-color:#e0f2fe!important;outline:2px solid #0ea5e9;outline-offset:2px;}
+.sidebar-back-glow:active{transform:scale(0.97);background-color:#7dd3fc!important;}
+.dark .sidebar-back-glow:active{background-color:#7dd3fc!important;}
 @media (prefers-reduced-motion: reduce){.sidebar-back-glow,.sidebar-back-glow:hover,.sidebar-back-glow:focus-visible{animation:none!important;transform:none!important}.sidebar-back-glow::before,.sidebar-back-glow::after{display:none!important}.sidebar-back-glow:hover,.sidebar-back-glow:focus-visible{box-shadow:0 0 0 1px rgba(186,230,253,.7),0 0 10px rgba(125,211,252,.65),0 0 24px rgba(56,189,248,.5),0 0 48px rgba(56,189,248,.32),0 0 90px rgba(14,165,233,.2),inset 0 0 14px rgba(125,211,252,.14)!important}}
 `}</style>
 
@@ -261,8 +253,8 @@ export function DashboardShell({
             </Link>
           ))}
         </div>
-        <main className="surface-grid gb-page-enter min-h-screen px-5 py-8 md:px-10">
-          <Outlet key={pathname} />
+        <main className="surface-grid min-h-screen px-5 py-8 md:px-10">
+          <Outlet />
         </main>
       </div>
     </div>
