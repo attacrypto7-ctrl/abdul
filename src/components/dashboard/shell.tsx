@@ -137,7 +137,9 @@ export function DashboardShell({
                 <div className="w-64 rounded-md border bg-popover p-1 shadow-md">
                   <div className="px-2 py-2">
                     <p className="text-sm font-semibold leading-none">{googleUser.name}</p>
-                    <p className="text-xs text-muted-foreground truncate mt-1">{googleUser.email}</p>
+                    <p className="text-xs text-muted-foreground truncate mt-1">
+                      {googleUser.email}
+                    </p>
                   </div>
                   <div className="-mx-1 my-1 h-px bg-muted" />
                   <button
@@ -174,13 +176,18 @@ export function DashboardShell({
                 key={item.to}
                 to={item.to}
                 className={cn(
-                  "group flex flex-1 min-h-[34px] max-h-[52px] items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-all duration-200",
+                  "group flex flex-1 min-h-[34px] max-h-[52px] items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-all duration-150 cursor-pointer",
                   active
                     ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-xs"
                     : "text-muted-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground hover:translate-x-1",
                 )}
               >
-                <item.icon className={cn("size-4 transition-transform duration-200 group-hover:scale-110", active && "text-primary")} />
+                <item.icon
+                  className={cn(
+                    "size-4 transition-transform duration-200 group-hover:scale-110",
+                    active && "text-primary",
+                  )}
+                />
                 {item.label}
               </Link>
             );
@@ -191,7 +198,7 @@ export function DashboardShell({
           <Link
             to="/"
             onClick={onBackToHome}
-            className="sidebar-back-glow group flex w-full items-center justify-between rounded-xl border border-blue-500/20 bg-blue-50/50 px-3 py-2.5 text-[11px] font-semibold text-blue-700 dark:border-blue-400/20 dark:bg-blue-900/20 dark:text-blue-300"
+            className="sidebar-back-glow group flex w-full cursor-pointer items-center justify-between rounded-xl border border-blue-500/20 bg-blue-50/50 px-3 py-2.5 text-[11px] font-semibold text-blue-700 dark:border-blue-400/20 dark:bg-blue-900/20 dark:text-blue-300"
           >
             <span className="relative z-[1] flex items-center gap-2.5">
               <Home className="size-3.5 text-blue-600 transition-transform duration-300 ease-out group-hover:scale-110 dark:text-blue-400" />
@@ -220,7 +227,7 @@ export function DashboardShell({
 .sidebar-back-glow:focus{outline:none}
 .sidebar-back-glow:focus-visible{outline:2px solid rgba(125,211,252,.9);outline-offset:2px;border-color:rgba(186,230,253,.70)!important;box-shadow:0 0 0 1px rgba(186,230,253,.7),0 0 10px rgba(125,211,252,.65),0 0 24px rgba(56,189,248,.5),0 0 48px rgba(56,189,248,.32),0 0 90px rgba(14,165,233,.2),inset 0 0 14px rgba(125,211,252,.14)!important}
 .sidebar-back-glow:focus:not(:focus-visible){outline:none}
-.sidebar-back-glow:active{transform:scale(0.97);transition:transform 100ms cubic-bezier(.4,0,.2,1),border-color 100ms cubic-bezier(.4,0,.2,1),box-shadow 100ms cubic-bezier(.4,0,.2,1),filter 100ms cubic-bezier(.4,0,.2,1);filter:brightness(1.08)}
+.sidebar-back-glow:active{transform:scale(0.97);transition:transform 100ms cubic-bezier(.4,0,.2,1),border-color 100ms cubic-bezier(.4,0,.2,1),box-shadow 100ms cubic-bezier(.4,0,.2,1)}
 .sidebar-back-glow:active .sidebar-back-arrow{transform:translateX(-4px)}
 @supports not (background:conic-gradient(from 0deg,red,blue)){.sidebar-back-glow::after{display:none!important}}
 @keyframes sidebar-back-rotate{to{--sb-angle:360deg}}
@@ -245,7 +252,9 @@ export function DashboardShell({
               key={item.to}
               to={item.to}
               className="flex items-center gap-2 whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-medium text-muted-foreground"
-              activeProps={{ className: "bg-sidebar-accent text-sidebar-accent-foreground font-semibold" }}
+              activeProps={{
+                className: "bg-sidebar-accent text-sidebar-accent-foreground font-semibold",
+              }}
             >
               <item.icon className="size-3.5" />
               {item.label}

@@ -73,7 +73,10 @@ export const Route = createFileRoute("/admin/licenses")({
 
 function LicensesPage() {
   const queryClient = useQueryClient();
-  const { data: licenses = [], isLoading } = useQuery({ queryKey: ["licenses"], queryFn: getLicenses });
+  const { data: licenses = [], isLoading } = useQuery({
+    queryKey: ["licenses"],
+    queryFn: getLicenses,
+  });
 
   const [open, setOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState("Growth");
@@ -131,7 +134,8 @@ function LicensesPage() {
   };
 
   const handleRevoke = async (id: string, kode: string) => {
-    if (!confirm(`Cabut lisensi ${kode}? Tenant tidak akan bisa menggunakan bot setelah ini.`)) return;
+    if (!confirm(`Cabut lisensi ${kode}? Tenant tidak akan bisa menggunakan bot setelah ini.`))
+      return;
     try {
       await revokeAdminLicenseApi(id);
       queryClient.invalidateQueries({ queryKey: ["licenses"] });
@@ -191,21 +195,34 @@ function LicensesPage() {
                 <div className="space-y-4 py-2">
                   <div className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 p-4 text-center space-y-2">
                     <CheckCircle2 className="size-8 text-emerald-500 mx-auto" />
-                    <h3 className="text-sm font-semibold text-foreground">Kode Lisensi Berhasil Dibuat!</h3>
+                    <h3 className="text-sm font-semibold text-foreground">
+                      Kode Lisensi Berhasil Dibuat!
+                    </h3>
                     <p className="text-xs text-muted-foreground">
-                      Bagikan kode lisensi ini kepada pengguna/klien untuk diaktifkan di menu Lisensi mereka:
+                      Bagikan kode lisensi ini kepada pengguna/klien untuk diaktifkan di menu
+                      Lisensi mereka:
                     </p>
                     <div className="flex items-center justify-center gap-2 pt-2">
                       <code className="rounded bg-background px-3 py-1.5 font-mono text-sm font-bold tracking-wider text-foreground border border-border">
                         {createdLicense.kode}
                       </code>
-                      <Button size="sm" variant="outline" onClick={() => copyCode(createdLicense.kode)}>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => copyCode(createdLicense.kode)}
+                      >
                         <Copy className="size-3.5" /> Salin
                       </Button>
                     </div>
                   </div>
                   <DialogFooter>
-                    <Button onClick={() => { setOpen(false); setCreatedLicense(null); }} className="w-full">
+                    <Button
+                      onClick={() => {
+                        setOpen(false);
+                        setCreatedLicense(null);
+                      }}
+                      className="w-full"
+                    >
                       Selesai
                     </Button>
                   </DialogFooter>
@@ -221,7 +238,9 @@ function LicensesPage() {
                       <SelectContent>
                         <SelectItem value="Starter">Starter (Basic AI & 1 WA)</SelectItem>
                         <SelectItem value="Growth">Growth (Full AI & Iklan)</SelectItem>
-                        <SelectItem value="Scale">Scale (High Priority & Priority Support)</SelectItem>
+                        <SelectItem value="Scale">
+                          Scale (High Priority & Priority Support)
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -233,28 +252,28 @@ function LicensesPage() {
                         <button
                           type="button"
                           onClick={() => handleSetPreset(1)}
-                          className="rounded px-1.5 py-0.5 text-[10px] font-medium bg-secondary text-muted-foreground hover:text-foreground"
+                          className="rounded px-1.5 py-0.5 text-[10px] font-medium bg-secondary text-muted-foreground hover:text-foreground cursor-pointer"
                         >
                           +1 Bln
                         </button>
                         <button
                           type="button"
                           onClick={() => handleSetPreset(3)}
-                          className="rounded px-1.5 py-0.5 text-[10px] font-medium bg-secondary text-muted-foreground hover:text-foreground"
+                          className="rounded px-1.5 py-0.5 text-[10px] font-medium bg-secondary text-muted-foreground hover:text-foreground cursor-pointer"
                         >
                           +3 Bln
                         </button>
                         <button
                           type="button"
                           onClick={() => handleSetPreset(6)}
-                          className="rounded px-1.5 py-0.5 text-[10px] font-medium bg-secondary text-muted-foreground hover:text-foreground"
+                          className="rounded px-1.5 py-0.5 text-[10px] font-medium bg-secondary text-muted-foreground hover:text-foreground cursor-pointer"
                         >
                           +6 Bln
                         </button>
                         <button
                           type="button"
                           onClick={() => handleSetPreset(12)}
-                          className="rounded px-1.5 py-0.5 text-[10px] font-medium bg-secondary text-muted-foreground hover:text-foreground"
+                          className="rounded px-1.5 py-0.5 text-[10px] font-medium bg-secondary text-muted-foreground hover:text-foreground cursor-pointer"
                         >
                           +1 Thn
                         </button>
@@ -380,7 +399,9 @@ function LicensesPage() {
                       {l.tenantNama ? (
                         <span>{l.tenantNama}</span>
                       ) : (
-                        <span className="text-xs italic text-muted-foreground">Belum diklaim (Umum)</span>
+                        <span className="text-xs italic text-muted-foreground">
+                          Belum diklaim (Umum)
+                        </span>
                       )}
                     </TableCell>
                     <TableCell>
@@ -395,15 +416,18 @@ function LicensesPage() {
                           sisa < 0
                             ? "text-destructive font-semibold"
                             : sisa <= 30
-                            ? "text-amber-500 font-semibold"
-                            : "text-muted-foreground"
+                              ? "text-amber-500 font-semibold"
+                              : "text-muted-foreground"
                         }
                       >
                         {sisa < 0 ? `Lewat ${Math.abs(sisa)} hari` : `${sisa} hari lagi`}
                       </span>
                     </TableCell>
                     <TableCell>
-                      <StatusPill label={l.status === "nonaktif" ? "Belum Aktif" : l.status} tone={toneForLicense(l.status)} />
+                      <StatusPill
+                        label={l.status === "nonaktif" ? "Belum Aktif" : l.status}
+                        tone={toneForLicense(l.status)}
+                      />
                     </TableCell>
                     <TableCell className="text-right space-x-1">
                       {l.status !== "revoked" && (
@@ -432,7 +456,10 @@ function LicensesPage() {
               })}
               {filteredLicenses.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={7} className="py-10 text-center text-sm text-muted-foreground">
+                  <TableCell
+                    colSpan={7}
+                    className="py-10 text-center text-sm text-muted-foreground"
+                  >
                     {searchQuery || statusFilter !== "all"
                       ? "Tidak ada lisensi yang cocok dengan pencarian."
                       : 'Belum ada lisensi yang dibuat. Klik "Generate Kode Lisensi" untuk membuat kode baru.'}
