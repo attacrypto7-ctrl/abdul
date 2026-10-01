@@ -232,21 +232,31 @@ export function DashboardShell({
   border-radius:0.75rem;
   isolation:isolate;
   cursor:pointer!important;
-  background-color:rgba(224, 242, 254, 0.5);
-  border:1px solid rgba(56, 189, 248, 0.4);
-  color:#0ea5e9;
+  background-color:rgba(14, 165, 233, 0.08)!important;
+  border:1px solid rgba(56, 189, 248, 0.3)!important;
+  color:#0284c7!important;
   transition:all 0.3s ease;
   animation: lightBlueGlow 3s infinite ease-in-out;
 }
 .dark .sidebar-back-glow{
-  background-color:rgba(12, 74, 110, 0.3);
-  border-color:rgba(56, 189, 248, 0.3);
-  color:#7dd3fc;
+  background-color:rgba(14, 165, 233, 0.1)!important;
+  border-color:rgba(56, 189, 248, 0.25)!important;
+  color:#38bdf8!important;
 }
 .sidebar-back-glow:hover{
-  background-color:rgba(186, 230, 253, 0.7);
-  border-color:rgba(56, 189, 248, 0.8);
+  background-color:rgba(14, 165, 233, 0.15)!important;
+  border-color:rgba(56, 189, 248, 0.8)!important;
+  color:#0369a1!important;
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.7), 0 0 30px rgba(56, 189, 248, 0.4)!important;
 }
+.dark .sidebar-back-glow:hover{
+  background-color:rgba(14, 165, 233, 0.2)!important;
+  border-color:rgba(56, 189, 248, 0.9)!important;
+  color:#ffffff!important;
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.7), 0 0 30px rgba(56, 189, 248, 0.4)!important;
+}
+.sidebar-back-glow:focus{outline:none}
+.sidebar-back-glow:focus-visible{outline:2px solid #0ea5e9;outline-offset:2px;}
 .sidebar-back-glow:active{
   transform:scale(0.97);
 }
