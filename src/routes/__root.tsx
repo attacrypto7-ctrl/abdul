@@ -144,6 +144,60 @@ function RootComponent() {
   const googleClientId =
     (import.meta.env["VITE_GOOGLE_CLIENT_ID"] as string | undefined) || "placeholder";
 
+  useEffect(() => {
+    const handlePointerDown = (e: PointerEvent) => {
+      const target = (e.target as HTMLElement)?.closest?.(
+        'button, [role="button"], input[type="button"], input[type="submit"], a'
+      ) as HTMLElement | null;
+      if (!target) return;
+      if (
+        target.hasAttribute("disabled") ||
+        target.getAttribute("aria-disabled") === "true" ||
+        target.hasAttribute("data-no-ripple")
+      ) {
+        return;
+      }
+      const rect = target.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const size = Math.max(rect.width, rect.height) * 2.2;
+
+      let clip = target.querySelector(":scope > .gb-bubble-clip") as HTMLElement;
+      if (!clip) {
+        const compStyle = window.getComputedStyle(target);
+        if (compStyle.position === "static") {
+          target.style.position = "relative";
+        }
+        if (compStyle.overflow !== "hidden") {
+          clip = document.createElement("span");
+          clip.className = "gb-bubble-clip";
+          target.appendChild(clip);
+        }
+      }
+
+      const bubble = document.createElement("span");
+      bubble.className = "gb-bubble";
+      bubble.style.left = `${x}px`;
+      bubble.style.top = `${y}px`;
+      bubble.style.width = `${size}px`;
+      bubble.style.height = `${size}px`;
+      bubble.addEventListener("animationend", () => {
+        bubble.remove();
+      });
+
+      if (clip) {
+        clip.appendChild(bubble);
+      } else {
+        target.appendChild(bubble);
+      }
+    };
+
+    window.addEventListener("pointerdown", handlePointerDown, { passive: true });
+    return () => {
+      window.removeEventListener("pointerdown", handlePointerDown);
+    };
+  }, []);
+
   return (
     <GoogleOAuthProvider clientId={googleClientId}>
       <QueryClientProvider client={queryClient}>

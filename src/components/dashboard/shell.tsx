@@ -37,8 +37,6 @@ export function DashboardShell({
   const [imgError, setImgError] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const [backRipples, setBackRipples] = useState<{ id: number; x: number; y: number; size: number }[]>([]);
-  const backRippleId = useRef(0);
 
   const handleMouseEnter = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -193,15 +191,6 @@ export function DashboardShell({
           <Link
             to="/"
             onClick={onBackToHome}
-            onPointerDown={(e) => {
-              const el = e.currentTarget as HTMLElement;
-              const r = el.getBoundingClientRect();
-              const x = e.clientX - r.left;
-              const y = e.clientY - r.top;
-              const size = Math.max(r.width, r.height) * 2.2;
-              const id = ++backRippleId.current;
-              setBackRipples((p) => [...p, { id, x, y, size }]);
-            }}
             className="sidebar-back-glow group flex w-full items-center justify-between rounded-xl border border-blue-500/20 bg-blue-50/50 px-3 py-2.5 text-[11px] font-semibold text-blue-700 dark:border-blue-400/20 dark:bg-blue-900/20 dark:text-blue-300"
           >
             <span className="relative z-[1] flex items-center gap-2.5">
@@ -211,43 +200,33 @@ export function DashboardShell({
             <span className="sidebar-back-arrow relative z-[1] text-blue-500/60 transition-transform duration-300 ease-out group-hover:translate-x-0.5 dark:text-blue-400/60">
               ←
             </span>
-            {backRipples.map((rp) => (
-              <span
-                key={rp.id}
-                className="sidebar-back-ripple"
-                style={{ left: rp.x, top: rp.y, width: rp.size, height: rp.size }}
-                onAnimationEnd={() => setBackRipples((p) => p.filter((v) => v.id !== rp.id))}
-              />
-            ))}
           </Link>
 
           {footer ? <div className="border-t border-sidebar-border pt-2.5">{footer}</div> : null}
         </div>
       </aside>
 
-      <style>{`@media (max-height: 650px) {
-  aside nav > a { min-height: 30px !important; }
-}
+      <style>{`@property --sb-angle{syntax:"<angle>";inherits:false;initial-value:0deg}
+@media (max-height: 650px){aside nav > a{min-height:30px!important}}
 .sidebar-back-glow{position:relative;overflow:hidden;border-radius:0.75rem;isolation:isolate;-webkit-tap-highlight-color:transparent;user-select:none;transform:scale(1);transition:transform 200ms cubic-bezier(.34,1.2,.64,1),border-color 300ms cubic-bezier(.4,0,.2,1),box-shadow 300ms cubic-bezier(.4,0,.2,1),color 300ms cubic-bezier(.4,0,.2,1),text-shadow 300ms cubic-bezier(.4,0,.2,1),filter 200ms cubic-bezier(.4,0,.2,1)}
-.sidebar-back-glow::after{content:"";position:absolute;top:-50%;left:-85%;width:34%;height:200%;background:linear-gradient(105deg,transparent 0%,transparent 42%,rgba(255,255,255,.32) 50%,transparent 58%,transparent 100%);transform:skewX(-16deg);opacity:0;pointer-events:none;z-index:0;border-radius:inherit}
+.sidebar-back-glow::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;border-radius:inherit;opacity:0;transition:opacity 300ms cubic-bezier(.4,0,.2,1);background:radial-gradient(circle 2.2px at 18% 28%,rgba(255,255,255,.95) 0,transparent 70%),radial-gradient(circle 1.6px at 72% 22%,rgba(186,230,253,.95) 0,transparent 70%),radial-gradient(circle 2px at 85% 68%,rgba(255,255,255,.9) 0,transparent 70%),radial-gradient(circle 1.6px at 30% 78%,rgba(125,211,252,.95) 0,transparent 70%)}
+.sidebar-back-glow::after{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:conic-gradient(from var(--sb-angle),rgba(186,230,253,0) 0deg,rgba(186,230,253,.95) 58deg,rgba(255,255,255,1) 92deg,rgba(56,189,248,.9) 128deg,rgba(186,230,253,0) 210deg,rgba(186,230,253,0) 360deg);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask-composite:exclude;opacity:0;pointer-events:none;z-index:0;transition:opacity 300ms cubic-bezier(.4,0,.2,1)}
 @media (hover: hover){
-  .sidebar-back-glow:hover{border-color:rgba(125,211,252,.70)!important;color:#0ea5e9!important;text-shadow:0 0 8px rgba(125,211,252,.45);box-shadow:0 0 0 1px rgba(125,211,252,.55),0 0 12px rgba(56,189,248,.45),0 0 28px rgba(56,189,248,.30),0 0 56px rgba(56,189,248,.18),inset 0 0 14px rgba(125,211,252,.12)!important;animation:sidebar-back-glow-pulse 1.8s ease-in-out infinite}
-  .dark .sidebar-back-glow:hover{border-color:rgba(125,211,252,.75)!important;box-shadow:0 0 0 1px rgba(125,211,252,.65),0 0 14px rgba(56,189,248,.55),0 0 32px rgba(56,189,248,.38),0 0 64px rgba(56,189,248,.24),inset 0 0 16px rgba(125,211,252,.16)!important;text-shadow:0 0 10px rgba(125,211,252,.55)}
-  .sidebar-back-glow:hover::after{animation:sidebar-back-glow-shimmer 620ms cubic-bezier(.4,0,.2,1) forwards;animation-delay:0s}
+  .sidebar-back-glow:hover{border-color:rgba(186,230,253,.70)!important;color:#0ea5e9!important;text-shadow:0 0 10px rgba(125,211,252,.55),0 0 20px rgba(125,211,252,.3);box-shadow:0 0 0 1px rgba(186,230,253,.7),0 0 10px rgba(125,211,252,.65),0 0 24px rgba(56,189,248,.5),0 0 48px rgba(56,189,248,.32),0 0 90px rgba(14,165,233,.2),inset 0 0 14px rgba(125,211,252,.14)!important;animation:sidebar-back-bloom 2s ease-in-out infinite}
+  .dark .sidebar-back-glow:hover{box-shadow:0 0 0 1px rgba(186,230,253,.75),0 0 12px rgba(125,211,252,.7),0 0 28px rgba(56,189,248,.55),0 0 56px rgba(56,189,248,.36),0 0 96px rgba(14,165,233,.24),inset 0 0 16px rgba(125,211,252,.18)!important}
+  .sidebar-back-glow:hover::before{opacity:1;animation:sidebar-back-twinkle 1.8s ease-in-out infinite}
+  .sidebar-back-glow:hover::after{opacity:1;animation:sidebar-back-rotate 5s linear infinite}
 }
 .sidebar-back-glow:focus{outline:none}
-.sidebar-back-glow:focus-visible{outline:2px solid rgba(125,211,252,.9);outline-offset:2px;border-color:rgba(125,211,252,.70)!important;box-shadow:0 0 0 1px rgba(125,211,252,.55),0 0 12px rgba(56,189,248,.45),0 0 28px rgba(56,189,248,.30),0 0 56px rgba(56,189,248,.18),inset 0 0 14px rgba(125,211,252,.12)!important}
+.sidebar-back-glow:focus-visible{outline:2px solid rgba(125,211,252,.9);outline-offset:2px;border-color:rgba(186,230,253,.70)!important;box-shadow:0 0 0 1px rgba(186,230,253,.7),0 0 10px rgba(125,211,252,.65),0 0 24px rgba(56,189,248,.5),0 0 48px rgba(56,189,248,.32),0 0 90px rgba(14,165,233,.2),inset 0 0 14px rgba(125,211,252,.14)!important}
 .sidebar-back-glow:focus:not(:focus-visible){outline:none}
-.sidebar-back-glow:active{transform:scale(0.97);transition:transform 100ms cubic-bezier(.4,0,.2,1),border-color 100ms cubic-bezier(.4,0,.2,1),box-shadow 100ms cubic-bezier(.4,0,.2,1),filter 100ms cubic-bezier(.4,0,.2,1);border-color:rgba(125,211,252,.85)!important;box-shadow:0 0 0 1px rgba(125,211,252,.80),0 0 10px rgba(56,189,248,.60),0 0 20px rgba(56,189,248,.45),inset 0 0 10px rgba(125,211,252,.18)!important;filter:brightness(1.06)}
+.sidebar-back-glow:active{transform:scale(0.97);transition:transform 100ms cubic-bezier(.4,0,.2,1),border-color 100ms cubic-bezier(.4,0,.2,1),box-shadow 100ms cubic-bezier(.4,0,.2,1),filter 100ms cubic-bezier(.4,0,.2,1);filter:brightness(1.08)}
 .sidebar-back-glow:active .sidebar-back-arrow{transform:translateX(-4px)}
-.sidebar-back-ripple{position:absolute;border-radius:9999px;background:rgba(125,211,252,.28);pointer-events:none;z-index:0;transform:translate(-50%,-50%) scale(0);opacity:.9;animation:sidebar-back-ripple 550ms ease-out forwards}
-.dark .sidebar-back-ripple{background:rgba(125,211,252,.35)}
-.sidebar-back-glow:disabled,.sidebar-back-glow[aria-disabled="true"]{cursor:not-allowed;transform:none!important;animation:none!important;filter:none!important;pointer-events:none}
-.sidebar-back-glow:disabled::after,.sidebar-back-glow[aria-disabled="true"]::after{display:none!important}
-@keyframes sidebar-back-glow-pulse{0%,100%{box-shadow:0 0 0 1px rgba(125,211,252,.55),0 0 12px rgba(56,189,248,.45),0 0 28px rgba(56,189,248,.30),0 0 56px rgba(56,189,248,.18),inset 0 0 14px rgba(125,211,252,.12)}50%{box-shadow:0 0 0 1px rgba(125,211,252,.72),0 0 16px rgba(56,189,248,.60),0 0 36px rgba(56,189,248,.42),0 0 68px rgba(56,189,248,.26),inset 0 0 18px rgba(125,211,252,.18)}}
-@keyframes sidebar-back-glow-shimmer{0%{left:-85%;opacity:0}18%{opacity:1}100%{left:135%;opacity:0}}
-@keyframes sidebar-back-ripple{0%{transform:translate(-50%,-50%) scale(0);opacity:.9}100%{transform:translate(-50%,-50%) scale(1);opacity:0}}
-@media (prefers-reduced-motion: reduce){.sidebar-back-glow,.sidebar-back-glow:hover,.sidebar-back-glow:focus-visible,.sidebar-back-glow:active{animation:none!important;transition:none!important;transform:none!important}.sidebar-back-glow::after{display:none!important}.sidebar-back-ripple{display:none!important}.sidebar-back-glow:hover,.sidebar-back-glow:focus-visible{box-shadow:0 0 0 1px rgba(125,211,252,.55),0 0 12px rgba(56,189,248,.45),0 0 28px rgba(56,189,248,.30),0 0 56px rgba(56,189,248,.18),inset 0 0 14px rgba(125,211,252,.12)!important}.sidebar-back-glow:focus-visible{outline:2px solid rgba(125,211,252,.9);outline-offset:2px}}
+@supports not (background:conic-gradient(from 0deg,red,blue)){.sidebar-back-glow::after{display:none!important}}
+@keyframes sidebar-back-rotate{to{--sb-angle:360deg}}
+@keyframes sidebar-back-bloom{0%,100%{transform:scale(1)}50%{transform:scale(1.012)}}
+@keyframes sidebar-back-twinkle{0%,100%{opacity:.55}50%{opacity:1}}
+@media (prefers-reduced-motion: reduce){.sidebar-back-glow,.sidebar-back-glow:hover,.sidebar-back-glow:focus-visible{animation:none!important;transform:none!important}.sidebar-back-glow::before,.sidebar-back-glow::after{display:none!important}.sidebar-back-glow:hover,.sidebar-back-glow:focus-visible{box-shadow:0 0 0 1px rgba(186,230,253,.7),0 0 10px rgba(125,211,252,.65),0 0 24px rgba(56,189,248,.5),0 0 48px rgba(56,189,248,.32),0 0 90px rgba(14,165,233,.2),inset 0 0 14px rgba(125,211,252,.14)!important}}
 `}</style>
 
       <div className="min-w-0 flex-1">
@@ -273,8 +252,8 @@ export function DashboardShell({
             </Link>
           ))}
         </div>
-        <main className="surface-grid min-h-screen px-5 py-8 md:px-10">
-          <Outlet />
+        <main className="surface-grid gb-page-enter min-h-screen px-5 py-8 md:px-10">
+          <Outlet key={pathname} />
         </main>
       </div>
     </div>
