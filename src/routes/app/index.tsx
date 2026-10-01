@@ -81,10 +81,10 @@ function TenantOverview() {
     queryFn: getTenantReadinessScore,
   });
 
-  const licenseEndDate = licenseStatus?.lisensiBerakhir || null;
+  const isLicenseActive = Boolean(licenseStatus?.isActive && licenseStatus?.kode);
+  const licenseEndDate = isLicenseActive ? (licenseStatus?.lisensiBerakhir || null) : null;
   const sisaHari = licenseEndDate ? daysLeft(licenseEndDate) : 0;
-  const isLicenseActive = Boolean(licenseStatus?.isActive || (licenseEndDate && sisaHari > 0));
-  const activePlan = licenseStatus?.plan || tenant?.plan || "Starter";
+  const activePlan = isLicenseActive ? (licenseStatus?.plan || "Starter") : null;
 
   const connectedNumbers = numbers.filter((n) => n.status === "tersambung").length;
   const totalChat = logs.length;
@@ -177,7 +177,7 @@ function TenantOverview() {
       />
 
       {/* BANNER NOTIFIKASI AKTIVASI LISENSI VIA ADMIN (hanya tampil jika lisensi belum aktif atau expired) */}
-      {(!isLicenseActive || sisaHari <= 0) && (
+      {!isLicenseActive && (
         <div className="mb-4 rounded-xl border border-emerald-500/30 bg-emerald-50/80 dark:bg-emerald-950/30 p-3.5 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-xs">
           <div className="flex items-center gap-2.5">
             <span className="flex h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
@@ -223,13 +223,13 @@ function TenantOverview() {
         />
         <StatCard
           label="Status Lisensi"
-          value={isLicenseActive && sisaHari > 0 ? "Aktif" : (licenseEndDate && sisaHari <= 0 ? "Expired" : "Belum Aktif")}
+          value={isLicenseActive ? "Aktif" : (licenseStatus?.status === "expired" ? "Expired" : "Belum Aktif")}
           icon={CalendarClock}
-          tone={isLicenseActive && sisaHari > 0 ? "success" : "danger"}
+          tone={isLicenseActive ? "success" : "danger"}
           hint={
-            isLicenseActive && sisaHari > 0
+            isLicenseActive
               ? `Paket ${activePlan} (Sisa ${sisaHari} hari)`
-              : (licenseEndDate ? "Masa aktif habis" : "Perlu aktivasi admin")
+              : "Perlu aktivasi admin"
           }
         />
       </div>

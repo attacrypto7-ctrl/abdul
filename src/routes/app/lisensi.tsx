@@ -64,14 +64,15 @@ function LisensiPage() {
   const [isActivating, setIsActivating] = useState(false);
 
   const latestLicense = licenses.find((l: any) => l.status === "aktif") ?? null;
-  const licenseEndDate = latestLicense?.berakhir || licenseStatus?.lisensiBerakhir || null;
+  const isLicenseActive = Boolean(licenseStatus?.isActive && licenseStatus?.kode);
+  const licenseEndDate = isLicenseActive ? (licenseStatus?.lisensiBerakhir || latestLicense?.berakhir || null) : null;
   const sisaHari = licenseEndDate ? daysLeft(licenseEndDate) : 0;
-  const isLicenseActive = Boolean(licenseStatus?.isActive || (licenseEndDate && sisaHari > 0) || (latestLicense && latestLicense.status === "aktif"));
-  const activePlan = latestLicense?.plan || licenseStatus?.plan || "Starter";
-  const activeCode = (latestLicense?.kode && latestLicense.kode !== "LISENSI-AKTIF") ? latestLicense.kode : (licenseStatus?.kode && licenseStatus.kode !== "LISENSI-AKTIF" ? licenseStatus.kode : null);
+  const activePlan = isLicenseActive ? (licenseStatus?.plan || latestLicense?.plan || "Starter") : null;
+  const activeCode = isLicenseActive ? (licenseStatus?.kode || latestLicense?.kode || null) : null;
   const totalChatDibalas = licenseStatus?.totalChatDibalas ?? licenseStatus?.chatBulanIni ?? 0;
 
-  const hasLicenseData = Boolean(licenseEndDate || latestLicense || activeCode);
+  // HANYA tampilkan box Detail Lisensi jika user benar-benar memiliki lisensi aktif dan kode sah dari admin
+  const hasLicenseData = Boolean(isLicenseActive && activeCode);
 
 
   const copyLicense = () => {
@@ -153,16 +154,16 @@ function LisensiPage() {
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard
           label="Status Lisensi"
-          value={isLicenseActive && sisaHari > 0 ? "Aktif" : (licenseEndDate && sisaHari <= 0 ? "Expired" : "Belum Aktif")}
-          icon={isLicenseActive && sisaHari > 0 ? ShieldCheck : ShieldAlert}
-          tone={isLicenseActive && sisaHari > 0 ? "success" : "danger"}
+          value={isLicenseActive ? "Aktif" : (licenseStatus?.status === "expired" ? "Expired" : "Belum Aktif")}
+          icon={isLicenseActive ? ShieldCheck : ShieldAlert}
+          tone={isLicenseActive ? "success" : "danger"}
           hint={hasLicenseData ? `Paket ${activePlan}` : "Perlu aktivasi admin"}
         />
         <StatCard
           label="Masa Berlaku"
-          value={isLicenseActive && sisaHari > 0 ? `${sisaHari} Hari` : (licenseEndDate && sisaHari <= 0 ? "Habis" : "-")}
+          value={isLicenseActive && sisaHari > 0 ? `${sisaHari} Hari` : "-"}
           icon={CalendarClock}
-          hint={licenseEndDate ? `Hingga ${formatDate(licenseEndDate)}` : "Perlu aktivasi"}
+          hint={isLicenseActive && licenseEndDate ? `Hingga ${formatDate(licenseEndDate)}` : "Perlu aktivasi"}
         />
         <StatCard
           label="Total Chat Dibalas"
@@ -179,7 +180,7 @@ function LisensiPage() {
       </div>
 
       {/* Info Aktivasi Admin & Tombol WhatsApp (Hanya muncul jika lisensi belum aktif atau expired) */}
-      {(!isLicenseActive || sisaHari <= 0) && (
+      {!isLicenseActive && (
         <div className="mt-4 rounded-xl border border-emerald-500/30 bg-emerald-50/70 dark:bg-emerald-950/20 p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs">
           <div className="flex items-start gap-3">
             <div className="size-10 rounded-xl bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">

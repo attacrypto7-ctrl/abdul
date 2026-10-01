@@ -53,7 +53,7 @@ function UjiCobaPage() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const isLicenseActive = licenseStatus?.isActive ?? true;
+  const isLicenseActive = licenseStatus?.isActive ?? false;
 
   const handleSend = async () => {
     if (!input.trim()) return;
