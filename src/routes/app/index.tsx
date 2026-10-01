@@ -32,8 +32,9 @@ import { Switch } from "@/components/ui/switch";
 import { Progress } from "@/components/ui/progress";
 import {
   formatNumber,
+  daysLeft,
   getChatLogs,
-  getLicenses,
+  getLicenseStatus,
   getWaNumbers,
   getTenantMe,
   getTenantReadinessScore,
@@ -73,14 +74,18 @@ function TenantOverview() {
 
   const { data: numbers = [] } = useQuery({ queryKey: ["wa"], queryFn: getWaNumbers });
   const { data: logs = [] } = useQuery({ queryKey: ["chats"], queryFn: getChatLogs });
-  const { data: licenses = [] } = useQuery({ queryKey: ["licenses"], queryFn: getLicenses });
+  const { data: licenseStatus } = useQuery({ queryKey: ["license-status"], queryFn: getLicenseStatus });
   const { data: tenant } = useQuery({ queryKey: ["tenant-me"], queryFn: getTenantMe });
   const { data: readiness } = useQuery({
     queryKey: ["readiness-score"],
     queryFn: getTenantReadinessScore,
   });
 
-  const activeLicense = licenses[0] ?? null;
+  const licenseEndDate = licenseStatus?.lisensiBerakhir || null;
+  const sisaHari = licenseEndDate ? daysLeft(licenseEndDate) : 0;
+  const isLicenseActive = Boolean(licenseStatus?.isActive || (licenseEndDate && sisaHari > 0));
+  const activePlan = licenseStatus?.plan || tenant?.plan || "Starter";
+
   const connectedNumbers = numbers.filter((n) => n.status === "tersambung").length;
   const totalChat = logs.length;
   const perluManusia = logs.filter((l) => l.status === "perlu manusia").length;
@@ -171,8 +176,8 @@ function TenantOverview() {
         }
       />
 
-      {/* BANNER NOTIFIKASI AKTIVASI LISENSI VIA ADMIN */}
-      {!activeLicense && (
+      {/* BANNER NOTIFIKASI AKTIVASI LISENSI VIA ADMIN (hanya tampil jika lisensi belum aktif atau expired) */}
+      {(!isLicenseActive || sisaHari <= 0) && (
         <div className="mb-4 rounded-xl border border-emerald-500/30 bg-emerald-50/80 dark:bg-emerald-950/30 p-3.5 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-xs">
           <div className="flex items-center gap-2.5">
             <span className="flex h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
@@ -218,9 +223,14 @@ function TenantOverview() {
         />
         <StatCard
           label="Status Lisensi"
-          value={activeLicense ? "Aktif" : "-"}
+          value={isLicenseActive && sisaHari > 0 ? "Aktif" : (licenseEndDate && sisaHari <= 0 ? "Expired" : "Belum Aktif")}
           icon={CalendarClock}
-          hint={activeLicense ? `Paket ${activeLicense.plan}` : "Belum ada lisensi"}
+          tone={isLicenseActive && sisaHari > 0 ? "success" : "danger"}
+          hint={
+            isLicenseActive && sisaHari > 0
+              ? `Paket ${activePlan} (Sisa ${sisaHari} hari)`
+              : (licenseEndDate ? "Masa aktif habis" : "Perlu aktivasi admin")
+          }
         />
       </div>
 
@@ -529,7 +539,9 @@ function TenantOverview() {
             <h2 className="text-sm font-semibold">Total Chat Dibalas</h2>
             <p className="mt-4 text-3xl font-black text-foreground font-mono">{formatNumber(totalChat)}</p>
             <p className="text-xs text-muted-foreground mt-1">
-              {activeLicense ? `Lisensi aktif (${activeLicense.plan}) • Unlimited Kuota` : "Belum ada lisensi aktif"}
+              {isLicenseActive && sisaHari > 0
+                ? `Lisensi aktif (${activePlan}) • Sisa ${sisaHari} hari`
+                : "Belum ada lisensi aktif"}
             </p>
             <div className="mt-6 space-y-3 text-xs">
               <div className="flex justify-between items-center py-1.5 border-b border-border/40">
