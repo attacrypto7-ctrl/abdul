@@ -1,4 +1,4 @@
-@import "tailwindcss" source(none);
+@import "tailwindcss";
 @source "../src";
 @import "tw-animate-css";
 
@@ -590,7 +590,6 @@
   animation: wiggle 3s ease-in-out infinite;
 }
 
-<<<<<<< HEAD
 /* Nas.com Revamp Interactive Micro-Interactions */
 @keyframes typing-bounce {
   0%, 60%, 100% {
@@ -713,14 +712,12 @@
 
 
 
-=======
 .balas-iklan-table {
   border-collapse: separate;
   border-spacing: 0;
   border-radius: 0.75rem;
   overflow: hidden;
 }
->>>>>>> 5fc7b8a58b4c4417e873910d45a45936a5b9132e
 
 .balas-iklan-table thead tr th,
 .balas-iklan-table tbody tr td {
