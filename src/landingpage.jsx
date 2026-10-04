@@ -314,10 +314,16 @@ export function Landing() {
     }
   };
 
-  // Scroll detection for dynamic sticky capsule navbar
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 40);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setIsScrolled(window.scrollY > 40);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
@@ -382,28 +388,9 @@ export function Landing() {
 
   // Dynamic document title
   useEffect(() => {
-    const fullTitle = "Balasin — CS AI WhatsApp Otomatis   ";
-    const workerScript = `
-      const titleText = ${JSON.stringify(fullTitle)};
-      const len = titleText.length;
-      const speedMs = 220;
-      const startTime = Date.now();
-      setInterval(() => {
-        const elapsed = Date.now() - startTime;
-        const charOffset = Math.floor(elapsed / speedMs) % len;
-        const currentTitle = titleText.substring(charOffset) + titleText.substring(0, charOffset);
-        postMessage(currentTitle);
-      }, 100);
-    `;
-    const blob = new Blob([workerScript], { type: "application/javascript" });
-    const blobUrl = URL.createObjectURL(blob);
-    const worker = new Worker(blobUrl);
-    worker.onmessage = (e) => {
-      document.title = e.data;
-    };
+    document.title = "Balasin — CS AI WhatsApp Otomatis";
     return () => {
-      worker.terminate();
-      URL.revokeObjectURL(blobUrl);
+      document.title = "Balasin — CS AI WhatsApp Otomatis";
     };
   }, []);
 
@@ -446,7 +433,7 @@ export function Landing() {
           }
         });
       },
-      { threshold: 0.08, rootMargin: '0px 0px -60px 0px' }
+      { threshold: 0.15, rootMargin: '0px 0px -100px 0px' }
     );
 
     els.forEach((el) => observer.observe(el));
@@ -571,7 +558,7 @@ export function Landing() {
       {/* ══════════════════════════════════════════════════════════ */}
       <div className="fixed top-4 inset-x-0 z-50 mx-auto max-w-5xl px-4 pointer-events-none transition-all duration-300">
         <header
-          className={`pointer-events-auto mx-auto flex items-center justify-between rounded-full border border-zinc-200/80 dark:border-zinc-800/90 bg-white/85 dark:bg-zinc-950/85 backdrop-blur-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300 ${
+          className={`pointer-events-auto mx-auto flex items-center justify-between rounded-full border border-zinc-200/80 dark:border-zinc-800/90 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-lg shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300 ${
             isScrolled ? "py-2 px-5 sm:px-6 scale-[0.98] border-emerald-500/30" : "py-3 px-6 sm:px-7"
           }`}
         >

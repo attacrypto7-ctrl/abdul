@@ -353,16 +353,13 @@
     #4ade80 75%,
     #10b981 100%
   );
-  background-size: 300% 100%;
+  background-size: 200% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  text-shadow: 0 0 25px rgba(74, 222, 128, 0.6);
-  animation: hero-glimmer 6s ease-in-out infinite;
+  animation: hero-glimmer 8s linear infinite;
   will-change: background-position;
   transform: translateZ(0);
-  backface-visibility: hidden;
-  display: inline-block;
 }
 
 @keyframes hero-glimmer {
@@ -454,13 +451,15 @@
     transform: scale(1);
   }
   50% {
-    opacity: 0.8;
-    transform: scale(1.05);
+    opacity: 0.6;
+    transform: scale(1.02);
   }
 }
 
 .animate-pulse-glow {
   animation: pulse-glow 3s ease-in-out infinite;
+  will-change: transform, opacity;
+  transform: translateZ(0);
 }
 
 @keyframes border-beam {
@@ -525,6 +524,8 @@
   display: flex;
   width: max-content;
   animation: marquee 28s linear infinite;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .animate-marquee:hover {
@@ -535,6 +536,8 @@
   display: flex;
   width: max-content;
   animation: marquee 38s linear infinite;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .animate-marquee-testimonials:hover {
@@ -586,30 +589,27 @@
   }
 }
 
-.animate-wiggle {
-  animation: wiggle 3s ease-in-out infinite;
+.animate-float, .animate-float-delayed, .animate-float-subtle {
+  will-change: transform;
+  transform: translateZ(0);
 }
 
-/* Nas.com Revamp Interactive Micro-Interactions */
-@keyframes typing-bounce {
-  0%, 60%, 100% {
-    transform: translateY(0);
-    opacity: 0.4;
-  }
-  30% {
-    transform: translateY(-6px);
-    opacity: 1;
-  }
+.animate-wiggle {
+  animation: wiggle 3s ease-in-out infinite;
+  will-change: transform;
 }
 
 .animate-typing-1 {
   animation: typing-bounce 1.2s infinite ease-in-out;
+  will-change: transform, opacity;
 }
 .animate-typing-2 {
   animation: typing-bounce 1.2s infinite ease-in-out 0.2s;
+  will-change: transform, opacity;
 }
 .animate-typing-3 {
   animation: typing-bounce 1.2s infinite ease-in-out 0.4s;
+  will-change: transform, opacity;
 }
 
 @keyframes light-sweep {
@@ -641,17 +641,18 @@
 
 @keyframes border-pulse-emerald {
   0%, 100% {
-    box-shadow: 0 0 15px rgba(16, 185, 129, 0.15), inset 0 0 15px rgba(16, 185, 129, 0.05);
-    border-color: rgba(16, 185, 129, 0.35);
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.1), inset 0 0 10px rgba(16, 185, 129, 0.03);
+    border-color: rgba(16, 185, 129, 0.3);
   }
   50% {
-    box-shadow: 0 0 30px rgba(16, 185, 129, 0.4), inset 0 0 20px rgba(16, 185, 129, 0.15);
-    border-color: rgba(16, 185, 129, 0.75);
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.25), inset 0 0 15px rgba(16, 185, 129, 0.1);
+    border-color: rgba(16, 185, 129, 0.6);
   }
 }
 
 .animate-border-pulse {
   animation: border-pulse-emerald 3s ease-in-out infinite;
+  will-change: border-color, box-shadow;
 }
 
 @keyframes bubble-pop {
@@ -671,17 +672,18 @@
 
 @keyframes laser-scan {
   0%, 100% {
-    top: 5%;
+    transform: translateY(0);
     opacity: 0.8;
   }
   50% {
-    top: 90%;
+    transform: translateY(64px);
     opacity: 1;
   }
 }
 
 .animate-laser-scan {
   animation: laser-scan 2.8s ease-in-out infinite;
+  will-change: transform, opacity;
 }
 
 @keyframes radar-sweep {

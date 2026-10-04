@@ -145,10 +145,19 @@ function RootComponent() {
     (import.meta.env["VITE_GOOGLE_CLIENT_ID"] as string | undefined) || "placeholder";
 
   useEffect(() => {
-    const handlePointerDown = (e: PointerEvent) => {
+    let rafId: number | null = null;
+    let pendingEvent: PointerEvent | null = null;
+
+    const processBubble = () => {
+      if (!pendingEvent) return;
+
+      const e = pendingEvent;
+      pendingEvent = null;
+
       const target = (e.target as HTMLElement)?.closest?.(
-        'button, [role="button"], input[type="button"], input[type="submit"], a'
+        'button, [role="button"], input[type="button"], input[type="submit"], a',
       ) as HTMLElement | null;
+
       if (!target) return;
       if (
         target.hasAttribute("disabled") ||
@@ -157,6 +166,7 @@ function RootComponent() {
       ) {
         return;
       }
+
       const rect = target.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
@@ -192,9 +202,16 @@ function RootComponent() {
       }
     };
 
+    const handlePointerDown = (e: PointerEvent) => {
+      pendingEvent = e;
+      if (rafId !== null) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(processBubble);
+    };
+
     window.addEventListener("pointerdown", handlePointerDown, { passive: true });
     return () => {
       window.removeEventListener("pointerdown", handlePointerDown);
+      if (rafId !== null) cancelAnimationFrame(rafId);
     };
   }, []);
 

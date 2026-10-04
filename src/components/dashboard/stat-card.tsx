@@ -23,10 +23,17 @@ export function StatCard({
   }[tone];
 
   return (
-    <div className="panel p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:border-primary/30 group cursor-default">
+    <div className="panel p-5 transition-all duration-200 hover:-translate-y-1 hover:shadow-sm hover:border-primary/30 group cursor-default">
       <div className="flex items-start justify-between gap-3">
-        <p className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">{label}</p>
-        <span className={cn("flex size-8 items-center justify-center rounded-lg transition-transform duration-300 group-hover:scale-110", toneClass)}>
+        <p className="text-sm text-muted-foreground group-hover:text-foreground transition-colors duration-200">
+          {label}
+        </p>
+        <span
+          className={cn(
+            "flex size-8 items-center justify-center rounded-lg transition-transform duration-200 group-hover:scale-105",
+            toneClass,
+          )}
+        >
           <Icon className="size-4" />
         </span>
       </div>

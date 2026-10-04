@@ -218,12 +218,12 @@ export function DashboardShell({
 @media (max-height: 650px){aside nav > a{min-height:30px!important}}
 @keyframes lightBlueGlow {
   0%, 100% {
-    box-shadow: 0 0 5px rgba(56, 189, 248, 0.4), 0 0 12px rgba(56, 189, 248, 0.2);
-    border-color: rgba(56, 189, 248, 0.6);
+    box-shadow: 0 0 4px rgba(56, 189, 248, 0.3), 0 0 8px rgba(56, 189, 248, 0.15);
+    border-color: rgba(56, 189, 248, 0.5);
   }
   50% {
-    box-shadow: 0 0 12px rgba(56, 189, 248, 0.8), 0 0 25px rgba(56, 189, 248, 0.5);
-    border-color: rgba(56, 189, 248, 1);
+    box-shadow: 0 0 8px rgba(56, 189, 248, 0.6), 0 0 16px rgba(56, 189, 248, 0.35);
+    border-color: rgba(56, 189, 248, 0.85);
   }
 }
 .sidebar-back-glow{
@@ -235,8 +235,9 @@ export function DashboardShell({
   background-color:rgba(14, 165, 233, 0.08)!important;
   border:1px solid rgba(56, 189, 248, 0.3)!important;
   color:#0284c7!important;
-  transition:all 0.3s ease;
-  animation: lightBlueGlow 3s infinite ease-in-out;
+  transition:all 0.25s ease;
+  animation: lightBlueGlow 4s infinite ease-in-out;
+  will-change: border-color, box-shadow;
 }
 .dark .sidebar-back-glow{
   background-color:rgba(14, 165, 233, 0.1)!important;
@@ -245,22 +246,22 @@ export function DashboardShell({
 }
 .sidebar-back-glow:hover{
   background-color:rgba(14, 165, 233, 0.15)!important;
-  border-color:rgba(56, 189, 248, 0.8)!important;
+  border-color:rgba(56, 189, 248, 0.75)!important;
   color:#0369a1!important;
-  box-shadow: 0 0 15px rgba(56, 189, 248, 0.7), 0 0 30px rgba(56, 189, 248, 0.4)!important;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.6), 0 0 24px rgba(56, 189, 248, 0.3)!important;
 }
 .dark .sidebar-back-glow:hover{
   background-color:rgba(14, 165, 233, 0.2)!important;
-  border-color:rgba(56, 189, 248, 0.9)!important;
+  border-color:rgba(56, 189, 248, 0.85)!important;
   color:#ffffff!important;
-  box-shadow: 0 0 15px rgba(56, 189, 248, 0.7), 0 0 30px rgba(56, 189, 248, 0.4)!important;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.6), 0 0 24px rgba(56, 189, 248, 0.3)!important;
 }
 .sidebar-back-glow:focus{outline:none}
 .sidebar-back-glow:focus-visible{outline:2px solid #0ea5e9;outline-offset:2px;}
 .sidebar-back-glow:active{
   transform:scale(0.97);
 }
-@media (prefers-reduced-motion: reduce){.sidebar-back-glow,.sidebar-back-glow:hover,.sidebar-back-glow:focus-visible{animation:none!important;transform:none!important}.sidebar-back-glow::before,.sidebar-back-glow::after{display:none!important}.sidebar-back-glow:hover,.sidebar-back-glow:focus-visible{box-shadow:0 0 0 1px rgba(186,230,253,.7),0 0 10px rgba(125,211,252,.65),0 0 24px rgba(56,189,248,.5),0 0 48px rgba(56,189,248,.32),0 0 90px rgba(14,165,233,.2),inset 0 0 14px rgba(125,211,252,.14)!important}}
+@media (prefers-reduced-motion: reduce){.sidebar-back-glow,.sidebar-back-glow:hover,.sidebar-back-glow:focus-visible{animation:none!important;transform:none!important}.sidebar-back-glow::before,.sidebar-back-glow::after{display:none!important}.sidebar-back-glow:hover,.sidebar-back-glow:focus-visible{box-shadow:0 0 0 1px rgba(186,230,253,.7),0 0 8px rgba(125,211,252,.5),0 0 16px rgba(56,189,248,.35)!important}}
 `}</style>
 
       <div className="min-w-0 flex-1">
