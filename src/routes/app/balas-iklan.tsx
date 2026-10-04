@@ -126,7 +126,9 @@ function AutoAdsPage() {
 
   // --- state form input ---
   const [pertanyaan, setPertanyaan] = useState("");
-  const [caraMencocokkan, setCaraMencocokkan] = useState<"sama_persis" | "boleh_mirip">("boleh_mirip");
+  const [caraMencocokkan, setCaraMencocokkan] = useState<"sama_persis" | "boleh_mirip">(
+    "boleh_mirip",
+  );
   const [langkahBaru, setLangkahBaru] = useState<StepItem[]>([
     { id: buatId(), tipe: "teks", isiTeks: "" },
   ]);
@@ -149,12 +151,14 @@ function AutoAdsPage() {
   }
 
   function ubahTeksLangkah(id: string, isiTeks: string) {
-    setLangkahBaru((prev) =>
-      prev.map((l) => (l.id === id ? { ...l, isiTeks } : l)),
-    );
+    setLangkahBaru((prev) => prev.map((l) => (l.id === id ? { ...l, isiTeks } : l)));
   }
 
-  async function handleUploadFile(id: string, file: File | undefined, targetTipe: "gambar" | "video") {
+  async function handleUploadFile(
+    id: string,
+    file: File | undefined,
+    targetTipe: "gambar" | "video",
+  ) {
     if (!file) return;
     setLangkahBaru((prev) =>
       prev.map((l) =>
@@ -192,9 +196,7 @@ function AutoAdsPage() {
       toast.success(`${targetTipe === "video" ? "Video" : "Gambar"} berhasil diunggah!`);
     } catch (err: any) {
       toast.error(err?.message || `Gagal mengunggah ${targetTipe}.`);
-      setLangkahBaru((prev) =>
-        prev.map((l) => (l.id === id ? { ...l, isUploading: false } : l)),
-      );
+      setLangkahBaru((prev) => prev.map((l) => (l.id === id ? { ...l, isUploading: false } : l)));
     }
   }
 
@@ -280,7 +282,9 @@ function AutoAdsPage() {
         description="Otomatisasi balasan untuk pesan dari iklan WhatsApp (Click-to-WhatsApp Ads). Kirimkan rangkaian pesan teks, gambar produk, dan video demo secara terstruktur."
         action={
           <div className="flex items-center gap-3 rounded-lg border border-border bg-card px-4 py-2">
-            <span className="text-sm font-medium">{globalAktif ? "Otomasi Aktif" : "Otomasi Nonaktif"}</span>
+            <span className="text-sm font-medium">
+              {globalAktif ? "Otomasi Aktif" : "Otomasi Nonaktif"}
+            </span>
             <Switch
               checked={globalAktif}
               onCheckedChange={(v) => {
@@ -292,21 +296,23 @@ function AutoAdsPage() {
         }
       />
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_420px]">
+      <div className="grid gap-6 xl:gap-8 lg:grid-cols-1 xl:grid-cols-[1fr_380px] items-start">
         {/* Kolom Kiri: Tabel Template */}
-        <div className="panel overflow-hidden flex flex-col justify-between">
-          <div>
-            <div className="flex items-center justify-between border-b border-border px-5 py-4 bg-secondary/10">
-              <div>
-                <h2 className="text-sm font-semibold">Daftar Pertanyaan & Rangkaian Balasan</h2>
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  Bot akan membalas pesan iklan yang sesuai dengan urutan balasan yang Anda tentukan
-                </p>
-              </div>
-              <span className="rounded-full bg-secondary px-2.5 py-1 text-xs font-semibold text-foreground">
-                {templates.length} template
-              </span>
+        <section className="panel overflow-hidden flex flex-col min-w-0 rounded-2xl">
+          <div className="flex flex-wrap items-start justify-between gap-3 border-b border-border px-6 py-5 bg-secondary/10">
+            <div className="min-w-0">
+              <h2 className="text-sm font-bold text-foreground">
+                Daftar Pertanyaan &amp; Rangkaian Balasan
+              </h2>
+              <p className="text-xs text-muted-foreground mt-1 leading-relaxed max-w-xl">
+                Bot akan membalas pesan iklan yang sesuai dengan urutan balasan yang Anda tentukan
+              </p>
             </div>
+            <span className="shrink-0 rounded-full bg-secondary border border-border px-3 py-1 text-xs font-bold text-foreground">
+              {templates.length} template
+            </span>
+          </div>
+          <div className="overflow-x-auto">
             <Table className="balas-iklan-table">
               <TableHeader>
                 <TableRow className="hover:bg-transparent">
@@ -319,10 +325,17 @@ function AutoAdsPage() {
               </TableHeader>
               <TableBody>
                 {templates.map((t: any) => (
-                  <TableRow key={t.id} className={!t.aktif ? "opacity-60 bg-secondary/10 hover:bg-transparent" : "hover:bg-transparent"}>
+                  <TableRow
+                    key={t.id}
+                    className={
+                      !t.aktif
+                        ? "opacity-60 bg-secondary/10 hover:bg-transparent"
+                        : "hover:bg-transparent"
+                    }
+                  >
                     <TableCell className="align-top font-medium">
-                      <p className="text-sm">{t.pertanyaan}</p>
-                      <div className="mt-2 flex items-center gap-2">
+                      <p className="text-sm leading-snug">{t.pertanyaan}</p>
+                      <div className="mt-2.5 flex items-center gap-2">
                         <button
                           type="button"
                           onClick={() => handleToggleAktif(t.id, t.aktif)}
@@ -336,27 +349,31 @@ function AutoAdsPage() {
                       </div>
                     </TableCell>
                     <TableCell className="align-top">
-                      <ol className="space-y-2">
+                      <ol className="space-y-2.5">
                         {t.langkah.map((l: StepItem, i: number) => (
                           <li
                             key={l.id || i}
-                            className="flex items-start gap-2.5 rounded-md border border-border/50 bg-secondary/20 p-2 text-xs"
+                            className="flex items-start gap-3 rounded-xl border border-border/50 bg-secondary/20 p-3 text-xs"
                           >
-                            <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-secondary text-[11px] font-bold text-foreground">
+                            <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-secondary border border-border text-[11px] font-bold text-foreground">
                               {i + 1}
                             </span>
-                            <div className="flex-1 min-w-0">
+                            <div className="flex-1 min-w-0 pt-0.5">
                               {l.tipe === "teks" && (
-                                <p className="text-foreground whitespace-pre-wrap leading-relaxed">{l.isiTeks}</p>
+                                <p className="text-foreground whitespace-pre-wrap leading-relaxed">
+                                  {l.isiTeks}
+                                </p>
                               )}
                               {l.tipe === "gambar" && (
-                                <div className="space-y-1">
+                                <div className="space-y-1.5">
                                   <div className="flex items-center gap-1.5 font-semibold text-emerald-600 dark:text-emerald-400">
-                                    <ImagePlus className="size-3.5" />
-                                    <span>Gambar: {l.namaGambar || "Foto Produk / Brosur"}</span>
+                                    <ImagePlus className="size-3.5 shrink-0" />
+                                    <span className="truncate">
+                                      Gambar: {l.namaGambar || "Foto Produk / Brosur"}
+                                    </span>
                                   </div>
                                   {(l.urlGambar || l.mediaUrl) && (
-                                    <div className="relative mt-1 inline-block overflow-hidden rounded-md border border-border max-w-[140px] max-h-[90px]">
+                                    <div className="relative mt-1 inline-block overflow-hidden rounded-lg border border-border max-w-[140px] max-h-[90px]">
                                       <img
                                         src={l.urlGambar || l.mediaUrl}
                                         alt={l.namaGambar || "preview"}
@@ -367,13 +384,16 @@ function AutoAdsPage() {
                                 </div>
                               )}
                               {l.tipe === "video" && (
-                                <div className="space-y-1">
+                                <div className="space-y-1.5">
                                   <div className="flex items-center gap-1.5 font-semibold text-sky-600 dark:text-sky-400">
-                                    <Film className="size-3.5" />
-                                    <span>Video: {l.namaVideo || l.namaGambar || "Video Demo / Tutorial"}</span>
+                                    <Film className="size-3.5 shrink-0" />
+                                    <span className="truncate">
+                                      Video:{" "}
+                                      {l.namaVideo || l.namaGambar || "Video Demo / Tutorial"}
+                                    </span>
                                   </div>
                                   {(l.urlVideo || l.urlGambar || l.mediaUrl) && (
-                                    <div className="relative mt-1 inline-block overflow-hidden rounded-md border border-border max-w-[160px]">
+                                    <div className="relative mt-1.5 inline-block overflow-hidden rounded-lg border border-border max-w-[160px]">
                                       <video
                                         src={l.urlVideo || l.urlGambar || l.mediaUrl}
                                         className="max-h-[90px] w-full rounded"
@@ -412,11 +432,15 @@ function AutoAdsPage() {
                 ))}
                 {templates.length === 0 && !isLoading && (
                   <TableRow>
-                    <TableCell colSpan={5} className="py-12 text-center text-sm text-muted-foreground">
-                      <Megaphone className="size-10 mx-auto mb-2 opacity-30 text-muted-foreground" />
-                      <p className="font-semibold text-foreground">Belum Ada Template Balasan Iklan</p>
-                      <p className="text-xs text-muted-foreground mt-1 max-w-sm mx-auto">
-                        Tambahkan pertanyaan trigger dari iklan dan buat rangkaian balasan teks, gambar, atau video lewat formulir di samping.
+                    <TableCell
+                      colSpan={5}
+                      className="py-14 text-center text-sm text-muted-foreground"
+                    >
+                      <Megaphone className="size-10 mx-auto mb-3 opacity-30 text-muted-foreground" />
+                      <p className="font-bold text-foreground">Belum Ada Template Balasan Iklan</p>
+                      <p className="text-xs text-muted-foreground mt-1.5 max-w-sm mx-auto leading-relaxed">
+                        Tambahkan pertanyaan trigger dari iklan dan buat rangkaian balasan teks,
+                        gambar, atau video lewat formulir di samping.
                       </p>
                     </TableCell>
                   </TableRow>
@@ -424,18 +448,25 @@ function AutoAdsPage() {
               </TableBody>
             </Table>
           </div>
-        </div>
+        </section>
 
         {/* Kolom Kanan: Form Tambah Template */}
-        <div className="space-y-6">
-          <form className="panel space-y-4 p-5" onSubmit={handleSubmit}>
-            <div className="flex items-center gap-2 pb-2 border-b border-border">
-              <Sparkles className="size-4 text-emerald-500" />
-              <h2 className="text-sm font-semibold">Tambah Template Balas Iklan</h2>
+        <div className="space-y-6 xl:sticky xl:top-6 self-start min-w-0">
+          <form className="panel space-y-6 p-6 rounded-2xl" onSubmit={handleSubmit}>
+            <div className="flex items-center gap-2.5 pb-4 border-b border-border">
+              <span className="flex size-8 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                <Sparkles className="size-4" />
+              </span>
+              <div>
+                <h2 className="text-sm font-bold text-foreground">Tambah Template Balas Iklan</h2>
+                <p className="text-xs text-muted-foreground">Buat rangkaian respon untuk iklan</p>
+              </div>
             </div>
 
-            <div className="grid gap-2">
-              <Label htmlFor="t-tanya">Pesan / Pertanyaan dari Iklan (Trigger)</Label>
+            <div className="grid gap-2.5">
+              <Label htmlFor="t-tanya" className="text-xs font-semibold">
+                Pesan / Pertanyaan dari Iklan (Trigger)
+              </Label>
               <Input
                 id="t-tanya"
                 placeholder="Contoh: Halo, saya tertarik dengan promo baju muslim..."
@@ -443,13 +474,13 @@ function AutoAdsPage() {
                 onChange={(e) => setPertanyaan(e.target.value)}
                 required
               />
-              <p className="text-[11px] text-muted-foreground">
+              <p className="text-[11px] text-muted-foreground leading-relaxed">
                 Pesan awal yang dikirimkan calon pelanggan saat mengklik iklan WhatsApp Anda.
               </p>
             </div>
 
-            <div className="grid gap-2">
-              <Label>Metode Pencocokan</Label>
+            <div className="grid gap-2.5">
+              <Label className="text-xs font-semibold">Metode Pencocokan</Label>
               <Select
                 value={caraMencocokkan}
                 onValueChange={(v: "sama_persis" | "boleh_mirip") => setCaraMencocokkan(v)}
@@ -468,29 +499,37 @@ function AutoAdsPage() {
               </Select>
             </div>
 
-            <div className="grid gap-3 pt-2">
-              <div className="flex items-center justify-between">
-                <Label>Rangkaian Balasan (Dikirim Berurutan)</Label>
-                <span className="text-[11px] text-muted-foreground">{langkahBaru.length} pesan</span>
+            <div className="grid gap-4 pt-2">
+              <div className="flex items-center justify-between gap-3">
+                <Label className="text-xs font-semibold">
+                  Rangkaian Balasan (Dikirim Berurutan)
+                </Label>
+                <span className="shrink-0 rounded-full bg-secondary border border-border px-2.5 py-1 text-[11px] font-bold text-muted-foreground">
+                  {langkahBaru.length} pesan
+                </span>
               </div>
 
               {langkahBaru.map((l, i) => (
                 <div
                   key={l.id}
-                  className="flex items-start gap-2 rounded-lg border border-border bg-secondary/30 p-3.5 transition-all"
+                  className="flex items-start gap-3 rounded-2xl border border-border bg-secondary/30 p-4"
                 >
                   <GripVertical className="mt-2 size-4 shrink-0 text-muted-foreground/50" />
-                  <div className="flex-1 space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-semibold text-foreground">
+                  <div className="flex-1 min-w-0 space-y-3">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <span className="text-xs font-bold text-foreground">
                         Langkah #{i + 1} &bull;{" "}
                         <span className="capitalize text-emerald-600 dark:text-emerald-400">
-                          {l.tipe === "teks" ? "Pesan Teks" : l.tipe === "gambar" ? "Foto / Brosur" : "Video"}
+                          {l.tipe === "teks"
+                            ? "Pesan Teks"
+                            : l.tipe === "gambar"
+                              ? "Foto / Brosur"
+                              : "Video"}
                         </span>
                       </span>
                       {l.isUploading && (
-                        <span className="flex items-center gap-1 text-[11px] text-emerald-600">
-                          <Loader2 className="size-3 animate-spin" /> Mengunggah...
+                        <span className="flex items-center gap-1.5 text-[11px] font-semibold text-emerald-600">
+                          <Loader2 className="size-3.5 animate-spin" /> Mengunggah...
                         </span>
                       )}
                     </div>
@@ -501,49 +540,57 @@ function AutoAdsPage() {
                         placeholder="Ketik isi pesan balasan untuk langkah ini..."
                         value={l.isiTeks}
                         onChange={(e) => ubahTeksLangkah(l.id, e.target.value)}
-                        className="text-xs leading-relaxed"
+                        className="text-xs leading-relaxed min-h-[64px]"
                       />
                     )}
 
                     {l.tipe === "gambar" && (
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2">
-                          <label className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border border-dashed border-border bg-background px-3 py-2.5 text-xs text-muted-foreground hover:border-emerald-500 hover:text-foreground transition-colors">
-                            <UploadCloud className="size-4 text-emerald-500" />
-                            <span>{l.namaGambar ? l.namaGambar : "Pilih file gambar (JPG, PNG, WEBP)"}</span>
-                            <input
-                              type="file"
-                              accept="image/*"
-                              className="hidden"
-                              onChange={(e) => handleUploadFile(l.id, e.target.files?.[0], "gambar")}
-                            />
-                          </label>
-                        </div>
+                      <div className="space-y-3">
+                        <label className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-xl border border-dashed border-border bg-background px-4 py-3.5 text-xs text-muted-foreground hover:border-emerald-500 hover:text-foreground transition-colors">
+                          <UploadCloud className="size-4 shrink-0 text-emerald-500" />
+                          <span className="truncate text-center">
+                            {l.namaGambar ? l.namaGambar : "Pilih file gambar (JPG, PNG, WEBP)"}
+                          </span>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={(e) => handleUploadFile(l.id, e.target.files?.[0], "gambar")}
+                          />
+                        </label>
                         {l.urlGambar && (
-                          <div className="relative overflow-hidden rounded-md border border-border max-w-[120px] max-h-[80px]">
-                            <img src={l.urlGambar} alt="preview" className="h-full w-full object-cover" />
+                          <div className="relative overflow-hidden rounded-xl border border-border max-w-[140px] max-h-[90px]">
+                            <img
+                              src={l.urlGambar}
+                              alt="preview"
+                              className="h-full w-full object-cover"
+                            />
                           </div>
                         )}
                       </div>
                     )}
 
                     {l.tipe === "video" && (
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2">
-                          <label className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border border-dashed border-border bg-background px-3 py-2.5 text-xs text-muted-foreground hover:border-sky-500 hover:text-foreground transition-colors">
-                            <Video className="size-4 text-sky-500" />
-                            <span>{l.namaVideo ? l.namaVideo : "Pilih file video (MP4, 3GP, MOV)"}</span>
-                            <input
-                              type="file"
-                              accept="video/*,.mp4,.3gp,.mov,.webm"
-                              className="hidden"
-                              onChange={(e) => handleUploadFile(l.id, e.target.files?.[0], "video")}
-                            />
-                          </label>
-                        </div>
+                      <div className="space-y-3">
+                        <label className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-xl border border-dashed border-border bg-background px-4 py-3.5 text-xs text-muted-foreground hover:border-sky-500 hover:text-foreground transition-colors">
+                          <Video className="size-4 shrink-0 text-sky-500" />
+                          <span className="truncate text-center">
+                            {l.namaVideo ? l.namaVideo : "Pilih file video (MP4, 3GP, MOV)"}
+                          </span>
+                          <input
+                            type="file"
+                            accept="video/*,.mp4,.3gp,.mov,.webm"
+                            className="hidden"
+                            onChange={(e) => handleUploadFile(l.id, e.target.files?.[0], "video")}
+                          />
+                        </label>
                         {l.urlVideo && (
-                          <div className="relative overflow-hidden rounded-md border border-border max-w-[140px]">
-                            <video src={l.urlVideo} className="max-h-[80px] w-full rounded" controls />
+                          <div className="relative overflow-hidden rounded-xl border border-border max-w-[160px]">
+                            <video
+                              src={l.urlVideo}
+                              className="max-h-[90px] w-full rounded-lg"
+                              controls
+                            />
                           </div>
                         )}
                       </div>
@@ -554,7 +601,7 @@ function AutoAdsPage() {
                     type="button"
                     size="sm"
                     variant="ghost"
-                    className="text-destructive hover:bg-destructive/10"
+                    className="shrink-0 text-destructive hover:bg-destructive/10 rounded-xl"
                     onClick={() => hapusLangkah(l.id)}
                     disabled={langkahBaru.length === 1}
                     title="Hapus langkah ini"
@@ -565,37 +612,64 @@ function AutoAdsPage() {
               ))}
 
               <div className="flex flex-wrap gap-2 pt-1">
-                <Button type="button" size="sm" variant="outline" onClick={tambahLangkahTeks} className="text-xs">
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  onClick={tambahLangkahTeks}
+                  className="text-xs rounded-xl"
+                >
                   <MessageSquarePlus className="size-3.5" /> + Teks
                 </Button>
-                <Button type="button" size="sm" variant="outline" onClick={tambahLangkahGambar} className="text-xs">
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  onClick={tambahLangkahGambar}
+                  className="text-xs rounded-xl"
+                >
                   <ImagePlus className="size-3.5 text-emerald-500" /> + Gambar
                 </Button>
-                <Button type="button" size="sm" variant="outline" onClick={tambahLangkahVideo} className="text-xs">
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  onClick={tambahLangkahVideo}
+                  className="text-xs rounded-xl"
+                >
                   <Video className="size-3.5 text-sky-500" /> + Video
                 </Button>
               </div>
             </div>
 
-            <Button type="submit" className="w-full mt-4" disabled={isSubmitting}>
+            <Button
+              type="submit"
+              className="w-full h-11 text-sm font-bold bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl shadow-md shadow-emerald-500/20"
+              disabled={isSubmitting}
+            >
               {isSubmitting ? (
-                <Loader2 className="size-4 animate-spin" />
+                <Loader2 className="size-4 animate-spin mr-2" />
               ) : (
                 <>
-                  <Plus className="size-4" /> Simpan Template Balasan Iklan
+                  <Plus className="size-4 mr-2" /> Simpan Template Balasan Iklan
                 </>
               )}
             </Button>
           </form>
 
-          <div className="panel space-y-3 p-5 text-sm">
-            <h3 className="font-semibold flex items-center gap-2 text-foreground">
-              <Play className="size-4 text-emerald-500" /> Cara Kerja Balas Iklan
+          <section className="panel p-5 rounded-2xl border border-border/60 bg-card">
+            <h3 className="text-sm font-bold flex items-center gap-2.5 text-foreground">
+              <span className="flex size-7 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-500">
+                <Play className="size-3.5" />
+              </span>
+              Cara Kerja Balas Iklan
             </h3>
-            <p className="text-xs text-muted-foreground leading-relaxed">
-              Saat ada pesan masuk dari prospek yang mengklik iklan WhatsApp dengan teks trigger di atas, sistem akan otomatis mengirimkan balasan langkah demi langkah secara berurutan (misalnya: perkenalan &rarr; gambar katalog &rarr; video demo produk).
+            <p className="text-xs text-muted-foreground leading-relaxed mt-3">
+              Saat ada pesan masuk dari prospek yang mengklik iklan WhatsApp dengan teks trigger di
+              atas, sistem akan otomatis mengirimkan balasan langkah demi langkah secara berurutan
+              (misalnya: perkenalan &rarr; gambar katalog &rarr; video demo produk).
             </p>
-          </div>
+          </section>
         </div>
       </div>
     </>

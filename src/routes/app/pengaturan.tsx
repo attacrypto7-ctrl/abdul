@@ -5,19 +5,14 @@ import {
   Building2,
   Sparkles,
   Sliders,
-  Bot,
   Shield,
-  CheckCircle2,
-  ArrowRight,
   ShoppingBag,
   Briefcase,
   HeartHandshake,
   Stethoscope,
   GraduationCap,
-  MessageCircle,
   HelpCircle,
 } from "lucide-react";
-import { toast } from "sonner";
 
 import { PageHeader } from "@/components/dashboard/shell";
 import { Button } from "@/components/ui/button";
@@ -30,10 +25,10 @@ export const Route = createFileRoute("/app/pengaturan")({
       { title: "Pengaturan — Dashboard Balasin" },
       {
         name: "description",
-        content: "Kelola klasifikasi tipe bisnis, gaya bahasa AI, dan preferensi bot WhatsApp Anda.",
+        content: "Kelola klasifikasi tipe bisnis dan profil akun WhatsApp Anda.",
       },
       { property: "og:title", content: "Pengaturan — Dashboard Balasin" },
-      { property: "og:description", content: "Kelola tipe bisnis dan preferensi bot." },
+      { property: "og:description", content: "Kelola tipe bisnis dan profil akun." },
     ],
   }),
   component: PengaturanPage,
@@ -57,11 +52,6 @@ function PengaturanPage() {
   });
   const [modalOpen, setModalOpen] = useState(false);
 
-  // Bot language personality preferences (saved locally)
-  const [gayaBahasa, setGayaBahasa] = useState<string>("ramah");
-  const [panggilanKlien, setPanggilanKlien] = useState<string>("kak");
-  const [isSaved, setIsSaved] = useState(false);
-
   const currentType = tenant?.industri || "Belum Memilih";
   const TypeIcon = getIconForType(currentType);
 
@@ -69,7 +59,6 @@ function PengaturanPage() {
   const isLicenseActive = licenseStatus?.isActive ?? false;
   const activePlan = licenseStatus?.plan || null;
   const licenseEndDate = licenseStatus?.lisensiBerakhir || null;
-
 
   const currentTypeDetail = BUSINESS_TYPES.find((b) =>
     currentType.toLowerCase().includes(b.id.toLowerCase().split("/")[0].trim()),
@@ -80,17 +69,11 @@ function PengaturanPage() {
     tagline: "AI membalas chat secara otomatis sesuai konteks pertanyaan pelanggan.",
   };
 
-  const handleSavePreferences = () => {
-    setIsSaved(true);
-    toast.success("Pengaturan gaya bahasa dan kepribadian bot berhasil disimpan!");
-    setTimeout(() => setIsSaved(false), 2500);
-  };
-
   return (
     <>
       <PageHeader
-        title="Pengaturan Bisnis &amp; Bot"
-        description="Sesuaikan klasifikasi bisnis, nada komunikasi bot AI, dan konfigurasi profil akun Anda."
+        title="Pengaturan Bisnis"
+        description="Sesuaikan klasifikasi bisnis dan konfigurasi akun Anda."
       />
 
       <div className="grid gap-6 lg:grid-cols-3">
@@ -142,96 +125,6 @@ function PengaturanPage() {
               </span>
             </div>
           </section>
-
-          {/* KARTU 2: GAYA BAHASA & KEPRIBADIAN BOT */}
-          <section className="panel rounded-2xl p-6 border border-border bg-card">
-            <div className="flex items-center gap-2.5 mb-1">
-              <span className="flex size-8 items-center justify-center rounded-lg bg-teal-500/10 text-teal-600 dark:text-teal-400">
-                <Bot className="size-4" />
-              </span>
-              <div>
-                <h3 className="text-sm font-bold text-foreground">
-                  Gaya Bahasa &amp; Nada Komunikasi AI
-                </h3>
-                <p className="text-xs text-muted-foreground">
-                  Tentukan bagaimana AI menyapa dan menjawab pesan pelanggan di WhatsApp.
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-5 space-y-4">
-              <div>
-                <label className="text-xs font-semibold text-foreground block mb-2">
-                  Nada Bicara Bot
-                </label>
-                <div className="grid gap-3 sm:grid-cols-3">
-                  {[
-                    { id: "ramah", label: "Ramah & Hangat", hint: "Sopan, bersahabat, banyak senyum emoji 😊" },
-                    { id: "formal", label: "Formal & Profesional", hint: "Baku, rapi, cocok untuk instansi/B2B" },
-                    { id: "santai", label: "Santai & Komunikatif", hint: "Gaul, santai, cocok untuk target Gen-Z" },
-                  ].map((item) => (
-                    <button
-                      type="button"
-                      key={item.id}
-                      onClick={() => setGayaBahasa(item.id)}
-                      className={`text-left p-3 rounded-xl border text-xs transition-all cursor-pointer ${
-                        gayaBahasa === item.id
-                          ? "border-emerald-500 bg-emerald-500/10 text-foreground ring-1 ring-emerald-500/30"
-                          : "border-border bg-card hover:bg-secondary/40 text-muted-foreground"
-                      }`}
-                    >
-                      <span className="font-semibold block text-foreground mb-1">
-                        {item.label}
-                      </span>
-                      <span className="text-[11px] text-muted-foreground leading-snug block">
-                        {item.hint}
-                      </span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="pt-2">
-                <label className="text-xs font-semibold text-foreground block mb-2">
-                  Panggilan untuk Lawan Bicara (Pelanggan / Donatur)
-                </label>
-                <div className="grid gap-2.5 sm:grid-cols-4">
-                  {[
-                    { id: "kak", label: "Kak / Kakak", for: "Umum & Toko" },
-                    { id: "mas_mbak", label: "Mas / Mbak", for: "Akrab" },
-                    { id: "bapak_ibu", label: "Bapak / Ibu", for: "Formal & Instansi" },
-                    { id: "sahabat", label: "Sahabat Dermawan", for: "Khusus Yayasan" },
-                  ].map((p) => (
-                    <button
-                      type="button"
-                      key={p.id}
-                      onClick={() => setPanggilanKlien(p.id)}
-                      className={`p-2.5 rounded-xl border text-xs text-center transition-all cursor-pointer ${
-                        panggilanKlien === p.id
-                          ? "border-emerald-500 bg-emerald-500/10 font-bold text-emerald-600 dark:text-emerald-400"
-                          : "border-border bg-card text-muted-foreground hover:bg-secondary/40"
-                      }`}
-                    >
-                      <span>{p.label}</span>
-                      <span className="block text-[10px] text-muted-foreground font-normal mt-0.5">
-                        {p.for}
-                      </span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="pt-3 flex justify-end">
-                <Button
-                  onClick={handleSavePreferences}
-                  className="bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-xs px-5 h-9"
-                >
-                  <CheckCircle2 className="size-3.5 mr-1.5" />
-                  {isSaved ? "Tersimpan!" : "Simpan Pengaturan"}
-                </Button>
-              </div>
-            </div>
-          </section>
         </div>
 
         {/* KOLOM KANAN (1 COLUMN): INFORMASI AKUN & PANDUAN */}
@@ -256,7 +149,9 @@ function PengaturanPage() {
                 {loadingLic ? (
                   <span className="text-muted-foreground italic">Memuat...</span>
                 ) : (
-                  <span className={`font-semibold ${activePlan ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground"}`}>
+                  <span
+                    className={`font-semibold ${activePlan ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground"}`}
+                  >
                     {activePlan || "Belum aktif"}
                   </span>
                 )}
@@ -266,11 +161,13 @@ function PengaturanPage() {
                 {loadingLic ? (
                   <span className="text-muted-foreground italic">Memuat...</span>
                 ) : (
-                  <span className={`font-semibold px-2 py-0.5 rounded-full text-[10px] ${
-                    isLicenseActive
-                      ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
-                      : "bg-red-500/10 text-red-600 dark:text-red-400"
-                  }`}>
+                  <span
+                    className={`font-semibold px-2 py-0.5 rounded-full text-[10px] ${
+                      isLicenseActive
+                        ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                        : "bg-red-500/10 text-red-600 dark:text-red-400"
+                    }`}
+                  >
                     {isLicenseActive ? "✓ Aktif" : "✗ Tidak Aktif"}
                   </span>
                 )}
@@ -288,17 +185,19 @@ function PengaturanPage() {
             </div>
           </section>
 
-
           <section className="panel rounded-2xl p-5 border border-border/60 bg-secondary/30">
             <h4 className="text-xs font-bold text-foreground mb-1.5 flex items-center gap-1.5">
               <HelpCircle className="size-3.5 text-emerald-500" />
               Dampak Penggantian Tipe Bisnis
             </h4>
             <p className="text-[11px] text-muted-foreground leading-relaxed">
-              Saat Anda mengganti tipe bisnis (misal dari Toko ke Yayasan atau sebaliknya), sistem secara otomatis:
+              Saat Anda mengganti tipe bisnis (misal dari Toko ke Yayasan atau sebaliknya), sistem
+              secara otomatis:
             </p>
             <ul className="mt-2 space-y-1.5 text-[11px] text-muted-foreground list-disc pl-4">
-              <li>Menampilkan template tanya-jawab (FAQ) yang relevan di menu Basis Pengetahuan.</li>
+              <li>
+                Menampilkan template tanya-jawab (FAQ) yang relevan di menu Basis Pengetahuan.
+              </li>
               <li>Menyesuaikan indikator dan grafik di menu Analitik &amp; Performa.</li>
               <li>Mengelompokkan status nomor dan donatur/pelanggan di menu Pengelolaan Nomor.</li>
             </ul>
