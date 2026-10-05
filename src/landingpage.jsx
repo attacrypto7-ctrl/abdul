@@ -316,10 +316,15 @@ export function Landing() {
 
   useEffect(() => {
     let ticking = false;
+    let lastScrolled = false;
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          setIsScrolled(window.scrollY > 40);
+          const shouldBeScrolled = window.scrollY > 40;
+          if (shouldBeScrolled !== lastScrolled) {
+            setIsScrolled(shouldBeScrolled);
+            lastScrolled = shouldBeScrolled;
+          }
           ticking = false;
         });
         ticking = true;
@@ -557,9 +562,9 @@ export function Landing() {
       {/* 1. DYNAMIC STICKY FLOATING CAPSULE NAVBAR (NAS.COM STYLE)  */}
       {/* ══════════════════════════════════════════════════════════ */}
       <div className="fixed top-4 inset-x-0 z-50 mx-auto max-w-5xl px-4 pointer-events-none transition-all duration-300">
-        <header
+           <header
           className={`pointer-events-auto mx-auto flex items-center justify-between rounded-full border border-zinc-200/80 dark:border-zinc-800/90 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-lg shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300 ${
-            isScrolled ? "py-2 px-5 sm:px-6 scale-[0.98] border-emerald-500/30" : "py-3 px-6 sm:px-7"
+            isScrolled ? "py-2 px-5 sm:px-6 border-emerald-500/30" : "py-3 px-6 sm:px-7"
           }`}
         >
           {/* Left: Logo with Live Pulsing Green Dot */}
