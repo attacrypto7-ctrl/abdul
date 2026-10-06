@@ -292,7 +292,6 @@
   border-style: solid;
   transform: translateZ(0);
   backface-visibility: hidden;
-  will-change: transform;
   transition:
     border-color 200ms ease,
     transform 200ms ease,
@@ -358,7 +357,6 @@
   background-clip: text;
   color: transparent;
   animation: hero-glimmer 8s linear infinite;
-  will-change: background-position;
   transform: translateZ(0);
 }
 
@@ -448,18 +446,14 @@
   0%,
   100% {
     opacity: 0.4;
-    transform: scale(1);
   }
   50% {
-    opacity: 0.6;
-    transform: scale(1.02);
+    opacity: 0.55;
   }
 }
 
 .animate-pulse-glow {
   animation: pulse-glow 3s ease-in-out infinite;
-  will-change: transform, opacity;
-  transform: translateZ(0);
 }
 
 @keyframes border-beam {
@@ -524,7 +518,6 @@
   display: flex;
   width: max-content;
   animation: marquee 28s linear infinite;
-  will-change: transform;
   transform: translateZ(0);
 }
 
@@ -536,7 +529,6 @@
   display: flex;
   width: max-content;
   animation: marquee 38s linear infinite;
-  will-change: transform;
   transform: translateZ(0);
 }
 
@@ -590,26 +582,32 @@
 }
 
 .animate-float, .animate-float-delayed, .animate-float-subtle {
-  will-change: transform;
   transform: translateZ(0);
 }
 
 .animate-wiggle {
   animation: wiggle 3s ease-in-out infinite;
-  will-change: transform;
 }
 
 .animate-typing-1 {
   animation: typing-bounce 1.2s infinite ease-in-out;
-  will-change: transform, opacity;
 }
 .animate-typing-2 {
   animation: typing-bounce 1.2s infinite ease-in-out 0.2s;
-  will-change: transform, opacity;
 }
 .animate-typing-3 {
   animation: typing-bounce 1.2s infinite ease-in-out 0.4s;
-  will-change: transform, opacity;
+}
+
+@keyframes typing-bounce {
+  0%, 60%, 100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  30% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
 }
 
 @keyframes light-sweep {
@@ -641,18 +639,17 @@
 
 @keyframes border-pulse-emerald {
   0%, 100% {
-    box-shadow: 0 0 10px rgba(16, 185, 129, 0.1), inset 0 0 10px rgba(16, 185, 129, 0.03);
-    border-color: rgba(16, 185, 129, 0.3);
+    opacity: 0.5;
   }
   50% {
-    box-shadow: 0 0 20px rgba(16, 185, 129, 0.25), inset 0 0 15px rgba(16, 185, 129, 0.1);
-    border-color: rgba(16, 185, 129, 0.6);
+    opacity: 1;
   }
 }
 
 .animate-border-pulse {
   animation: border-pulse-emerald 3s ease-in-out infinite;
-  will-change: border-color, box-shadow;
+  border-color: rgba(16, 185, 129, 0.5);
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.15), inset 0 0 10px rgba(16, 185, 129, 0.05);
 }
 
 @keyframes bubble-pop {
@@ -683,7 +680,6 @@
 
 .animate-laser-scan {
   animation: laser-scan 2.8s ease-in-out infinite;
-  will-change: transform, opacity;
 }
 
 @keyframes radar-sweep {
