@@ -290,9 +290,6 @@
 .feature-card {
   border-width: 1px;
   border-style: solid;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  will-change: transform;
   transition:
     border-color 200ms ease,
     transform 200ms ease,
@@ -524,8 +521,6 @@
   display: flex;
   width: max-content;
   animation: marquee 28s linear infinite;
-  will-change: transform;
-  transform: translateZ(0);
 }
 
 .animate-marquee:hover {
@@ -536,8 +531,6 @@
   display: flex;
   width: max-content;
   animation: marquee 38s linear infinite;
-  will-change: transform;
-  transform: translateZ(0);
 }
 
 .animate-marquee-testimonials:hover {
@@ -589,14 +582,8 @@
   }
 }
 
-.animate-float, .animate-float-delayed, .animate-float-subtle {
-  will-change: transform;
-  transform: translateZ(0);
-}
-
 .animate-wiggle {
   animation: wiggle 3s ease-in-out infinite;
-  will-change: transform;
 }
 
 .animate-typing-1 {

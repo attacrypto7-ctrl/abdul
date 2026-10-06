@@ -272,6 +272,47 @@ const faqItems = [
   },
 ];
 
+function LandingHeader({
+  googleUser,
+  avatarSrc,
+  avatarError,
+  setAvatarError,
+  initials,
+  isOpen,
+  setIsOpen,
+  handleMouseEnter,
+  handleMouseLeave,
+  setShowLogin,
+  navigate,
+}) {
+  const [isScrolled, setIsScrolled] = useState(false);
+
+
+  const handleNavClick = (e, targetId) => {
+    e.preventDefault();
+    const el = document.getElementById(targetId);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
+  return (
+    <LandingHeader
+        googleUser={googleUser}
+        avatarSrc={avatarSrc}
+        avatarError={avatarError}
+        setAvatarError={setAvatarError}
+        initials={initials}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        handleMouseEnter={handleMouseEnter}
+        handleMouseLeave={handleMouseLeave}
+        setShowLogin={setShowLogin}
+        navigate={navigate}
+      />
+  );
+}
+
 export function Landing() {
   const navigate = useNavigate();
   const [showLogin, setShowLogin] = useState(false);
@@ -286,7 +327,7 @@ export function Landing() {
   const [isOpen, setIsOpen] = useState(false);
   const [skenarioAktif, setSkenarioAktif] = useState("iklan");
   const [isTyping, setIsTyping] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
+
 
   // Interactive Simulator state
   const [customInput, setCustomInput] = useState("");
@@ -314,25 +355,6 @@ export function Landing() {
     }
   };
 
-  useEffect(() => {
-    let ticking = false;
-    let lastScrolled = false;
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const shouldBeScrolled = window.scrollY > 40;
-          if (shouldBeScrolled !== lastScrolled) {
-            setIsScrolled(shouldBeScrolled);
-            lastScrolled = shouldBeScrolled;
-          }
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   // Synchronize chat messages with scenario
   useEffect(() => {
@@ -561,164 +583,19 @@ export function Landing() {
       {/* ══════════════════════════════════════════════════════════ */}
       {/* 1. DYNAMIC STICKY FLOATING CAPSULE NAVBAR (NAS.COM STYLE)  */}
       {/* ══════════════════════════════════════════════════════════ */}
-      <div className="fixed top-4 inset-x-0 z-50 mx-auto max-w-5xl px-4 pointer-events-none transition-all duration-300">
-           <header
-          className={`pointer-events-auto mx-auto flex items-center justify-between rounded-full border border-zinc-200/80 dark:border-zinc-800/90 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-lg shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300 ${
-            isScrolled ? "py-2 px-5 sm:px-6 border-emerald-500/30" : "py-3 px-6 sm:px-7"
-          }`}
-        >
-          {/* Left: Logo with Live Pulsing Green Dot */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="relative">
-              <img
-                src="/chatbot_wa.png"
-                alt="Balasin"
-                className="h-8 w-8 rounded-full object-contain transition-transform duration-300 group-hover:scale-110 shadow-xs"
-              />
-              <span className="absolute -bottom-0.5 -right-0.5 flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500 border border-white dark:border-zinc-950" />
-              </span>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-lg font-black tracking-tight text-zinc-900 dark:text-zinc-50">
-                Balas<span className="text-emerald-500">in</span>
-              </span>
-            </div>
-          </Link>
-
-          {/* Center: Clean Nav Links with hover underline indicator */}
-          <nav className="hidden items-center gap-1 sm:gap-2 text-xs font-semibold text-zinc-600 dark:text-zinc-300 md:flex">
-            <a
-              href="#fitur"
-              onClick={(e) => handleNavClick(e, "fitur")}
-              className="relative rounded-full px-3.5 py-1.5 transition-colors hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-900/60"
-            >
-              Fitur Unggulan
-            </a>
-            <a
-              href="#simulasi"
-              onClick={(e) => handleNavClick(e, "simulasi")}
-              className="relative rounded-full px-3.5 py-1.5 transition-colors hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-900/60"
-            >
-              Simulasi Chat
-            </a>
-            <a
-              href="#cara-kerja"
-              onClick={(e) => handleNavClick(e, "cara-kerja")}
-              className="relative rounded-full px-3.5 py-1.5 transition-colors hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-900/60"
-            >
-              Cara Pakai
-            </a>
-            <a
-              href="#perbandingan"
-              onClick={(e) => handleNavClick(e, "perbandingan")}
-              className="relative rounded-full px-3.5 py-1.5 transition-colors hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-900/60"
-            >
-              Keuntungan ROI
-            </a>
-            <a
-              href="#testimoni"
-              onClick={(e) => handleNavClick(e, "testimoni")}
-              className="relative rounded-full px-3.5 py-1.5 transition-colors hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-900/60"
-            >
-              Testimoni
-            </a>
-          </nav>
-
-          {/* Right: Theme Toggle & CTA / User Dropdown */}
-          <div className="flex items-center gap-2.5">
-            <ThemeToggle className="size-8 rounded-full border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-200 hover:border-emerald-500/40" />
-
-            {googleUser ? (
-              <div
-                className="relative"
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-              >
-                <button className="flex cursor-pointer items-center gap-2 rounded-full border border-zinc-200 dark:border-zinc-800 bg-zinc-100/80 dark:bg-zinc-900/80 p-1 pr-3 transition-all hover:border-emerald-500/60 focus-visible:outline-none">
-                  <span className="relative flex size-7 shrink-0">
-                    {avatarSrc && !avatarError ? (
-                      <img
-                        src={avatarSrc}
-                        alt="Profile"
-                        referrerPolicy="no-referrer"
-                        onError={() => setAvatarError(true)}
-                        className="size-7 rounded-full object-cover ring-2 ring-emerald-500/30"
-                      />
-                    ) : (
-                      <span className="flex size-7 items-center justify-center rounded-full bg-emerald-500/10 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
-                        {initials}
-                      </span>
-                    )}
-                  </span>
-                  <span className="hidden text-xs font-bold sm:inline-block text-zinc-900 dark:text-zinc-100">
-                    {googleUser.name.split(" ")[0]}
-                  </span>
-                  <ChevronDown className="size-3 text-zinc-400" />
-                </button>
-                {isOpen && (
-                  <div className="absolute top-full right-0 z-50 pt-2">
-                    <div className="w-56 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-2 shadow-2xl backdrop-blur-xl">
-                      <div className="px-2.5 py-2">
-                        <p className="text-xs font-bold text-zinc-900 dark:text-zinc-100">{googleUser.name}</p>
-                        <p className="mt-0.5 truncate text-[10px] text-zinc-500 dark:text-zinc-400">
-                          {googleUser.email}
-                        </p>
-                      </div>
-                      <div className="-mx-1 my-1 h-px bg-zinc-200 dark:bg-zinc-800" />
-                      <Link
-                        to="/app"
-                        onClick={() => setIsOpen(false)}
-                        className="relative flex w-full cursor-pointer select-none items-center gap-2 rounded-xl px-2.5 py-2 text-xs font-semibold text-emerald-600 dark:text-emerald-400 outline-none hover:bg-emerald-50 dark:hover:bg-emerald-500/10 transition-colors"
-                      >
-                        <LayoutDashboard className="size-3.5" />
-                        Buka Dashboard
-                      </Link>
-                      <button
-                        onClick={() => {
-                          setIsOpen(false);
-                          setShowLogin(true);
-                        }}
-                        className="relative flex w-full cursor-pointer select-none items-center gap-2 rounded-xl px-2.5 py-2 text-xs text-zinc-700 dark:text-zinc-300 outline-none hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors"
-                      >
-                        <UserPlus className="size-3.5" />
-                        Tambahkan Akun Lain
-                      </button>
-                      <button
-                        onClick={() => handleLogout()}
-                        className="relative flex w-full cursor-pointer select-none items-center gap-2 rounded-xl px-2.5 py-2 text-xs text-red-500 dark:text-red-400 outline-none hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors"
-                      >
-                        <LogOut className="size-3.5" />
-                        Keluar
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => setShowLogin(true)}
-                  className="hidden cursor-pointer text-xs font-bold text-zinc-700 transition-colors hover:text-emerald-600 dark:text-zinc-300 dark:hover:text-emerald-400 sm:inline-block px-3 py-1.5"
-                >
-                  Masuk
-                </button>
-                <button
-                  onClick={() => setShowLogin(true)}
-                  className="relative group overflow-hidden flex cursor-pointer items-center gap-1.5 rounded-full bg-emerald-500 hover:bg-emerald-400 text-zinc-950 px-4 py-2 text-xs font-extrabold shadow-[0_0_20px_rgba(16,185,129,0.35)] transition-all hover:scale-105 active:scale-95"
-                >
-                  <span className="relative z-10 flex items-center gap-1">
-                    <span>Mulai Sekarang</span>
-                    <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
-                  </span>
-                  <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/40 to-transparent" />
-                </button>
-              </div>
-            )}
-          </div>
-        </header>
-      </div>
+      <LandingHeader
+        googleUser={googleUser}
+        avatarSrc={avatarSrc}
+        avatarError={avatarError}
+        setAvatarError={setAvatarError}
+        initials={initials}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        handleMouseEnter={handleMouseEnter}
+        handleMouseLeave={handleMouseLeave}
+        setShowLogin={setShowLogin}
+        navigate={navigate}
+      />
 
       {/* Login Dialog */}
       <Dialog open={showLogin} onOpenChange={setShowLogin}>
@@ -850,8 +727,8 @@ export function Landing() {
         {/* ══════════════════════════════════════════════════════════ */}
         <section className="relative overflow-hidden pt-28 pb-16 lg:pt-36 lg:pb-24 tech-grid-bg">
           {/* Ambient Glowing Orbs */}
-          <div className="pointer-events-none absolute top-10 left-1/4 h-[400px] w-[550px] rounded-full bg-emerald-500/15 blur-[140px] animate-pulse-glow" />
-          <div className="pointer-events-none absolute top-36 right-10 h-[350px] w-[500px] rounded-full bg-teal-500/15 blur-[130px] animate-pulse-glow" />
+          <div className="pointer-events-none absolute top-10 left-1/4 h-[400px] w-[550px] rounded-full bg-[radial-gradient(circle,rgba(16,185,129,0.18)_0%,transparent_70%)] animate-pulse-glow" />
+          <div className="pointer-events-none absolute top-36 right-10 h-[350px] w-[500px] rounded-full bg-[radial-gradient(circle,rgba(20,184,166,0.18)_0%,transparent_70%)] animate-pulse-glow" />
 
           <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-8">
@@ -1086,7 +963,7 @@ export function Landing() {
               {[...platformItems, ...platformItems].map((p, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center gap-3.5 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white/90 dark:bg-zinc-900/90 px-5 py-3 shadow-xs backdrop-blur-md transition-all hover:scale-105 hover:border-emerald-500/50 cursor-pointer shrink-0 group"
+                  className="flex items-center gap-3.5 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-5 py-3 shadow-xs transition-all hover:scale-105 hover:border-emerald-500/50 cursor-pointer shrink-0 group"
                 >
                   <div className="transition-transform duration-500 group-hover:scale-115">
                     {p.logo}
@@ -1833,7 +1710,7 @@ export function Landing() {
               {[...testimoniList, ...testimoniList].map((t, idx) => (
                 <div
                   key={idx}
-                  className="flex w-[380px] shrink-0 flex-col justify-between rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white/85 dark:bg-zinc-900/85 p-6 shadow-md backdrop-blur-xl transition-all hover:scale-105 hover:border-emerald-500/50 cursor-pointer"
+                  className="flex w-[380px] shrink-0 flex-col justify-between rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 shadow-md transition-all hover:scale-105 hover:border-emerald-500/50 cursor-pointer"
                 >
                   <div>
                     <div className="flex items-center justify-between mb-4">
