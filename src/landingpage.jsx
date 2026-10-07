@@ -298,11 +298,12 @@ export function Landing() {
 
   const handleMouseEnter = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    setIsOpen(true);
+    if (isOpen) return;
+    requestAnimationFrame(() => setIsOpen(true));
   };
   const handleMouseLeave = () => {
     timeoutRef.current = setTimeout(() => {
-      setIsOpen(false);
+      requestAnimationFrame(() => setIsOpen(false));
     }, 200);
   };
 
