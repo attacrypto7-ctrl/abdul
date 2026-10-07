@@ -38,7 +38,7 @@ import {
   Radio,
   ExternalLink,
 } from "lucide-react";
-import { memo, useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -272,22 +272,47 @@ const faqItems = [
   },
 ];
 
-const Navbar = memo(({ googleUser, setShowLogin }) => {
-  const [isScrolled, setIsScrolled] = useState(false);
+export function Landing() {
+  const navigate = useNavigate();
+  const [showLogin, setShowLogin] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [isShaking, setIsShaking] = useState(false);
+  const [oauthError, setOauthError] = useState(null);
+  const [googleUser, setGoogleUser] = useState(null);
+  const [avatarError, setAvatarError] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const timeoutRef = useRef(null);
+  const [skenarioAktif, setSkenarioAktif] = useState("iklan");
+  const [isTyping, setIsTyping] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
-  const handleMouseEnter = useCallback(() => {
+  // Interactive Simulator state
+  const [customInput, setCustomInput] = useState("");
+  const [chatMessages, setChatMessages] = useState([]);
+  const [activeTemplateTab, setActiveTemplateTab] = useState("fashion");
+
+  const timeoutRef = useRef(null);
+  const googleClickLockRef = useRef(false);
+
+  const handleMouseEnter = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     setIsOpen(true);
-  }, []);
-  const handleMouseLeave = useCallback(() => {
-    timeoutRef.current = setTimeout(() => setIsOpen(false), 200);
-  }, []);
+  };
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      setIsOpen(false);
+    }, 200);
+  };
 
-  useEffect(() => () => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-  }, []);
+  const handleNavClick = (e, targetId) => {
+    e.preventDefault();
+    const el = document.getElementById(targetId);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
 
   useEffect(() => {
     let ticking = false;
@@ -309,231 +334,14 @@ const Navbar = memo(({ googleUser, setShowLogin }) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleNavClick = useCallback((e, targetId) => {
-    e.preventDefault();
-    const el = document.getElementById(targetId);
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-  }, []);
-
-  const avatarSrc = googleUser?.avatarUrl || googleUser?.picture || null;
-  const [avatarError, setAvatarError] = useState(false);
-  useEffect(() => { setAvatarError(false); }, [googleUser?.avatarUrl, googleUser?.picture]);
-  const initials = googleUser
-    ? googleUser.name
-        .split(" ")
-        .map((p) => p.charAt(0).toUpperCase())
-        .slice(0, 2)
-        .join("") || "?"
-    : "?";
-
-  return (
-    <div className="fixed top-4 inset-x-0 z-50 mx-auto max-w-5xl px-4 pointer-events-none transition-all duration-300">
-      <header
-        className={`pointer-events-auto mx-auto flex items-center justify-between rounded-full border border-zinc-200/80 dark:border-zinc-800/90 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-lg shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300 ${
-          isScrolled ? "py-2 px-5 sm:px-6 border-emerald-500/30" : "py-3 px-6 sm:px-7"
-        }`}
-      >
-        <Link to="/" className="flex items-center gap-3 group">
-          <div className="relative">
-            <img
-              src="/chatbot_wa.png"
-              alt="Balasin"
-              className="h-8 w-8 rounded-full object-contain transition-transform duration-300 group-hover:scale-110 shadow-xs"
-            />
-            <span className="absolute -bottom-0.5 -right-0.5 flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500 border border-white dark:border-zinc-950" />
-            </span>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-lg font-black tracking-tight text-zinc-900 dark:text-zinc-50">
-              Balas<span className="text-emerald-500">in</span>
-            </span>
-          </div>
-        </Link>
-
-        <nav className="hidden items-center gap-1 sm:gap-2 text-xs font-semibold text-zinc-600 dark:text-zinc-300 md:flex">
-          <a
-            href="#fitur"
-            onClick={(e) => handleNavClick(e, "fitur")}
-            className="relative rounded-full px-3.5 py-1.5 transition-colors hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-900/60"
-          >
-            Fitur Unggulan
-          </a>
-          <a
-            href="#simulasi"
-            onClick={(e) => handleNavClick(e, "simulasi")}
-            className="relative rounded-full px-3.5 py-1.5 transition-colors hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-900/60"
-          >
-            Simulasi Chat
-          </a>
-          <a
-            href="#cara-kerja"
-            onClick={(e) => handleNavClick(e, "cara-kerja")}
-            className="relative rounded-full px-3.5 py-1.5 transition-colors hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-900/60"
-          >
-            Cara Pakai
-          </a>
-          <a
-            href="#perbandingan"
-            onClick={(e) => handleNavClick(e, "perbandingan")}
-            className="relative rounded-full px-3.5 py-1.5 transition-colors hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-900/60"
-          >
-            Keuntungan ROI
-          </a>
-          <a
-            href="#testimoni"
-            onClick={(e) => handleNavClick(e, "testimoni")}
-            className="relative rounded-full px-3.5 py-1.5 transition-colors hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-900/60"
-          >
-            Testimoni
-          </a>
-        </nav>
-
-        <div className="flex items-center gap-2.5">
-          <ThemeToggle className="size-8 rounded-full border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-200 hover:border-emerald-500/40" />
-
-          {googleUser ? (
-            <div
-              className="relative"
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-            >
-              <button className="flex cursor-pointer items-center gap-2 rounded-full border border-zinc-200 dark:border-zinc-800 bg-zinc-100/80 dark:bg-zinc-900/80 p-1 pr-3 transition-all hover:border-emerald-500/60 focus-visible:outline-none">
-                <span className="relative flex size-7 shrink-0">
-                  {avatarSrc && !avatarError ? (
-                    <img
-                      src={avatarSrc}
-                      alt="Profile"
-                      referrerPolicy="no-referrer"
-                      onError={() => setAvatarError(true)}
-                      className="size-7 rounded-full object-cover ring-2 ring-emerald-500/30"
-                    />
-                  ) : (
-                    <span className="flex size-7 items-center justify-center rounded-full bg-emerald-500/10 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
-                      {initials}
-                    </span>
-                  )}
-                </span>
-                <span className="hidden text-xs font-bold sm:inline-block text-zinc-900 dark:text-zinc-100">
-                  {googleUser.name.split(" ")[0]}
-                </span>
-                <ChevronDown className="size-3 text-zinc-400" />
-              </button>
-              {isOpen && (
-                <div className="absolute top-full right-0 z-50 pt-2">
-                  <div className="w-56 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-2 shadow-2xl backdrop-blur-xl">
-                    <div className="px-2.5 py-2">
-                      <p className="text-xs font-bold text-zinc-900 dark:text-zinc-100">{googleUser.name}</p>
-                      <p className="mt-0.5 truncate text-[10px] text-zinc-500 dark:text-zinc-400">
-                        {googleUser.email}
-                      </p>
-                    </div>
-                    <div className="-mx-1 my-1 h-px bg-zinc-200 dark:bg-zinc-800" />
-                    <Link
-                      to="/app"
-                      onClick={() => setIsOpen(false)}
-                      className="relative flex w-full cursor-pointer select-none items-center gap-2 rounded-xl px-2.5 py-2 text-xs font-semibold text-emerald-600 dark:text-emerald-400 outline-none hover:bg-emerald-50 dark:hover:bg-emerald-500/10 transition-colors"
-                    >
-                      <LayoutDashboard className="size-3.5" />
-                      Buka Dashboard
-                    </Link>
-                    <button
-                      onClick={() => {
-                        setIsOpen(false);
-                        setShowLogin(true);
-                      }}
-                      className="relative flex w-full cursor-pointer select-none items-center gap-2 rounded-xl px-2.5 py-2 text-xs text-zinc-700 dark:text-zinc-300 outline-none hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors"
-                    >
-                      <UserPlus className="size-3.5" />
-                      Tambahkan Akun Lain
-                    </button>
-                    <button
-                      onClick={() => handleLogout()}
-                      className="relative flex w-full cursor-pointer select-none items-center gap-2 rounded-xl px-2.5 py-2 text-xs text-red-500 dark:text-red-400 outline-none hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors"
-                    >
-                      <LogOut className="size-3.5" />
-                      Keluar
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-          ) : (
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => setShowLogin(true)}
-                className="hidden cursor-pointer text-xs font-bold text-zinc-700 transition-colors hover:text-emerald-600 dark:text-zinc-300 dark:hover:text-emerald-400 sm:inline-block px-3 py-1.5"
-              >
-                Masuk
-              </button>
-              <button
-                onClick={() => setShowLogin(true)}
-                className="relative group overflow-hidden flex cursor-pointer items-center gap-1.5 rounded-full bg-emerald-500 hover:bg-emerald-400 text-zinc-950 px-4 py-2 text-xs font-extrabold shadow-[0_0_20px_rgba(16,185,129,0.35)] transition-all hover:scale-105 active:scale-95"
-              >
-                <span className="relative z-10 flex items-center gap-1">
-                  <span>Mulai Sekarang</span>
-                  <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
-                </span>
-                <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/40 to-transparent" />
-              </button>
-            </div>
-          )}
-        </div>
-      </header>
-    </div>
-  );
-});
-
-const TemplatePreview = memo(() => {
-  const [activeTemplateTab, setActiveTemplateTab] = useState("fashion");
-  return (
-    <div className="mt-6 space-y-3">
-      <div className="flex flex-wrap gap-1.5">
-        {Object.keys(presetTemplatePreview).map((cat) => (
-          <button
-            key={cat}
-            type="button"
-            onClick={() => setActiveTemplateTab(cat)}
-            className={`rounded-full px-2.5 py-1 text-[11px] font-bold transition-all cursor-pointer ${
-              activeTemplateTab === cat
-                ? "bg-amber-500 text-zinc-950 shadow-xs scale-105"
-                : "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-foreground"
-            }`}
-          >
-            {presetTemplatePreview[cat].nama.split(" ")[0]}
-          </button>
-        ))}
-      </div>
-      <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/90 dark:bg-zinc-950/80 p-3 text-[11px] leading-relaxed">
-        <p className="text-zinc-500 dark:text-zinc-400 font-medium italic">
-          "{presetTemplatePreview[activeTemplateTab].pertanyaan}"
-        </p>
-        <div className="mt-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 p-2.5 text-emerald-800 dark:text-emerald-300 font-semibold">
-          ⚡ AI Balasin: {presetTemplatePreview[activeTemplateTab].jawaban}
-        </div>
-      </div>
-    </div>
-  );
-});
-
-const ChatSimulator = memo(() => {
-  const [skenarioAktif, setSkenarioAktif] = useState("iklan");
-  const [isTyping, setIsTyping] = useState(false);
-  const [customInput, setCustomInput] = useState("");
-  const [chatMessages, setChatMessages] = useState([
-    {
-      pengirim: "user",
-      teks: simulasiChatData["iklan"].leadPertanyaan,
-      waktu: simulasiChatData["iklan"].leadWaktu,
-    },
-  ]);
-
+  // Synchronize chat messages with scenario
   useEffect(() => {
     const scenario = simulasiChatData[skenarioAktif];
     if (scenario) {
       setIsTyping(true);
-      setChatMessages([{ pengirim: "user", teks: scenario.leadPertanyaan, waktu: scenario.leadWaktu }]);
+      setChatMessages([
+        { pengirim: "user", teks: scenario.leadPertanyaan, waktu: scenario.leadWaktu },
+      ]);
       const timer = setTimeout(() => {
         setIsTyping(false);
         setChatMessages([
@@ -545,327 +353,43 @@ const ChatSimulator = memo(() => {
     }
   }, [skenarioAktif]);
 
+  // Handle custom interactive message send in simulator
   const handleSendCustomMessage = (e) => {
     if (e) e.preventDefault();
     if (!customInput.trim()) return;
+
     const userText = customInput.trim();
     setCustomInput("");
+
+    // Add user message
     const now = new Date();
     const currentTime = `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`;
+    
     setChatMessages((prev) => [
       ...prev,
       { pengirim: "user", teks: userText, waktu: currentTime },
     ]);
+
     setIsTyping(true);
     setTimeout(() => {
       setIsTyping(false);
-      let botResponse =
-        "Halo Kak! Salam kenal dari toko kami. Pesanan kakak sudah kami catat ya! Ada yang bisa kami bantu lagi untuk pengirimannya? 😊";
+      let botResponse = "Halo Kak! Salam kenal dari toko kami. Pesanan kakak sudah kami catat ya! Ada yang bisa kami bantu lagi untuk pengirimannya? 😊";
+      
       const lower = userText.toLowerCase();
-      if (lower.includes("cod") || lower.includes("bayar"))
-        botResponse =
-          "Bisa banget bayar di tempat (COD) kak! Kurir kami siap antar langsung ke alamat kakak tanpa ribet transfer ✨";
-      else if (lower.includes("harga") || lower.includes("diskon") || lower.includes("promo"))
-        botResponse =
-          "Untuk promo hari ini masih dapat potongan 30% + voucher gratis ongkir ya kak! Mau dibantu amankan stoknya sekarang?";
-      else if (lower.includes("stok") || lower.includes("ready") || lower.includes("ukuran"))
+      if (lower.includes("cod") || lower.includes("bayar")) {
+        botResponse = "Bisa banget bayar di tempat (COD) kak! Kurir kami siap antar langsung ke alamat kakak tanpa ribet transfer ✨";
+      } else if (lower.includes("harga") || lower.includes("diskon") || lower.includes("promo")) {
+        botResponse = "Untuk promo hari ini masih dapat potongan 30% + voucher gratis ongkir ya kak! Mau dibantu amankan stoknya sekarang?";
+      } else if (lower.includes("stok") || lower.includes("ready") || lower.includes("ukuran")) {
         botResponse = "Stok dan variasi ukuran ready lengkap kak! Mau dikirim hari ini sebelum jam 17.00 WIB?";
+      }
+
       setChatMessages((prev) => [
         ...prev,
         { pengirim: "bot", teks: botResponse, waktu: currentTime },
       ]);
     }, 850);
   };
-
-  return (
-    <section id="simulasi" className="scroll-reveal-scale mx-auto max-w-5xl px-4 sm:px-6 py-24">
-      <div className="rounded-[40px] border border-zinc-200 dark:border-zinc-800 bg-white/85 dark:bg-zinc-950/85 p-6 shadow-2xl backdrop-blur-2xl md:p-10">
-        <div className="mx-auto mb-8 max-w-2xl text-center">
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-1 text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400 mb-3">
-            <Smartphone className="size-3.5 text-emerald-400" />
-            Simulasi WhatsApp Interaktif
-          </span>
-          <h2 className="text-2xl sm:text-4xl font-black tracking-tight text-zinc-900 dark:text-zinc-100">
-            Uji Coba Langsung Cara AI Membalas Pembeli
-          </h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Klik tombol skenario cepat atau ketik sendiri pertanyaan di kolom chat untuk melihat respon cerdas AI
-            secara langsung.
-          </p>
-        </div>
-
-        <div className="mb-6 flex flex-wrap justify-center gap-2">
-          {Object.keys(simulasiChatData).map((key) => {
-            const item = simulasiChatData[key];
-            const active = skenarioAktif === key;
-            return (
-              <button
-                key={key}
-                type="button"
-                onClick={() => setSkenarioAktif(key)}
-                className={`flex cursor-pointer items-center gap-2 rounded-full px-4 py-2 text-xs font-bold transition-all ${
-                  active
-                    ? "bg-emerald-500 text-zinc-950 shadow-md shadow-emerald-500/25 scale-105"
-                    : "bg-zinc-100 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 border border-zinc-200 dark:border-zinc-800"
-                }`}
-              >
-                {key === "iklan" && <Zap className="size-3.5" />}
-                {key === "faq" && <HelpCircle className="size-3.5" />}
-                {key === "lokasi" && <Store className="size-3.5" />}
-                <span>{item.label}</span>
-              </button>
-            );
-          })}
-        </div>
-
-        <div className="mx-auto max-w-lg overflow-hidden rounded-3xl border-2 border-zinc-300 dark:border-zinc-800 bg-[#e5ddd5] shadow-2xl dark:bg-[#0b141a]">
-          <div className="flex items-center justify-between bg-[#075e54] px-4 py-3 text-white dark:bg-[#202c33] shadow-sm">
-            <div className="flex items-center gap-3">
-              <div className="relative">
-                <img
-                  src="/chatbot_wa.png"
-                  alt="Avatar"
-                  className="size-10 rounded-full object-cover ring-2 ring-emerald-400 shadow-xs"
-                />
-                <span className="absolute bottom-0 right-0 size-3 rounded-full border-2 border-[#075e54] bg-emerald-400 dark:border-[#202c33]" />
-              </div>
-              <div>
-                <div className="flex items-center gap-1.5">
-                  <h3 className="text-sm font-bold leading-tight">Sneakers Official Store</h3>
-                  <span className="rounded-full bg-emerald-500/30 px-1.5 py-0.2 text-[9px] font-extrabold text-emerald-200">
-                    OFFICIAL
-                  </span>
-                </div>
-                <p className="text-[11px] leading-tight text-emerald-200 dark:text-emerald-400 flex items-center gap-1 mt-0.5">
-                  <span className="inline-block size-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  {isTyping ? "Sedang mengetik balasan..." : "Online • CS AI Aktif 24/7"}
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3 text-white/80">
-              <button
-                type="button"
-                onClick={() => toast.info("Fitur panggilan suara via WhatsApp bot siap dihubungkan.")}
-                className="p-1 hover:text-white transition-colors cursor-pointer"
-                title="Panggilan Telepon"
-              >
-                <Phone className="size-4" />
-              </button>
-              <button
-                type="button"
-                onClick={() => toast.info("Simulasi interaktif siap melayani chat pembeli.")}
-                className="p-1 hover:text-white transition-colors cursor-pointer"
-                title="Panggilan Video"
-              >
-                <Video className="size-4" />
-              </button>
-              <MoreVertical className="size-4 cursor-pointer hover:text-white" />
-            </div>
-          </div>
-
-          <div className="flex min-h-[380px] max-h-[460px] overflow-y-auto flex-col justify-end space-y-3 bg-[radial-gradient(#0000000c_1px,transparent_1px)] p-4 [background-size:16px_16px] dark:bg-[radial-gradient(#ffffff0a_1px,transparent_1px)]">
-            <div className="my-1 text-center">
-              <span className="rounded-md bg-white/80 dark:bg-[#182229] px-3 py-1 text-[10px] text-muted-foreground shadow-xs font-semibold">
-                Hari Ini &bull; Terhubung Otomatis via Balasin AI
-              </span>
-            </div>
-
-            {chatMessages.map((msg, idx) => {
-              const isUser = msg.pengirim === "user";
-              return (
-                <div
-                  key={idx}
-                  className={`flex flex-col ${isUser ? "items-end" : "items-start"} animate-bubble-pop`}
-                >
-                  <div
-                    className={`max-w-[88%] rounded-2xl px-3.5 py-2.5 text-xs leading-relaxed shadow-sm ${
-                      isUser
-                        ? "rounded-tr-xs bg-[#d9fdd3] text-gray-900 dark:bg-[#005c4b] dark:text-white"
-                        : "rounded-tl-xs bg-white text-gray-900 dark:bg-[#202c33] dark:text-gray-100"
-                    }`}
-                  >
-                    {msg.media && msg.media.tipe === "produk" && (
-                      <div className="mb-2.5 overflow-hidden rounded-xl border border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5">
-                        <img
-                          src={msg.media.gambar}
-                          alt={msg.media.nama}
-                          className="h-32 w-full object-cover rounded-t-xl"
-                        />
-                        <div className="p-2.5 text-left">
-                          <span className="inline-block rounded-md bg-emerald-500 text-zinc-950 font-black text-[9px] px-2 py-0.5 mb-1">
-                            {msg.media.diskon}
-                          </span>
-                          <h4 className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
-                            {msg.media.nama}
-                          </h4>
-                          <div className="flex items-center gap-2 mt-1">
-                            <span className="font-black text-sm text-emerald-600 dark:text-emerald-400">
-                              {msg.media.hargaPromo}
-                            </span>
-                            <span className="line-through text-[10px] text-muted-foreground">
-                              {msg.media.hargaAsli}
-                            </span>
-                          </div>
-                          <p className="text-[10px] text-muted-foreground mt-1">{msg.media.spek}</p>
-                          <div className="mt-2.5 flex gap-2">
-                            <button
-                              type="button"
-                              onClick={() => setCustomInput("Saya mau pesan yang ukuran 42 warna Hitam ya min")}
-                              className="flex-1 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-zinc-950 font-bold py-1.5 text-[10px] text-center transition-all cursor-pointer"
-                            >
-                              📦 Pesan Sekarang (COD)
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => setCustomInput("Bisa tolong cek ongkir gratis ke Surabaya kak?")}
-                              className="rounded-lg border border-emerald-500/40 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 font-bold px-2 py-1.5 text-[10px] cursor-pointer"
-                            >
-                              Cek Ongkir
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                    <p className="whitespace-pre-line">{msg.teks}</p>
-                    <div
-                      className={`mt-1.5 flex items-center justify-end gap-1 text-[10px] ${
-                        isUser ? "text-emerald-700 dark:text-emerald-200" : "text-muted-foreground"
-                      }`}
-                    >
-                      <span>{msg.waktu}</span>
-                      <CheckCheck className="size-3 text-[#53bdeb]" />
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-
-            {isTyping && (
-              <div className="flex flex-col items-start animate-bubble-pop">
-                <div className="flex items-center gap-1.5 rounded-2xl rounded-tl-xs bg-white dark:bg-[#202c33] px-4 py-2.5 shadow-sm">
-                  <span className="size-2 rounded-full bg-emerald-600 dark:bg-emerald-400 animate-typing-1" />
-                  <span className="size-2 rounded-full bg-emerald-600 dark:bg-emerald-400 animate-typing-2" />
-                  <span className="size-2 rounded-full bg-emerald-600 dark:bg-emerald-400 animate-typing-3" />
-                </div>
-              </div>
-            )}
-          </div>
-
-          <form
-            onSubmit={handleSendCustomMessage}
-            className="flex items-center gap-2 border-t border-black/5 bg-[#f0f2f5] p-2.5 dark:border-white/5 dark:bg-[#202c33]"
-          >
-            <input
-              type="text"
-              value={customInput}
-              onChange={(e) => setCustomInput(e.target.value)}
-              placeholder="Ketik pertanyaan untuk coba chat..."
-              className="flex-1 rounded-full bg-white px-4 py-2 text-xs text-zinc-900 dark:text-zinc-100 placeholder:text-muted-foreground outline-none dark:bg-[#2a3942] border border-black/5"
-            />
-            <button
-              type="submit"
-              className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#00a884] text-white shadow-xs cursor-pointer hover:scale-105 active:scale-95 transition-all"
-              title="Kirim Pesan"
-            >
-              <Send className="size-3.5" />
-            </button>
-          </form>
-        </div>
-      </div>
-    </section>
-  );
-});
-
-const LoginDialog = memo(({ open, setOpen, googleUser, setGoogleUser }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [isShaking, setIsShaking] = useState(false);
-  const [oauthError, setOauthError] = useState(null);
-  const googleClickLockRef = useRef(false);
-
-  const handleGoogleClick = useCallback(() => {
-    if (googleClickLockRef.current) return;
-    googleClickLockRef.current = true;
-    setOauthError(null);
-    try {
-      const origin = encodeURIComponent(window.location.origin);
-      window.location.href = `${API_BASE}/auth/google?origin=${origin}`;
-    } catch {
-      setOauthError("Gagal membuka login Google. Coba lagi.");
-      toast.error("Gagal membuka login Google");
-      googleClickLockRef.current = false;
-    }
-  }, []);
-
-  const handleManualLogin = useCallback((e) => {
-    e.preventDefault();
-    if (!email || !password || !email.includes("@") || password.length < 6) {
-      setIsError(true);
-      setIsShaking(true);
-      setTimeout(() => setIsShaking(false), 500);
-      return;
-    }
-    setIsError(false);
-    setIsShaking(true);
-    setTimeout(() => {
-      setIsShaking(false);
-      setIsError(true);
-    }, 300);
-  }, [email, password]);
-
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="sm:max-w-md rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-zinc-950/95 backdrop-blur-2xl">
-        <style>{`
-          @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-            20%, 40%, 60%, 80% { transform: translateX(5px); }
-          }
-          .shake-animation { animation: shake 0.5s ease-in-out; }
-        `}</style>
-        <DialogHeader className="items-center">
-          <div className="mb-2"><BrandLogo size="lg" /></div>
-          <DialogTitle className="text-center text-xl font-bold tracking-tight">Masuk ke Akun Balasin</DialogTitle>
-          <DialogDescription className="text-center text-xs text-muted-foreground">Akses instan dashboard CS AI WhatsApp bisnis Anda</DialogDescription>
-        </DialogHeader>
-        <form onSubmit={handleManualLogin} className={`space-y-4 pt-2 ${isShaking ? "shake-animation" : ""}`}>
-          <div className="space-y-1.5">
-            <Label htmlFor="email" className="text-xs text-muted-foreground">Email</Label>
-            <Input id="email" type="text" placeholder="Email bisnis atau pribadi" value={email} onChange={(e) => { setEmail(e.target.value); if (isError) setIsError(false); }} className={`rounded-xl border-zinc-200 dark:border-zinc-800 ${isError ? "border-red-500 focus-visible:ring-red-500" : ""}`} />
-          </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="password" className="text-xs text-muted-foreground">Kata Sandi</Label>
-            <div className="relative">
-              <Input id="password" type={showPassword ? "text" : "password"} placeholder="Masukkan kata sandi" value={password} onChange={(e) => { setPassword(e.target.value); if (isError) setIsError(false); }} className={`rounded-xl border-zinc-200 dark:border-zinc-800 ${isError ? "border-red-500 focus-visible:ring-red-500" : ""}`} />
-              <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-muted-foreground transition-colors hover:text-foreground">
-                {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
-              </button>
-            </div>
-            {isError && <p className="mt-1 text-xs leading-tight text-red-500">Email atau kata sandi tidak cocok. Gunakan tombol Google di bawah untuk akses langsung.</p>}
-          </div>
-          <div className="relative my-6 flex items-center justify-center">
-            <div className="w-full border-t border-border" />
-            <span className="absolute bg-background px-2 text-xs text-muted-foreground font-semibold">ATAU</span>
-          </div>
-          <button type="button" onClick={handleGoogleClick} className="flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/80 px-4 py-3 text-sm font-semibold shadow-xs transition-all hover:bg-zinc-100 dark:hover:bg-zinc-800">
-            <svg className="size-4 shrink-0" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" /><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" /><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" /><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" /></svg>
-            <span>Lanjutkan dengan Akun Google</span>
-          </button>
-          {oauthError && <p className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs leading-tight text-amber-600 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-400">{oauthError}</p>}
-          <Button type="submit" className="w-full cursor-pointer rounded-2xl bg-zinc-900 hover:bg-zinc-800 dark:bg-emerald-500 dark:hover:bg-emerald-600 dark:text-zinc-950 font-bold text-white py-3">Masuk</Button>
-        </form>
-      </DialogContent>
-    </Dialog>
-  );
-});
-
-export function Landing() {
-  const navigate = useNavigate();
-  const [showLogin, setShowLogin] = useState(false);
-  const [googleUser, setGoogleUser] = useState(null);
 
   // Dynamic document title
   useEffect(() => {
@@ -876,7 +400,16 @@ export function Landing() {
   }, []);
 
   useEffect(() => {
-    const sync = () => setGoogleUser(getGoogleUser());
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    const sync = () => {
+      setGoogleUser(getGoogleUser());
+      setAvatarError(false);
+    };
     sync();
     window.addEventListener("balasin:auth-changed", sync);
     window.addEventListener("storage", sync);
@@ -886,12 +419,16 @@ export function Landing() {
     };
   }, []);
 
+  useEffect(() => {
+    setAvatarError(false);
+  }, [googleUser?.avatarUrl, googleUser?.picture]);
+
   // Scroll Reveal: animate elements into view when they enter the viewport
   useEffect(() => {
-    const els = document.querySelectorAll(
-      '.scroll-reveal, .scroll-reveal-left, .scroll-reveal-right, .scroll-reveal-scale'
-    );
+    const revealSelectors = '.scroll-reveal, .scroll-reveal-left, .scroll-reveal-right, .scroll-reveal-scale';
+    const els = document.querySelectorAll(revealSelectors);
     if (!els.length) return;
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -903,9 +440,24 @@ export function Landing() {
       },
       { threshold: 0.15, rootMargin: '0px 0px -100px 0px' }
     );
+
     els.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
   }, []);
+
+  const handleGoogleClick = () => {
+    if (googleClickLockRef.current) return;
+    googleClickLockRef.current = true;
+    setOauthError(null);
+    try {
+      const origin = encodeURIComponent(window.location.origin);
+      window.location.href = `${API_BASE}/auth/google?origin=${origin}`;
+    } catch {
+      setOauthError("Gagal membuka login Google. Coba lagi.");
+      toast.error("Gagal membuka login Google");
+      googleClickLockRef.current = false;
+    }
+  };
 
   const handleManualLogin = (e) => {
     e.preventDefault();
@@ -1005,9 +557,169 @@ export function Landing() {
   return (
     <>
       <AmbientBackground />
-      <Navbar googleUser={googleUser} setShowLogin={setShowLogin} />
 
-      {/* Login Dialog */}
+      {/* ══════════════════════════════════════════════════════════ */}
+      {/* 1. DYNAMIC STICKY FLOATING CAPSULE NAVBAR (NAS.COM STYLE)  */}
+      {/* ══════════════════════════════════════════════════════════ */}
+      <div className="fixed top-4 inset-x-0 z-50 mx-auto max-w-5xl px-4 pointer-events-none transition-all duration-300">
+           <header
+          className={`pointer-events-auto mx-auto flex items-center justify-between rounded-full border border-zinc-200/80 dark:border-zinc-800/90 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-lg shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300 ${
+            isScrolled ? "py-2 px-5 sm:px-6 border-emerald-500/30" : "py-3 px-6 sm:px-7"
+          }`}
+        >
+          {/* Left: Logo with Live Pulsing Green Dot */}
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="relative">
+              <img
+                src="/chatbot_wa.png"
+                alt="Balasin"
+                className="h-8 w-8 rounded-full object-contain transition-transform duration-300 group-hover:scale-110 shadow-xs"
+              />
+              <span className="absolute -bottom-0.5 -right-0.5 flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500 border border-white dark:border-zinc-950" />
+              </span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-lg font-black tracking-tight text-zinc-900 dark:text-zinc-50">
+                Balas<span className="text-emerald-500">in</span>
+              </span>
+            </div>
+          </Link>
+
+          {/* Center: Clean Nav Links with hover underline indicator */}
+          <nav className="hidden items-center gap-1 sm:gap-2 text-xs font-semibold text-zinc-600 dark:text-zinc-300 md:flex">
+            <a
+              href="#fitur"
+              onClick={(e) => handleNavClick(e, "fitur")}
+              className="relative rounded-full px-3.5 py-1.5 transition-colors hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-900/60"
+            >
+              Fitur Unggulan
+            </a>
+            <a
+              href="#simulasi"
+              onClick={(e) => handleNavClick(e, "simulasi")}
+              className="relative rounded-full px-3.5 py-1.5 transition-colors hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-900/60"
+            >
+              Simulasi Chat
+            </a>
+            <a
+              href="#cara-kerja"
+              onClick={(e) => handleNavClick(e, "cara-kerja")}
+              className="relative rounded-full px-3.5 py-1.5 transition-colors hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-900/60"
+            >
+              Cara Pakai
+            </a>
+            <a
+              href="#perbandingan"
+              onClick={(e) => handleNavClick(e, "perbandingan")}
+              className="relative rounded-full px-3.5 py-1.5 transition-colors hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-900/60"
+            >
+              Keuntungan ROI
+            </a>
+            <a
+              href="#testimoni"
+              onClick={(e) => handleNavClick(e, "testimoni")}
+              className="relative rounded-full px-3.5 py-1.5 transition-colors hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-900/60"
+            >
+              Testimoni
+            </a>
+          </nav>
+
+          {/* Right: Theme Toggle & CTA / User Dropdown */}
+          <div className="flex items-center gap-2.5">
+            <ThemeToggle className="size-8 rounded-full border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-200 hover:border-emerald-500/40" />
+
+            {googleUser ? (
+              <div
+                className="relative"
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+              >
+                <button className="flex cursor-pointer items-center gap-2 rounded-full border border-zinc-200 dark:border-zinc-800 bg-zinc-100/80 dark:bg-zinc-900/80 p-1 pr-3 transition-all hover:border-emerald-500/60 focus-visible:outline-none">
+                  <span className="relative flex size-7 shrink-0">
+                    {avatarSrc && !avatarError ? (
+                      <img
+                        src={avatarSrc}
+                        alt="Profile"
+                        referrerPolicy="no-referrer"
+                        onError={() => setAvatarError(true)}
+                        className="size-7 rounded-full object-cover ring-2 ring-emerald-500/30"
+                      />
+                    ) : (
+                      <span className="flex size-7 items-center justify-center rounded-full bg-emerald-500/10 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
+                        {initials}
+                      </span>
+                    )}
+                  </span>
+                  <span className="hidden text-xs font-bold sm:inline-block text-zinc-900 dark:text-zinc-100">
+                    {googleUser.name.split(" ")[0]}
+                  </span>
+                  <ChevronDown className="size-3 text-zinc-400" />
+                </button>
+                {isOpen && (
+                  <div className="absolute top-full right-0 z-50 pt-2">
+                    <div className="w-56 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-2 shadow-2xl backdrop-blur-xl">
+                      <div className="px-2.5 py-2">
+                        <p className="text-xs font-bold text-zinc-900 dark:text-zinc-100">{googleUser.name}</p>
+                        <p className="mt-0.5 truncate text-[10px] text-zinc-500 dark:text-zinc-400">
+                          {googleUser.email}
+                        </p>
+                      </div>
+                      <div className="-mx-1 my-1 h-px bg-zinc-200 dark:bg-zinc-800" />
+                      <Link
+                        to="/app"
+                        onClick={() => setIsOpen(false)}
+                        className="relative flex w-full cursor-pointer select-none items-center gap-2 rounded-xl px-2.5 py-2 text-xs font-semibold text-emerald-600 dark:text-emerald-400 outline-none hover:bg-emerald-50 dark:hover:bg-emerald-500/10 transition-colors"
+                      >
+                        <LayoutDashboard className="size-3.5" />
+                        Buka Dashboard
+                      </Link>
+                      <button
+                        onClick={() => {
+                          setIsOpen(false);
+                          setShowLogin(true);
+                        }}
+                        className="relative flex w-full cursor-pointer select-none items-center gap-2 rounded-xl px-2.5 py-2 text-xs text-zinc-700 dark:text-zinc-300 outline-none hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors"
+                      >
+                        <UserPlus className="size-3.5" />
+                        Tambahkan Akun Lain
+                      </button>
+                      <button
+                        onClick={() => handleLogout()}
+                        className="relative flex w-full cursor-pointer select-none items-center gap-2 rounded-xl px-2.5 py-2 text-xs text-red-500 dark:text-red-400 outline-none hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors"
+                      >
+                        <LogOut className="size-3.5" />
+                        Keluar
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setShowLogin(true)}
+                  className="hidden cursor-pointer text-xs font-bold text-zinc-700 transition-colors hover:text-emerald-600 dark:text-zinc-300 dark:hover:text-emerald-400 sm:inline-block px-3 py-1.5"
+                >
+                  Masuk
+                </button>
+                <button
+                  onClick={() => setShowLogin(true)}
+                  className="relative group overflow-hidden flex cursor-pointer items-center gap-1.5 rounded-full bg-emerald-500 hover:bg-emerald-400 text-zinc-950 px-4 py-2 text-xs font-extrabold shadow-[0_0_20px_rgba(16,185,129,0.35)] transition-all hover:scale-105 active:scale-95"
+                >
+                  <span className="relative z-10 flex items-center gap-1">
+                    <span>Mulai Sekarang</span>
+                    <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
+                  </span>
+                  <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+                </button>
+              </div>
+            )}
+          </div>
+        </header>
+      </div>
+
       {/* Login Dialog */}
       <Dialog open={showLogin} onOpenChange={setShowLogin}>
         <DialogContent className="sm:max-w-md rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-zinc-950/95 backdrop-blur-2xl">
@@ -1138,8 +850,8 @@ export function Landing() {
         {/* ══════════════════════════════════════════════════════════ */}
         <section className="relative overflow-hidden pt-28 pb-16 lg:pt-36 lg:pb-24 tech-grid-bg">
           {/* Ambient Glowing Orbs */}
-          <div className="pointer-events-none absolute top-10 left-1/4 h-[300px] w-[400px] rounded-full bg-emerald-500/10 blur-[80px]" />
-          <div className="pointer-events-none absolute top-36 right-10 h-[250px] w-[350px] rounded-full bg-teal-500/10 blur-[80px]" />
+          <div className="pointer-events-none absolute top-10 left-1/4 h-[400px] w-[550px] rounded-full bg-emerald-500/15 blur-[140px] animate-pulse-glow" />
+          <div className="pointer-events-none absolute top-36 right-10 h-[350px] w-[500px] rounded-full bg-teal-500/15 blur-[130px] animate-pulse-glow" />
 
           <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-8">
