@@ -564,7 +564,7 @@ export function Landing() {
       {/* ══════════════════════════════════════════════════════════ */}
       <div className="fixed top-4 inset-x-0 z-50 mx-auto max-w-5xl px-4 pointer-events-none transition-all duration-300">
            <header
-          className={`pointer-events-auto mx-auto flex items-center justify-between rounded-full border border-zinc-200/80 dark:border-zinc-800/90 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-lg shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300 ${
+          className={`pointer-events-auto mx-auto flex items-center justify-between rounded-full border border-zinc-200/80 dark:border-zinc-800/90 bg-white/95 dark:bg-zinc-950/95 backdrop-blur-md transform-gpu will-change-transform shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300 ${
             isScrolled ? "py-2 px-5 sm:px-6 border-emerald-500/30" : "py-3 px-6 sm:px-7"
           }`}
         >
@@ -659,8 +659,8 @@ export function Landing() {
                   <ChevronDown className="size-3 text-zinc-400" />
                 </button>
                 {isOpen && (
-                  <div className="absolute top-full right-0 z-50 pt-2">
-                    <div className="w-56 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-2 shadow-2xl backdrop-blur-xl">
+                  <div className="absolute top-full right-0 z-50 pt-2 transform-gpu will-change-[transform,opacity] transition-all duration-150 ease-out animate-in fade-in zoom-in-95">
+                    <div className="w-56 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-zinc-950/95 p-2 shadow-2xl backdrop-blur-md">
                       <div className="px-2.5 py-2">
                         <p className="text-xs font-bold text-zinc-900 dark:text-zinc-100">{googleUser.name}</p>
                         <p className="mt-0.5 truncate text-[10px] text-zinc-500 dark:text-zinc-400">
@@ -723,7 +723,7 @@ export function Landing() {
 
       {/* Login Dialog */}
       <Dialog open={showLogin} onOpenChange={setShowLogin}>
-        <DialogContent className="sm:max-w-md rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-zinc-950/95 backdrop-blur-2xl">
+        <DialogContent className="sm:max-w-md rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-zinc-950/95 backdrop-blur-md">
           <style>{`
             @keyframes shake {
               0%, 100% { transform: translateX(0); }
@@ -962,7 +962,7 @@ export function Landing() {
               {/* Right Column: Phone Mockup with 3 Dynamic Floating Badges */}
               <div className="relative flex justify-center lg:col-span-5">
                 {/* Floating Badge 1 (Top Left): Live Chat Incoming */}
-                <div className="absolute -top-6 -left-6 z-20 hidden items-center gap-3 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-zinc-900/95 p-3 shadow-2xl backdrop-blur-xl animate-float-delayed sm:flex">
+                <div className="absolute -top-6 -left-6 z-20 hidden items-center gap-3 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-zinc-900/95 p-3 shadow-2xl backdrop-blur-md animate-float-delayed sm:flex">
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-500/20 text-lg">
                     💬
                   </div>
@@ -976,7 +976,7 @@ export function Landing() {
                 </div>
 
                 {/* Floating Badge 2 (Bottom Right): Instant Response */}
-                <div className="absolute -bottom-6 -right-6 z-20 hidden items-center gap-3 rounded-2xl border border-emerald-500/40 bg-white/95 dark:bg-zinc-900/95 p-3 shadow-2xl backdrop-blur-xl animate-float sm:flex">
+                <div className="absolute -bottom-6 -right-6 z-20 hidden items-center gap-3 rounded-2xl border border-emerald-500/40 bg-white/95 dark:bg-zinc-900/95 p-3 shadow-2xl backdrop-blur-md animate-float sm:flex">
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-500 font-bold text-zinc-950">
                     ⚡
                   </div>
@@ -1083,11 +1083,11 @@ export function Landing() {
 
           {/* Marquee Wrapper 1: Platform Integration */}
           <div className="relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)] mb-8">
-            <div className="animate-marquee flex gap-6 items-center">
+            <div className="animate-marquee hover:[animation-play-state:paused] flex gap-6 items-center transform-gpu will-change-transform">
               {[...platformItems, ...platformItems].map((p, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center gap-3.5 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white/90 dark:bg-zinc-900/90 px-5 py-3 shadow-xs backdrop-blur-md transition-all hover:scale-105 hover:border-emerald-500/50 cursor-pointer shrink-0 group"
+                  className="flex items-center gap-3.5 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-zinc-900/95 px-5 py-3 shadow-xs backdrop-blur-md transition-transform duration-200 hover:scale-105 hover:border-emerald-500/50 cursor-pointer shrink-0 group transform-gpu will-change-transform"
                 >
                   <div className="transition-transform duration-500 group-hover:scale-115">
                     {p.logo}
@@ -1132,7 +1132,7 @@ export function Landing() {
               ].map((stat) => (
                 <div
                   key={stat.label}
-                  className="relative overflow-hidden rounded-3xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/60 dark:bg-zinc-900/60 p-6 text-center shadow-sm backdrop-blur-md transition-all hover:border-emerald-500/40 hover:-translate-y-1"
+                  className="relative overflow-hidden rounded-3xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/60 dark:bg-zinc-900/60 p-6 text-center shadow-sm backdrop-blur-md transform-gpu will-change-transform transition-\[transform,border-color\] duration-200 hover:border-emerald-500/40 hover:-translate-y-1"
                 >
                   <div className="mb-2 flex justify-center">
                     <span className="rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
@@ -1169,7 +1169,7 @@ export function Landing() {
             {/* Asymmetric Bento Box (4 Cards) dengan Desain & Icon Kaya Visual */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {/* Card 1 (Large - col-span 2): Speed-to-Lead + Interactive Benchmark Sine Wave */}
-              <div className="md:col-span-2 group relative overflow-hidden rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/70 p-8 shadow-sm backdrop-blur-xl transition-all hover:border-emerald-500/50 hover:shadow-[0_0_35px_rgba(16,185,129,0.15)] flex flex-col justify-between">
+              <div className="md:col-span-2 group relative overflow-hidden rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/70 p-8 shadow-sm backdrop-blur-md transform-gpu will-change-transform transition-\[transform,border-color,box-shadow\] duration-200 hover:border-emerald-500/50 hover:shadow-[0_0_35px_rgba(16,185,129,0.15)] flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between mb-6">
                     {/* Rich Multi-Layered Glowing Icon Container */}
@@ -1251,7 +1251,7 @@ export function Landing() {
               </div>
 
               {/* Card 2 (Medium - col-span 1): QR Code Scan 1 Minute with Laser Scanner Visual */}
-              <div className="md:col-span-1 group relative overflow-hidden rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/70 p-8 shadow-sm backdrop-blur-xl transition-all hover:border-emerald-500/50 hover:shadow-[0_0_35px_rgba(16,185,129,0.15)] flex flex-col justify-between">
+              <div className="md:col-span-1 group relative overflow-hidden rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/70 p-8 shadow-sm backdrop-blur-md transform-gpu will-change-transform transition-\[transform,border-color,box-shadow\] duration-200 hover:border-emerald-500/50 hover:shadow-[0_0_35px_rgba(16,185,129,0.15)] flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between mb-6">
                     {/* Rich Multi-Layered Icon */}
@@ -1297,7 +1297,7 @@ export function Landing() {
               </div>
 
               {/* Card 3 (Medium - col-span 1): Dynamic Store Knowledge Base Simulator */}
-              <div className="md:col-span-1 group relative overflow-hidden rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/70 p-8 shadow-sm backdrop-blur-xl transition-all hover:border-emerald-500/50 hover:shadow-[0_0_35px_rgba(16,185,129,0.15)] flex flex-col justify-between">
+              <div className="md:col-span-1 group relative overflow-hidden rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/70 p-8 shadow-sm backdrop-blur-md transform-gpu will-change-transform transition-\[transform,border-color,box-shadow\] duration-200 hover:border-emerald-500/50 hover:shadow-[0_0_35px_rgba(16,185,129,0.15)] flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between mb-6">
                     {/* Rich Multi-Layered Icon */}
@@ -1353,7 +1353,7 @@ export function Landing() {
               </div>
 
               {/* Card 4 (Large - col-span 2): Enterprise Privacy & Cloud Infrastructure */}
-              <div className="md:col-span-2 group relative overflow-hidden rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/70 p-8 shadow-sm backdrop-blur-xl transition-all hover:border-emerald-500/50 hover:shadow-[0_0_35px_rgba(16,185,129,0.15)] flex flex-col justify-between">
+              <div className="md:col-span-2 group relative overflow-hidden rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/70 p-8 shadow-sm backdrop-blur-md transform-gpu will-change-transform transition-\[transform,border-color,box-shadow\] duration-200 hover:border-emerald-500/50 hover:shadow-[0_0_35px_rgba(16,185,129,0.15)] flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between mb-6">
                     {/* Rich Multi-Layered Icon */}
@@ -1420,7 +1420,7 @@ export function Landing() {
         {/* 5. REVISI SIMULASI CHAT INTERAKTIF LEBIH HIDUP & FLEKSIBEL  */}
         {/* ══════════════════════════════════════════════════════════ */}
         <section id="simulasi" className="scroll-reveal-scale mx-auto max-w-5xl px-4 sm:px-6 py-24">
-          <div className="rounded-[40px] border border-zinc-200 dark:border-zinc-800 bg-white/85 dark:bg-zinc-950/85 p-6 shadow-2xl backdrop-blur-2xl md:p-10">
+          <div className="rounded-[40px] border border-zinc-200 dark:border-zinc-800 bg-white/85 dark:bg-zinc-950/85 p-6 shadow-2xl backdrop-blur-md md:p-10">
             <div className="mx-auto mb-8 max-w-2xl text-center">
               <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-1 text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400 mb-3">
                 <Smartphone className="size-3.5 text-emerald-400" />
@@ -1655,7 +1655,7 @@ export function Landing() {
             {langkahMudah.map((step, idx) => (
               <div
                 key={step.nomor}
-                className="group relative flex flex-col justify-between rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/70 p-7 shadow-sm backdrop-blur-xl transition-all hover:border-emerald-500/50 hover:-translate-y-1.5"
+                className="group relative flex flex-col justify-between rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/70 p-7 shadow-sm backdrop-blur-md transform-gpu will-change-transform transition-\[transform,border-color\] duration-200 hover:border-emerald-500/50 hover:-translate-y-1.5"
               >
                 <div>
                   {/* Step Header */}
@@ -1749,7 +1749,7 @@ export function Landing() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* Conventional Store Card */}
-              <div className="rounded-3xl border border-red-500/20 bg-white/70 dark:bg-zinc-900/50 p-8 shadow-sm backdrop-blur-xl">
+              <div className="rounded-3xl border border-red-500/20 bg-white/70 dark:bg-zinc-900/50 p-8 shadow-sm backdrop-blur-md">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-500/10 text-red-500">
                     <XCircle className="size-5" />
@@ -1776,7 +1776,7 @@ export function Landing() {
               </div>
 
               {/* Balasin Store Card (Glowing Neon Pulse) */}
-              <div className="relative rounded-3xl border border-emerald-500/50 bg-white/95 dark:bg-zinc-900/90 p-8 shadow-2xl backdrop-blur-xl animate-border-pulse">
+              <div className="relative rounded-3xl border border-emerald-500/50 bg-white/95 dark:bg-zinc-900/90 p-8 shadow-2xl backdrop-blur-md animate-border-pulse">
                 <div className="absolute top-4 right-4 rounded-full bg-emerald-500/10 border border-emerald-500/30 px-3 py-1 text-[11px] font-extrabold text-emerald-600 dark:text-emerald-400">
                   REKOMENDASI SELLER ✨
                 </div>
@@ -1830,11 +1830,11 @@ export function Landing() {
 
           {/* Continuous Infinite Moving Testimonials Marquee */}
           <div className="relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
-            <div className="animate-marquee-testimonials flex gap-6 items-stretch">
+            <div className="animate-marquee-testimonials hover:[animation-play-state:paused] flex gap-6 items-stretch transform-gpu will-change-transform">
               {[...testimoniList, ...testimoniList].map((t, idx) => (
                 <div
                   key={idx}
-                  className="flex w-[380px] shrink-0 flex-col justify-between rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white/85 dark:bg-zinc-900/85 p-6 shadow-md backdrop-blur-xl transition-all hover:scale-105 hover:border-emerald-500/50 cursor-pointer"
+                  className="flex w-[380px] shrink-0 flex-col justify-between rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white/90 dark:bg-zinc-900/90 p-6 shadow-md backdrop-blur-md transition-transform duration-200 hover:scale-105 hover:border-emerald-500/50 cursor-pointer transform-gpu will-change-transform"
                 >
                   <div>
                     <div className="flex items-center justify-between mb-4">
@@ -1897,7 +1897,7 @@ export function Landing() {
               {faqItems.map((faq, idx) => (
                 <details
                   key={idx}
-                  className="group rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/60 p-6 shadow-xs backdrop-blur-xl transition-all hover:border-emerald-500/40 [&_summary::-webkit-details-marker]:hidden"
+                  className="group rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/60 p-6 shadow-xs backdrop-blur-md transform-gpu will-change-transform transition-\[transform,border-color\] duration-200 hover:border-emerald-500/40 [&_summary::-webkit-details-marker]:hidden"
                 >
                   <summary className="flex cursor-pointer items-center justify-between text-base font-bold text-zinc-900 dark:text-zinc-100">
                     <span>{faq.q}</span>
