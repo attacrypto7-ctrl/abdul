@@ -13,12 +13,6 @@ import {
   AlertCircle,
   ArrowRight,
   HelpCircle,
-  Building2,
-  ShoppingBag,
-  Briefcase,
-  HeartHandshake,
-  Stethoscope,
-  GraduationCap,
   Sliders,
 } from "lucide-react";
 import { useState, useEffect } from "react";
@@ -56,16 +50,6 @@ export const Route = createFileRoute("/app/")({
   }),
   component: TenantOverview,
 });
-
-function getBusinessTypeIcon(type?: string) {
-  if (!type) return Building2;
-  if (type.includes("Toko") || type.includes("Commerce")) return ShoppingBag;
-  if (type.includes("Agency") || type.includes("Jasa")) return Briefcase;
-  if (type.includes("Yayasan") || type.includes("Profit")) return HeartHandshake;
-  if (type.includes("Klinik") || type.includes("Kesehatan")) return Stethoscope;
-  if (type.includes("Sekolah") || type.includes("Edukasi")) return GraduationCap;
-  return Building2;
-}
 
 function TenantOverview() {
   const queryClient = useQueryClient();
@@ -152,7 +136,6 @@ function TenantOverview() {
 
   const currentType = tenant?.industri || "Belum Memilih";
   const isTypeSelected = currentType !== "Belum Memilih" && currentType !== "Belum Ditentukan";
-  const TypeIcon = getBusinessTypeIcon(currentType);
 
   const score = readiness?.score ?? 50;
   const scoreLevel = readiness?.level ?? "Cukup Siap";
@@ -164,15 +147,9 @@ function TenantOverview() {
         title="Ringkasan"
         description="Pantau kinerja bot WhatsApp, kendali balas otomatis, dan kesiapan AI bisnis Anda."
         action={
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground">
-              <TypeIcon className="size-3.5 text-emerald-600 dark:text-emerald-400" />
-              <span>{isTypeSelected ? currentType : "Tipe Bisnis Belum Dipilih"}</span>
-            </span>
-            <Button asChild variant="outline" size="sm" className="rounded-xl">
-              <Link to="/app/uji-coba">Uji coba bot</Link>
-            </Button>
-          </div>
+          <Button asChild variant="outline" size="sm" className="rounded-xl">
+            <Link to="/app/uji-coba">Uji coba bot</Link>
+          </Button>
         }
       />
 

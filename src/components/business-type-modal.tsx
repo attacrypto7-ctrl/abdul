@@ -6,7 +6,6 @@ import {
   HeartHandshake,
   Stethoscope,
   GraduationCap,
-  Building2,
   CheckCircle2,
   Sparkles,
   ArrowRight,
@@ -60,13 +59,6 @@ export const BUSINESS_TYPES = [
     icon: GraduationCap,
     deskripsi: "Bimbingan belajar, kursus bahasa/skill, sekolah, akademi pelatihan.",
     tagline: "Edukatif, memberikan rincian program belajar, biaya, & pendaftaran",
-  },
-  {
-    id: "Bisnis Umum",
-    label: "Lainnya / Bisnis Umum",
-    icon: Building2,
-    deskripsi: "Perusahaan dagang, properti, bengkel, sewa/rental, dan bidang usaha lainnya.",
-    tagline: "Fleksibel menjawab pertanyaan pelanggan sesuai template yang Anda tentukan",
   },
 ];
 
