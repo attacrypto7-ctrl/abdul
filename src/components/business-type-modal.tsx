@@ -138,12 +138,10 @@ export function BusinessTypeModal({
             const isSelected = selected === item.id || selected === item.label;
             const Icon = item.icon;
             return (
-              <button
+              <div
                 key={item.id}
-                type="button"
-                aria-pressed={isSelected}
                 onClick={() => setSelected(item.id)}
-                className={`group relative flex w-full cursor-pointer flex-col justify-between rounded-xl border p-4 text-left transition-all duration-200 ${
+                className={`group relative flex cursor-pointer flex-col justify-between rounded-xl border p-4 transition-all duration-200 ${
                   isSelected
                     ? "border-emerald-500 bg-emerald-500/5 ring-1 ring-emerald-500 shadow-xs"
                     : "border-border bg-card/60 hover:border-border/80 hover:bg-accent/40"
@@ -179,7 +177,7 @@ export function BusinessTypeModal({
                 <div className="mt-3 pt-2 border-t border-border/40 text-[11px] font-medium text-emerald-600 dark:text-emerald-400/90 leading-tight">
                   ✨ {item.tagline}
                 </div>
-              </button>
+              </div>
             );
           })}
         </div>
