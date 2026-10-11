@@ -895,7 +895,7 @@ export const Landing = memo(function Landing() {
                         setShowLogin(true);
                       }
                     }}
-                    className="relative group overflow-hidden flex w-full items-center justify-center gap-3 rounded-full bg-emerald-500 hover:bg-emerald-400 px-8 py-4 text-base font-extrabold text-zinc-950 shadow-[0_0_30px_rgba(16,185,129,0.4)]transition-[transform,opacity,background-color] duration-150 ease-out hover:scale-105 active:scale-95 sm:w-auto cursor-pointer"
+                    className="relative group overflow-hidden flex w-full items-center justify-center gap-3 rounded-full bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 px-8 py-4 text-base font-extrabold text-white shadow-[0_0_30px_rgba(16,185,129,0.4)]transition-[transform,opacity,background-color] duration-150 ease-out hover:scale-105 active:scale-95 sm:w-auto cursor-pointer"
                   >
                     <span className="relative z-10 flex items-center gap-2">
                       <Zap className="h-5 w-5 fill-current" />
@@ -910,7 +910,7 @@ export const Landing = memo(function Landing() {
                     href="https://wa.me/6285215902047?text=Halo%20Admin%20Balasin%2C%20saya%20ingin%20aktivasi%20lisensi%20WhatsApp%20saya."
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex w-full items-center justify-center gap-2.5 rounded-full border border-emerald-500/40 bg-zinc-100/90 dark:bg-zinc-900/90 px-6 py-4 text-sm font-bold text-zinc-900 dark:text-zinc-100transition-[transform,opacity,border-color] duration-150 ease-out hover:scale-105 hover:border-emerald-500/80 shadow-xs sm:w-auto"
+                    className="inline-flex w-full items-center justify-center gap-2.5 rounded-full border border-emerald-500/40 bg-emerald-50 dark:bg-emerald-950/30 px-6 py-4 text-sm font-bold text-emerald-700 dark:text-emerald-300 transition-[transform,opacity,border-color] duration-150 ease-out hover:scale-105 hover:border-emerald-500/80 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 shadow-xs sm:w-auto"
                   >
                     <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#25D366] text-white">
                       <svg className="h-3 w-3 fill-current" viewBox="0 0 24 24">
@@ -1948,7 +1948,7 @@ export const Landing = memo(function Landing() {
               <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Button
                   size="lg"
-                  className="relative group overflow-hidden rounded-full bg-white px-8 py-6 font-extrabold text-emerald-950 shadow-xltransition-[transform,opacity,background-color] duration-150 ease-out hover:bg-emerald-50 hover:scale-105 active:scale-95 text-base w-full sm:w-auto cursor-pointer"
+                  className="relative group overflow-hidden rounded-full bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 px-8 py-6 font-extrabold text-white shadow-xl transition-[transform,opacity,background-color] duration-150 ease-out hover:scale-105 active:scale-95 text-base w-full sm:w-auto cursor-pointer"
                   onClick={() => {
                     if (googleUser) {
                       navigate({ to: "/app" });
