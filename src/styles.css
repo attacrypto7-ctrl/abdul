@@ -929,3 +929,12 @@ a:not(:active) {
     transition: none !important;
   }
 }
+
+.cursor-pointer,
+.animate-marquee img,
+.animate-marquee button,
+.animate-marquee div,
+#testimoni .card,
+[data-testimonial-card] {
+  cursor: pointer !important;
+}

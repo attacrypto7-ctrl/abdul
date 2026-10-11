@@ -1093,6 +1093,7 @@ export function Landing() {
                 <div
                   key={idx}
                   className="flex items-center gap-3.5 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-zinc-900/95 px-5 py-3 shadow-xs transition-[transform,opacity,border-color] duration-150 ease-out hover:scale-105 hover:border-emerald-500/50 cursor-pointer shrink-0 group"
+                  style={{ cursor: 'pointer' }}
                 >
                   <div className="transition-transform duration-500 group-hover:scale-115">
                     {p.logo}
@@ -1840,6 +1841,8 @@ export function Landing() {
                 <div
                   key={idx}
                   className="flex w-[380px] shrink-0 flex-col justify-between rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white/90 dark:bg-zinc-900/90 p-6 shadow-md transition-[transform,opacity,border-color] duration-150 ease-out hover:scale-105 hover:border-emerald-500/50 cursor-pointer"
+                  data-testimonial-card
+                  style={{ cursor: 'pointer' }}
                 >
                   <div>
                     <div className="flex items-center justify-between mb-4">
