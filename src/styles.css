@@ -904,17 +904,9 @@ a:not(:active) {
 /* LANDING PAGE RENDER OPTIMIZATIONS (no visual change)            */
 /* ═══════════════════════════════════════════════════════════════ */
 
-/* Isolate marquee/card-slider paint+layout so it never triggers
-   full-page style/layout recalculation (zero layout thrashing). */
+/* Marquee containment minimal - hanya untuk performa marquee, bukan theme switch */
 .marquee-parent-contain {
-  contain: content;
-}
-
-/* Skip layout/paint for long off-screen landing sections to free
-   up the frame budget during scroll & marquee animation. */
-.lazy-render-section {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 900px;
+  contain: paint;
 }
 
 /* Respect reduced motion */
@@ -947,19 +939,24 @@ a:not(:active) {
 }
 
 /* ═══════════════════════════════════════════════════════════════ */
-/* INSTANT THEME SWITCH - Override body transition-colors from __root.tsx */
+/* INSTANT THEME SWITCH - Bersih & Mulus Tanpa Lag */
 /* ═══════════════════════════════════════════════ */
-/* The __root.tsx has: <body className="... transition-colors duration-200"> 
-   which causes lag when toggling dark mode. Override it here. */
+/* Pendekatan: hanya matikan transisi di elemen root (html, body) 
+   danarkan paint domain agar perubahan warna instan tanpa membunuh 
+   animasi hover/transition di komponen lain. */
+
+/* 1. Pastikan body dan html tidak memiliki transisi yang menghambat */
 html,
 body {
   transition: none !important;
   transition-property: none !important;
   transition-duration: 0s !important;
   transition-timing-function: none !important;
+  background-color: transparent !important;
+  color: inherit !important;
 }
 
-/* Ensure color/background changes on theme switch are instant */
+/* 2. Pastikan perubahan dark class berjalan instan di root */
 html.dark,
 body.dark,
 html:not(.dark),
@@ -967,39 +964,34 @@ body:not(.dark) {
   transition: none !important;
 }
 
-/* CSS CONTAINMENT untuk theme switch - mencegah global reflow */
-/* Gunakan contain pada section besar untuk mengisolasi paint */
+/* 3. Isolasi paint domain - elemen dengan dark mode classes 
+   tidak mempengaruhi elemen lain saat di-update */
+.divariant,
 main,
 section,
-article,
-.dariant,
-.bg-grid,
-.surface-grid {
-  contain: layout style paint;
+article {
+  contain: paint;
 }
 
-/* Hindari layout thrashing: gunakan transform untuk animasi bukan top/left */
+/* 4. Elemen yang butuh animasi tetap berfungsi */
 .scroll-reveal,
 .scroll-reveal-left,
 .scroll-reveal-right,
-.scroll-reveal-scale {
-  will-change: transform, opacity;
+.scroll-reveal-scale,
+.scroll-reveal-child {
+  transition: initial !important;
 }
 
-/* Override slow transitions on theme toggle button */
-/* The ThemeToggle component has: transition-all duration-300 */
-/* We override with faster 100ms transitions for instant feel */
-/* Target via aria-label which contains "Beralih" */
-button[aria-label*="Beralih"],
-button[title*="Beralih"],
-button[aria-label*="Mode"],
-button[title*="Mode"] {
-  transition: transform 0.1s ease, opacity 0.1s ease !important;
+/* 5. Hover transition untuk elemen interaktif tetap aktif */
+button:hover,
+[role="button"]:hover,
+a:hover,
+.feature-card:hover,
+.cta-button:hover,
+.card-hover-lift:hover,
+.animate-marquee:hover,
+[data-testimonial-card]:hover,
+button:focus-visible,
+[role="button"]:focus-visible {
+  transition: all 0.15s ease !important;
 }
-button[aria-label*="Beralih"] svg,
-button[title*="Beralih"] svg,
-button[aria-label*="Mode"] svg,
-button[title*="Mode"] svg {
-  transition: transform 0.1s ease, opacity 0.1s ease, rotate 0.1s ease, scale 0.1s ease !important;
-}
-
