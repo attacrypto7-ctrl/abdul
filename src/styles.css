@@ -930,11 +930,18 @@ a:not(:active) {
   }
 }
 
+/* Force pointer on marquee logos & testimonial cards */
 .cursor-pointer,
 .animate-marquee img,
-.animate-marquee button,
-.animate-marquee div,
+.animate-marquee a,
+.animate-marquee div[class*="group"],
+#testimoni div[class*="rounded"],
 #testimoni .card,
 [data-testimonial-card] {
+  cursor: pointer !important;
+}
+.animate-marquee img *,
+.animate-marquee div *,
+[data-testimonial-card] * {
   cursor: pointer !important;
 }
