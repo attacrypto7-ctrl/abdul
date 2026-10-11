@@ -945,3 +945,41 @@ a:not(:active) {
 [data-testimonial-card] * {
   cursor: pointer !important;
 }
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* INSTANT THEME SWITCH - Override body transition-colors from __root.tsx */
+/* ═══════════════════════════════════════════════════════════════ */
+/* The __root.tsx has: <body className="... transition-colors duration-200"> 
+   which causes lag when toggling dark mode. Override it here. */
+html,
+body {
+  transition: none !important;
+  transition-property: none !important;
+  transition-duration: 0s !important;
+  transition-timing-function: none !important;
+}
+
+/* Ensure color/background changes on theme switch are instant */
+html.dark,
+body.dark,
+html:not(.dark),
+body:not(.dark) {
+  transition: none !important;
+}
+
+/* Override slow transitions on theme toggle button */
+/* The ThemeToggle component has: transition-all duration-300 */
+/* We override with faster 100ms transitions for instant feel */
+/* Target via aria-label which contains "Beralih" */
+button[aria-label*="Beralih"],
+button[title*="Beralih"],
+button[aria-label*="Mode"],
+button[title*="Mode"] {
+  transition: transform 0.1s ease, opacity 0.1s ease !important;
+}
+button[aria-label*="Beralih"] svg,
+button[title*="Beralih"] svg,
+button[aria-label*="Mode"] svg,
+button[title*="Mode"] svg {
+  transition: transform 0.1s ease, opacity 0.1s ease, rotate 0.1s ease, scale 0.1s ease !important;
+}
