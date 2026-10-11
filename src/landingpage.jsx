@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
+import { memo } from "react";
 import {
   Zap,
   Eye,
@@ -272,7 +273,7 @@ const faqItems = [
   },
 ];
 
-export function Landing() {
+export const Landing = memo(function Landing() {
   const navigate = useNavigate();
   const [showLogin, setShowLogin] = useState(false);
   const [email, setEmail] = useState("");
@@ -2041,6 +2042,6 @@ export function Landing() {
       </aside>
     </>
   );
-}
+});
 
 export default Landing;
