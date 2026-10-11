@@ -895,7 +895,7 @@ export const Landing = memo(function Landing() {
                         setShowLogin(true);
                       }
                     }}
-                    className="relative group overflow-hidden flex w-full items-center justify-center gap-3 rounded-full bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 px-8 py-4 text-base font-extrabold text-white shadow-[0_0_30px_rgba(16,185,129,0.4)]transition-[transform,opacity,background-color] duration-150 ease-out hover:scale-105 active:scale-95 sm:w-auto cursor-pointer"
+                    className="relative group overflow-hidden flex w-full items-center justify-center gap-3 rounded-full bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 px-8 py-4 text-base font-extrabold text-white shadow-[0_0_30px_rgba(16,185,129,0.4)]transition-[transform,opacity,background-color] duration-150 ease-out hover:scale-105 active:scale-95 sm:w-auto cursor-pointer"
                   >
                     <span className="relative z-10 flex items-center gap-2">
                       <Zap className="h-5 w-5 fill-current" />
@@ -1631,7 +1631,7 @@ export const Landing = memo(function Landing() {
                 />
                 <button
                   type="submit"
-                  className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#00a884] text-white shadow-xs cursor-pointer hover:scale-105 active:scale-95transition-[transform,opacity,background-color] duration-150 ease-out"
+                  className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#00a884] text-white shadow-xs cursor-pointer hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-[transform,opacity,background-color] duration-150 ease-out"
                   title="Kirim Pesan"
                 >
                   <Send className="size-3.5" />
@@ -1948,7 +1948,7 @@ export const Landing = memo(function Landing() {
               <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Button
                   size="lg"
-                  className="relative group overflow-hidden rounded-full bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 px-8 py-6 font-extrabold text-white shadow-xl transition-[transform,opacity,background-color] duration-150 ease-out hover:scale-105 active:scale-95 text-base w-full sm:w-auto cursor-pointer"
+                  className="relative group overflow-hidden rounded-full bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 px-8 py-6 font-extrabold text-white shadow-xl transition-[transform,opacity,background-color] duration-150 ease-out hover:scale-105 active:scale-95 text-base w-full sm:w-auto cursor-pointer"
                   onClick={() => {
                     if (googleUser) {
                       navigate({ to: "/app" });
@@ -1969,7 +1969,7 @@ export const Landing = memo(function Landing() {
                   href="https://wa.me/6285215902047?text=Halo%20Admin%20Balasin%2C%20saya%20ingin%20aktivasi%20lisensi%20WhatsApp%20saya."
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-full bg-[#25D366] hover:bg-[#128C7E] px-8 py-4 font-extrabold text-white shadow-xltransition-[transform,opacity,background-color] duration-150 ease-out hover:scale-105 active:scale-95 text-base flex items-center justify-center gap-2 w-full sm:w-auto"
+                  className="rounded-full bg-[#25D366] hover:bg-[#128C7E] active:bg-[#0d6b53] px-8 py-4 font-extrabold text-white shadow-xl transition-[transform,opacity,background-color] duration-150 ease-out hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 text-base flex items-center justify-center gap-2 w-full sm:w-auto"
                 >
                   <svg className="size-5 fill-current" viewBox="0 0 24 24">
                     <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.634.044-1.282-.128-.85-.226-1.523-.626-2.196-1.299-.958-.958-1.554-2.146-1.637-2.316-.083-.17-.234-.488-.234-.933 0-.445.234-.664.318-.749.085-.085.185-.106.247-.106.062 0 .125.001.179.003.058.002.136-.022.213.161.085.202.289.704.314.756.025.053.042.115.008.183-.034.068-.051.11-.102.17-.051.06-.107.133-.153.179-.051.051-.104.106-.045.207.06.101.265.438.568.708.391.349.721.457.823.508.102.051.162.043.222-.026.06-.068.256-.298.324-.4.068-.102.137-.085.23-.051.094.034.596.281.698.332.102.051.17.077.196.12.025.042.025.247-.119.652z" />
@@ -2021,7 +2021,7 @@ export const Landing = memo(function Landing() {
           href="https://wa.me/6285215902047?text=Halo%20Admin%20Balasin%2C%20saya%20ingin%20aktivasi%20lisensi%20akun%20WhatsApp%20saya."
           target="_blank"
           rel="noopener noreferrer"
-          className="group relative flex items-center gap-3 rounded-full bg-gradient-to-r from-[#25D366] to-[#128C7E] px-4 py-3 text-white shadow-[0_4px_25px_rgba(37,211,102,0.5)]transition-[transform,opacity,box-shadow] duration-150 ease-out hover:scale-105 hover:shadow-[0_6px_35px_rgba(37,211,102,0.7)] active:scale-95"
+          className="group relative flex items-center gap-3 rounded-full bg-gradient-to-r from-[#25D366] to-[#128C7E] px-4 py-3 text-white shadow-[0_4px_25px_rgba(37,211,102,0.5)] transition-[transform,opacity,box-shadow] duration-150 ease-out hover:scale-105 hover:shadow-[0_6px_35px_rgba(37,211,102,0.7)] active:scale-95 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
           title="Chat Admin WhatsApp untuk Aktivasi Lisensi"
         >
           {/* Animated Pulsing Ring */}
