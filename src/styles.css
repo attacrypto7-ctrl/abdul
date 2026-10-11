@@ -904,7 +904,7 @@ a:not(:active) {
 /* LANDING PAGE RENDER OPTIMIZATIONS (no visual change)            */
 /* ═══════════════════════════════════════════════════════════════ */
 
-/* Marquee containment minimal - hanya untuk performa marquee, bukan theme switch */
+/* Marquee containment minimal - hanya untuk performa marquee */
 .marquee-parent-contain {
   contain: paint;
 }
@@ -944,6 +944,12 @@ a:not(:active) {
 /* Pendekatan: hanya matikan transisi di elemen root (html, body) 
    danarkan paint domain agar perubahan warna instan tanpa membunuh 
    animasi hover/transition di komponen lain. */
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* INSTANT THEME SWITCH - Non-blocking & Tanpa Lag                      */
+/* ═══════════════════════════════════════════════ */
+/* Pendekatan: root-only transition kill + paint domain isolation. */
+/* Menggunakan double rAF di landingpage.jsx untuk non-blocking DOM mutation. */
 
 /* 1. Pastikan body dan html tidak memiliki transisi yang menghambat */
 html,
@@ -994,4 +1000,15 @@ a:hover,
 button:focus-visible,
 [role="button"]:focus-visible {
   transition: all 0.15s ease !important;
+}
+
+/* 6. Anti layout thrashing: jangan ukur layout setelah modifikasi */
+/*    CSS containment pada elemen statis untuk mencegah reflow berantai */
+.marquee-parent-contain {
+  contain: paint;
+}
+
+.lazy-render-section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
 }
