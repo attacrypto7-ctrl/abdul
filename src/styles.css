@@ -290,9 +290,6 @@
 .feature-card {
   border-width: 1px;
   border-style: solid;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  will-change: transform;
   transition:
     border-color 200ms ease,
     transform 200ms ease,
@@ -358,8 +355,6 @@
   background-clip: text;
   color: transparent;
   animation: hero-glimmer 8s linear infinite;
-  will-change: background-position;
-  transform: translateZ(0);
 }
 
 @keyframes hero-glimmer {
@@ -456,10 +451,6 @@
 
 .animate-pulse-glow {
   animation: pulse-glow 3s ease-in-out infinite;
-  will-change: opacity;
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
 }
 
 @keyframes border-beam {
@@ -490,9 +481,6 @@
 
 .animate-shimmer {
   animation: shimmer-slide 2.5s infinite;
-  will-change: transform;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
 }
 
 .tech-grid-bg {
@@ -516,10 +504,10 @@
 
 @keyframes marquee {
   0% {
-    transform: translate3d(0, 0, 0);
+    transform: translateX(0);
   }
   100% {
-    transform: translate3d(-50%, 0, 0);
+    transform: translateX(-50%);
   }
 }
 
@@ -527,11 +515,6 @@
   display: flex;
   width: max-content;
   animation: marquee 28s linear infinite;
-  will-change: transform;
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  perspective: 1000px;
 }
 
 .animate-marquee:hover {
@@ -542,11 +525,6 @@
   display: flex;
   width: max-content;
   animation: marquee 38s linear infinite;
-  will-change: transform;
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  perspective: 1000px;
 }
 
 .animate-marquee-testimonials:hover {
@@ -599,29 +577,20 @@
 }
 
 .animate-float, .animate-float-delayed, .animate-float-subtle {
-  will-change: transform;
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  perspective: 1000px;
 }
 
 .animate-wiggle {
   animation: wiggle 3s ease-in-out infinite;
-  will-change: transform;
 }
 
 .animate-typing-1 {
   animation: typing-bounce 1.2s infinite ease-in-out;
-  will-change: transform, opacity;
 }
 .animate-typing-2 {
   animation: typing-bounce 1.2s infinite ease-in-out 0.2s;
-  will-change: transform, opacity;
 }
 .animate-typing-3 {
   animation: typing-bounce 1.2s infinite ease-in-out 0.4s;
-  will-change: transform, opacity;
 }
 
 @keyframes light-sweep {
@@ -635,9 +604,6 @@
 
 .animate-light-sweep {
   animation: light-sweep 4s ease-in-out infinite;
-  will-change: transform;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
 }
 
 @keyframes wave-flow {
@@ -667,7 +633,6 @@
 
 .animate-border-pulse {
   animation: border-pulse-emerald 3s ease-in-out infinite;
-  will-change: border-color, box-shadow;
 }
 
 @keyframes bubble-pop {
@@ -698,7 +663,6 @@
 
 .animate-laser-scan {
   animation: laser-scan 2.8s ease-in-out infinite;
-  will-change: transform, opacity;
 }
 
 @keyframes radar-sweep {
@@ -860,25 +824,19 @@ a:not(:active) {
 /* ═══════════════════════════════════════════════════════════════ */
 .scroll-reveal {
   opacity: 0;
-  transform: translate3d(0, 40px, 0);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  will-change: transform, opacity;
+  transform: translateY(40px);
   transition:
     opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
     transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .scroll-reveal.revealed {
   opacity: 1;
-  transform: translate3d(0, 0, 0);
+  transform: translateY(0);
 }
 /* Staggered children reveal */
 .scroll-reveal-child {
   opacity: 0;
-  transform: translate3d(0, 24px, 0);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  will-change: transform, opacity;
+  transform: translateY(24px);
   transition:
     opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
     transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
@@ -892,40 +850,31 @@ a:not(:active) {
 /* Slide from left variant */
 .scroll-reveal-left {
   opacity: 0;
-  transform: translate3d(-40px, 0, 0);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  will-change: transform, opacity;
+  transform: translateX(-40px);
   transition:
     opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
     transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .scroll-reveal-left.revealed {
   opacity: 1;
-  transform: translate3d(0, 0, 0);
+  transform: translateX(0);
 }
 /* Slide from right variant */
 .scroll-reveal-right {
   opacity: 0;
-  transform: translate3d(40px, 0, 0);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  will-change: transform, opacity;
+  transform: translateX(40px);
   transition:
     opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
     transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .scroll-reveal-right.revealed {
   opacity: 1;
-  transform: translate3d(0, 0, 0);
+  transform: translateX(0);
 }
 /* Scale up variant */
 .scroll-reveal-scale {
   opacity: 0;
   transform: scale(0.92);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  will-change: transform, opacity;
   transition:
     opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
     transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
@@ -935,8 +884,6 @@ a:not(:active) {
   transform: scale(1);
 }
 .fixed {
-  transform: translate3d(0, 0, 0);
-  will-change: transform;
 }
 
 .fixed header,
@@ -945,8 +892,6 @@ a:not(:active) {
   backdrop-filter: blur(12px) !important;
   -webkit-backdrop-filter: blur(12px) !important;
   background-color: rgba(255, 255, 255, 0.95) !important;
-  transform: translate3d(0, 0, 0);
-  will-change: transform;
 }
 
 .dark .fixed header,
@@ -963,8 +908,6 @@ a:not(:active) {
    full-page style/layout recalculation (zero layout thrashing). */
 .marquee-parent-contain {
   contain: content;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
 }
 
 /* Skip layout/paint for long off-screen landing sections to free

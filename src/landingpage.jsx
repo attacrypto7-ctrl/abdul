@@ -562,9 +562,9 @@ export function Landing() {
       {/* ══════════════════════════════════════════════════════════ */}
       {/* 1. DYNAMIC STICKY FLOATING CAPSULE NAVBAR (NAS.COM STYLE)  */}
       {/* ══════════════════════════════════════════════════════════ */}
-      <div className="fixed top-4 inset-x-0 z-50 mx-auto max-w-5xl px-4 pointer-events-none transition-[transform,opacity] duration-300 [transform:translate3d(0,0,0)] [backface-visibility:hidden] [perspective:1000px]">
+      <div className="fixed top-4 inset-x-0 z-50 mx-auto max-w-5xl px-4 pointer-events-none transition-[transform,opacity] duration-300">
            <header
-          className={`pointer-events-auto mx-auto flex items-center justify-between rounded-full border border-zinc-200/80 dark:border-zinc-800/90 bg-white/95 dark:bg-zinc-950/95 backdrop-blur-md transform-gpu will-change-[transform,opacity] [backface-visibility:hidden] [perspective:1000px] shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-[padding,border-color,box-shadow] duration-300 ${
+          className={`pointer-events-auto mx-auto flex items-center justify-between rounded-full border border-zinc-200/80 dark:border-zinc-800/90 bg-white/95 dark:bg-zinc-950/95 backdrop-blur-mdshadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-[padding,border-color,box-shadow] duration-300 ${
             isScrolled ? "py-2 px-5 sm:px-6 border-emerald-500/30" : "py-3 px-6 sm:px-7"
           }`}
         >
@@ -637,7 +637,7 @@ export function Landing() {
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
               >
-                <button className="flex cursor-pointer items-center gap-2 rounded-full border border-zinc-200 dark:border-zinc-800 bg-zinc-100/80 dark:bg-zinc-900/80 p-1 pr-3 transform-gpu will-change-[transform,opacity] [backface-visibility:hidden] transition-[transform,opacity,border-color,background-color] duration-150 ease-out hover:border-emerald-500/60 focus-visible:outline-none">
+                <button className="flex cursor-pointer items-center gap-2 rounded-full border border-zinc-200 dark:border-zinc-800 bg-zinc-100/80 dark:bg-zinc-900/80 p-1 pr-3transition-[transform,opacity,border-color,background-color] duration-150 ease-out hover:border-emerald-500/60 focus-visible:outline-none">
                   <span className="relative flex size-7 shrink-0">
                     {avatarSrc && !avatarError ? (
                       <img
@@ -660,13 +660,13 @@ export function Landing() {
                 </button>
                 <div
                   aria-hidden={!isOpen}
-                  className={`absolute top-full right-0 z-50 pt-2 transform-gpu will-change-[transform,opacity] [backface-visibility:hidden] [perspective:1000px] transition-[transform,opacity,visibility] duration-150 ease-out ${
+                  className={`absolute top-full right-0 z-50 pt-2transition-[transform,opacity,visibility] duration-150 ease-out ${
                     isOpen
                       ? "opacity-100 scale-100 translate-y-0 visible pointer-events-auto"
                       : "opacity-0 scale-95 -translate-y-1 invisible pointer-events-none"
                   }`}
                 >
-                    <div className="w-56 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-zinc-950/95 p-2 shadow-2xl [backface-visibility:hidden]">
+                    <div className="w-56 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-zinc-950/95 p-2 shadow-2xl">
                       <div className="px-2.5 py-2">
                         <p className="text-xs font-bold text-zinc-900 dark:text-zinc-100">{googleUser.name}</p>
                         <p className="mt-0.5 truncate text-[10px] text-zinc-500 dark:text-zinc-400">
@@ -712,13 +712,13 @@ export function Landing() {
                 </button>
                 <button
                   onClick={() => setShowLogin(true)}
-                  className="relative group overflow-hidden flex cursor-pointer items-center gap-1.5 rounded-full bg-emerald-500 hover:bg-emerald-400 text-zinc-950 px-4 py-2 text-xs font-extrabold shadow-[0_0_20px_rgba(16,185,129,0.35)] transform-gpu will-change-[transform,opacity] [backface-visibility:hidden] transition-[transform,opacity,background-color,box-shadow] duration-150 ease-out hover:scale-105 active:scale-95"
+                  className="relative group overflow-hidden flex cursor-pointer items-center gap-1.5 rounded-full bg-emerald-500 hover:bg-emerald-400 text-zinc-950 px-4 py-2 text-xs font-extrabold shadow-[0_0_20px_rgba(16,185,129,0.35)]transition-[transform,opacity,background-color,box-shadow] duration-150 ease-out hover:scale-105 active:scale-95"
                 >
                   <span className="relative z-10 flex items-center gap-1">
                     <span>Mulai Sekarang</span>
                     <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
                   </span>
-                  <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transform-gpu will-change-[transform,opacity] [backface-visibility:hidden] transition-transform duration-700 bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+                  <div className="absolute inset-0 -translate-x-full group-hover:translate-x-fulltransition-transform duration-700 bg-gradient-to-r from-transparent via-white/40 to-transparent" />
                 </button>
               </div>
             )}
@@ -812,7 +812,7 @@ export function Landing() {
             <button
               type="button"
               onClick={handleGoogleClick}
-              className="flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/80 px-4 py-3 text-sm font-semibold shadow-xs transform-gpu will-change-[transform,opacity] [backface-visibility:hidden] transition-[transform,opacity,background-color] duration-150 ease-out hover:bg-zinc-100 dark:hover:bg-zinc-800"
+              className="flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/80 px-4 py-3 text-sm font-semibold shadow-xstransition-[transform,opacity,background-color] duration-150 ease-out hover:bg-zinc-100 dark:hover:bg-zinc-800"
             >
               <svg className="size-4 shrink-0" viewBox="0 0 24 24">
                 <path
@@ -894,14 +894,14 @@ export function Landing() {
                         setShowLogin(true);
                       }
                     }}
-                    className="relative group overflow-hidden flex w-full items-center justify-center gap-3 rounded-full bg-emerald-500 hover:bg-emerald-400 px-8 py-4 text-base font-extrabold text-zinc-950 shadow-[0_0_30px_rgba(16,185,129,0.4)] transform-gpu will-change-[transform,opacity] [backface-visibility:hidden] [perspective:1000px] transition-[transform,opacity,background-color] duration-150 ease-out hover:scale-105 active:scale-95 sm:w-auto cursor-pointer"
+                    className="relative group overflow-hidden flex w-full items-center justify-center gap-3 rounded-full bg-emerald-500 hover:bg-emerald-400 px-8 py-4 text-base font-extrabold text-zinc-950 shadow-[0_0_30px_rgba(16,185,129,0.4)]transition-[transform,opacity,background-color] duration-150 ease-out hover:scale-105 active:scale-95 sm:w-auto cursor-pointer"
                   >
                     <span className="relative z-10 flex items-center gap-2">
                       <Zap className="h-5 w-5 fill-current" />
                       <span>Hubungkan WhatsApp Sekarang</span>
                       <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                     </span>
-                    <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transform-gpu will-change-[transform,opacity] [backface-visibility:hidden] transition-transform duration-700 bg-gradient-to-r from-transparent via-white/50 to-transparent" />
+                    <div className="absolute inset-0 -translate-x-full group-hover:translate-x-fulltransition-transform duration-700 bg-gradient-to-r from-transparent via-white/50 to-transparent" />
                   </button>
 
                   {/* Chat Admin WhatsApp Button */}
@@ -909,7 +909,7 @@ export function Landing() {
                     href="https://wa.me/6285215902047?text=Halo%20Admin%20Balasin%2C%20saya%20ingin%20aktivasi%20lisensi%20WhatsApp%20saya."
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex w-full items-center justify-center gap-2.5 rounded-full border border-emerald-500/40 bg-zinc-100/90 dark:bg-zinc-900/90 px-6 py-4 text-sm font-bold text-zinc-900 dark:text-zinc-100 transform-gpu will-change-[transform,opacity] [backface-visibility:hidden] transition-[transform,opacity,border-color] duration-150 ease-out hover:scale-105 hover:border-emerald-500/80 shadow-xs sm:w-auto"
+                    className="inline-flex w-full items-center justify-center gap-2.5 rounded-full border border-emerald-500/40 bg-zinc-100/90 dark:bg-zinc-900/90 px-6 py-4 text-sm font-bold text-zinc-900 dark:text-zinc-100transition-[transform,opacity,border-color] duration-150 ease-out hover:scale-105 hover:border-emerald-500/80 shadow-xs sm:w-auto"
                   >
                     <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#25D366] text-white">
                       <svg className="h-3 w-3 fill-current" viewBox="0 0 24 24">
@@ -967,7 +967,7 @@ export function Landing() {
               {/* Right Column: Phone Mockup with 3 Dynamic Floating Badges */}
               <div className="relative flex justify-center lg:col-span-5">
                 {/* Floating Badge 1 (Top Left): Live Chat Incoming */}
-                <div className="absolute -top-6 -left-6 z-20 hidden items-center gap-3 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-zinc-900/95 p-3 shadow-2xl animate-float-delayed sm:flex [backface-visibility:hidden] [perspective:1000px]">
+                <div className="absolute -top-6 -left-6 z-20 hidden items-center gap-3 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-zinc-900/95 p-3 shadow-2xl animate-float-delayed sm:flex">
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-500/20 text-lg">
                     💬
                   </div>
@@ -981,7 +981,7 @@ export function Landing() {
                 </div>
 
                 {/* Floating Badge 2 (Bottom Right): Instant Response */}
-                <div className="absolute -bottom-6 -right-6 z-20 hidden items-center gap-3 rounded-2xl border border-emerald-500/40 bg-white/95 dark:bg-zinc-900/95 p-3 shadow-2xl animate-float sm:flex [backface-visibility:hidden] [perspective:1000px]">
+                <div className="absolute -bottom-6 -right-6 z-20 hidden items-center gap-3 rounded-2xl border border-emerald-500/40 bg-white/95 dark:bg-zinc-900/95 p-3 shadow-2xl animate-float sm:flex">
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-500 font-bold text-zinc-950">
                     ⚡
                   </div>
@@ -995,7 +995,7 @@ export function Landing() {
                 </div>
 
                 {/* Floating Badge 3 (Bottom Center): Order Conversion */}
-                <div className="absolute -bottom-4 left-6 z-20 flex items-center gap-2 rounded-full border border-emerald-500/30 bg-white/95 dark:bg-zinc-900/95 px-3 py-1.5 text-[10px] font-bold text-emerald-700 dark:text-emerald-300 shadow-xl [backface-visibility:hidden]">
+                <div className="absolute -bottom-4 left-6 z-20 flex items-center gap-2 rounded-full border border-emerald-500/30 bg-white/95 dark:bg-zinc-900/95 px-3 py-1.5 text-[10px] font-bold text-emerald-700 dark:text-emerald-300 shadow-xl">
                   <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
                   <span>💰 Order Masuk COD: Rp 389.000</span>
                 </div>
@@ -1088,11 +1088,11 @@ export function Landing() {
 
           {/* Marquee Wrapper 1: Platform Integration */}
           <div className="marquee-parent-contain relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)] mb-8">
-            <div className="animate-marquee hover:[animation-play-state:paused] flex gap-6 items-center transform-gpu will-change-transform [backface-visibility:hidden] [perspective:1000px]">
+            <div className="animate-marquee hover:[animation-play-state:paused] flex gap-6 items-center">
               {[...platformItems, ...platformItems].map((p, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center gap-3.5 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-zinc-900/95 px-5 py-3 shadow-xs transition-[transform,opacity,border-color] duration-150 ease-out hover:scale-105 hover:border-emerald-500/50 cursor-pointer shrink-0 group transform-gpu will-change-[transform,opacity] [backface-visibility:hidden] [perspective:1000px]"
+                  className="flex items-center gap-3.5 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-zinc-900/95 px-5 py-3 shadow-xs transition-[transform,opacity,border-color] duration-150 ease-out hover:scale-105 hover:border-emerald-500/50 cursor-pointer shrink-0 group"
                 >
                   <div className="transition-transform duration-500 group-hover:scale-115">
                     {p.logo}
@@ -1137,7 +1137,7 @@ export function Landing() {
               ].map((stat) => (
                 <div
                   key={stat.label}
-                  className="relative overflow-hidden rounded-3xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/60 dark:bg-zinc-900/60 p-6 text-center shadow-sm backdrop-blur-md transform-gpu will-change-transform transition-\[transform,border-color\] duration-200 hover:border-emerald-500/40 hover:-translate-y-1"
+                  className="relative overflow-hidden rounded-3xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/60 dark:bg-zinc-900/60 p-6 text-center shadow-sm backdrop-blur-md transition-\[transform,border-color\] duration-200 hover:border-emerald-500/40 hover:-translate-y-1"
                 >
                   <div className="mb-2 flex justify-center">
                     <span className="rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
@@ -1174,7 +1174,7 @@ export function Landing() {
             {/* Asymmetric Bento Box (4 Cards) dengan Desain & Icon Kaya Visual */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {/* Card 1 (Large - col-span 2): Speed-to-Lead + Interactive Benchmark Sine Wave */}
-              <div className="md:col-span-2 group relative overflow-hidden rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/70 p-8 shadow-sm backdrop-blur-md transform-gpu will-change-transform transition-\[transform,border-color,box-shadow\] duration-200 hover:border-emerald-500/50 hover:shadow-[0_0_35px_rgba(16,185,129,0.15)] flex flex-col justify-between">
+              <div className="md:col-span-2 group relative overflow-hidden rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/70 p-8 shadow-sm backdrop-blur-md transition-\[transform,border-color,box-shadow\] duration-200 hover:border-emerald-500/50 hover:shadow-[0_0_35px_rgba(16,185,129,0.15)] flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between mb-6">
                     {/* Rich Multi-Layered Glowing Icon Container */}
@@ -1256,7 +1256,7 @@ export function Landing() {
               </div>
 
               {/* Card 2 (Medium - col-span 1): QR Code Scan 1 Minute with Laser Scanner Visual */}
-              <div className="md:col-span-1 group relative overflow-hidden rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/70 p-8 shadow-sm backdrop-blur-md transform-gpu will-change-transform transition-\[transform,border-color,box-shadow\] duration-200 hover:border-emerald-500/50 hover:shadow-[0_0_35px_rgba(16,185,129,0.15)] flex flex-col justify-between">
+              <div className="md:col-span-1 group relative overflow-hidden rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/70 p-8 shadow-sm backdrop-blur-md transition-\[transform,border-color,box-shadow\] duration-200 hover:border-emerald-500/50 hover:shadow-[0_0_35px_rgba(16,185,129,0.15)] flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between mb-6">
                     {/* Rich Multi-Layered Icon */}
@@ -1302,7 +1302,7 @@ export function Landing() {
               </div>
 
               {/* Card 3 (Medium - col-span 1): Dynamic Store Knowledge Base Simulator */}
-              <div className="md:col-span-1 group relative overflow-hidden rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/70 p-8 shadow-sm backdrop-blur-md transform-gpu will-change-transform transition-\[transform,border-color,box-shadow\] duration-200 hover:border-emerald-500/50 hover:shadow-[0_0_35px_rgba(16,185,129,0.15)] flex flex-col justify-between">
+              <div className="md:col-span-1 group relative overflow-hidden rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/70 p-8 shadow-sm backdrop-blur-md transition-\[transform,border-color,box-shadow\] duration-200 hover:border-emerald-500/50 hover:shadow-[0_0_35px_rgba(16,185,129,0.15)] flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between mb-6">
                     {/* Rich Multi-Layered Icon */}
@@ -1335,7 +1335,7 @@ export function Landing() {
                         key={cat}
                         type="button"
                         onClick={() => setActiveTemplateTab(cat)}
-                        className={`rounded-full px-2.5 py-1 text-[11px] font-bold cursor-pointer transform-gpu will-change-[transform,opacity] [backface-visibility:hidden] transition-[transform,opacity,background-color,color] duration-150 ease-out ${
+                        className={`rounded-full px-2.5 py-1 text-[11px] font-bold cursor-pointertransition-[transform,opacity,background-color,color] duration-150 ease-out ${
                           activeTemplateTab === cat
                             ? "bg-amber-500 text-zinc-950 shadow-xs scale-105"
                             : "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-foreground"
@@ -1358,7 +1358,7 @@ export function Landing() {
               </div>
 
               {/* Card 4 (Large - col-span 2): Enterprise Privacy & Cloud Infrastructure */}
-              <div className="md:col-span-2 group relative overflow-hidden rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/70 p-8 shadow-sm backdrop-blur-md transform-gpu will-change-transform transition-\[transform,border-color,box-shadow\] duration-200 hover:border-emerald-500/50 hover:shadow-[0_0_35px_rgba(16,185,129,0.15)] flex flex-col justify-between">
+              <div className="md:col-span-2 group relative overflow-hidden rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/70 p-8 shadow-sm backdrop-blur-md transition-\[transform,border-color,box-shadow\] duration-200 hover:border-emerald-500/50 hover:shadow-[0_0_35px_rgba(16,185,129,0.15)] flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between mb-6">
                     {/* Rich Multi-Layered Icon */}
@@ -1449,7 +1449,7 @@ export function Landing() {
                     key={key}
                     type="button"
                     onClick={() => setSkenarioAktif(key)}
-                    className={`flex cursor-pointer items-center gap-2 rounded-full px-4 py-2 text-xs font-bold transform-gpu will-change-[transform,opacity] [backface-visibility:hidden] transition-[transform,opacity,background-color,color,border-color] duration-150 ease-out ${
+                    className={`flex cursor-pointer items-center gap-2 rounded-full px-4 py-2 text-xs font-boldtransition-[transform,opacity,background-color,color,border-color] duration-150 ease-out ${
                       active
                         ? "bg-emerald-500 text-zinc-950 shadow-md shadow-emerald-500/25 scale-105"
                         : "bg-zinc-100 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 border border-zinc-200 dark:border-zinc-800"
@@ -1568,7 +1568,7 @@ export function Landing() {
                                   onClick={() => {
                                     setCustomInput("Saya mau pesan yang ukuran 42 warna Hitam ya min");
                                   }}
-                                  className="flex-1 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-zinc-950 font-bold py-1.5 text-[10px] text-center cursor-pointer transform-gpu will-change-[transform,opacity] [backface-visibility:hidden] transition-[transform,opacity,background-color] duration-150 ease-out"
+                                  className="flex-1 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-zinc-950 font-bold py-1.5 text-[10px] text-center cursor-pointertransition-[transform,opacity,background-color] duration-150 ease-out"
                                 >
                                   📦 Pesan Sekarang (COD)
                                 </button>
@@ -1629,7 +1629,7 @@ export function Landing() {
                 />
                 <button
                   type="submit"
-                  className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#00a884] text-white shadow-xs cursor-pointer hover:scale-105 active:scale-95 transform-gpu will-change-[transform,opacity] [backface-visibility:hidden] transition-[transform,opacity,background-color] duration-150 ease-out"
+                  className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#00a884] text-white shadow-xs cursor-pointer hover:scale-105 active:scale-95transition-[transform,opacity,background-color] duration-150 ease-out"
                   title="Kirim Pesan"
                 >
                   <Send className="size-3.5" />
@@ -1660,7 +1660,7 @@ export function Landing() {
             {langkahMudah.map((step, idx) => (
               <div
                 key={step.nomor}
-                className="group relative flex flex-col justify-between rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/70 p-7 shadow-sm backdrop-blur-md transform-gpu will-change-transform transition-\[transform,border-color\] duration-200 hover:border-emerald-500/50 hover:-translate-y-1.5"
+                className="group relative flex flex-col justify-between rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/70 p-7 shadow-sm backdrop-blur-md transition-\[transform,border-color\] duration-200 hover:border-emerald-500/50 hover:-translate-y-1.5"
               >
                 <div>
                   {/* Step Header */}
@@ -1835,11 +1835,11 @@ export function Landing() {
 
           {/* Continuous Infinite Moving Testimonials Marquee */}
           <div className="marquee-parent-contain relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
-            <div className="animate-marquee-testimonials hover:[animation-play-state:paused] flex gap-6 items-stretch transform-gpu will-change-transform [backface-visibility:hidden] [perspective:1000px]">
+            <div className="animate-marquee-testimonials hover:[animation-play-state:paused] flex gap-6 items-stretch">
               {[...testimoniList, ...testimoniList].map((t, idx) => (
                 <div
                   key={idx}
-                  className="flex w-[380px] shrink-0 flex-col justify-between rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white/90 dark:bg-zinc-900/90 p-6 shadow-md transition-[transform,opacity,border-color] duration-150 ease-out hover:scale-105 hover:border-emerald-500/50 cursor-pointer transform-gpu will-change-[transform,opacity] [backface-visibility:hidden] [perspective:1000px]"
+                  className="flex w-[380px] shrink-0 flex-col justify-between rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white/90 dark:bg-zinc-900/90 p-6 shadow-md transition-[transform,opacity,border-color] duration-150 ease-out hover:scale-105 hover:border-emerald-500/50 cursor-pointer"
                 >
                   <div>
                     <div className="flex items-center justify-between mb-4">
@@ -1902,11 +1902,11 @@ export function Landing() {
               {faqItems.map((faq, idx) => (
                 <details
                   key={idx}
-                  className="group rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/60 p-6 shadow-xs backdrop-blur-md transform-gpu will-change-transform transition-\[transform,border-color\] duration-200 hover:border-emerald-500/40 [&_summary::-webkit-details-marker]:hidden"
+                  className="group rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/60 p-6 shadow-xs backdrop-blur-md transition-\[transform,border-color\] duration-200 hover:border-emerald-500/40 [&_summary::-webkit-details-marker]:hidden"
                 >
                   <summary className="flex cursor-pointer items-center justify-between text-base font-bold text-zinc-900 dark:text-zinc-100">
                     <span>{faq.q}</span>
-                    <span className="ml-4 shrink-0 transition-[transform,opacity] duration-300 group-open:-rotate-180 [backface-visibility:hidden]">
+                    <span className="ml-4 shrink-0 transition-[transform,opacity] duration-300 group-open:-rotate-180">
                       <ChevronDown className="size-5 text-emerald-500" />
                     </span>
                   </summary>
@@ -1944,7 +1944,7 @@ export function Landing() {
               <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Button
                   size="lg"
-                  className="relative group overflow-hidden rounded-full bg-white px-8 py-6 font-extrabold text-emerald-950 shadow-xl transform-gpu will-change-[transform,opacity] [backface-visibility:hidden] [perspective:1000px] transition-[transform,opacity,background-color] duration-150 ease-out hover:bg-emerald-50 hover:scale-105 active:scale-95 text-base w-full sm:w-auto cursor-pointer"
+                  className="relative group overflow-hidden rounded-full bg-white px-8 py-6 font-extrabold text-emerald-950 shadow-xltransition-[transform,opacity,background-color] duration-150 ease-out hover:bg-emerald-50 hover:scale-105 active:scale-95 text-base w-full sm:w-auto cursor-pointer"
                   onClick={() => {
                     if (googleUser) {
                       navigate({ to: "/app" });
@@ -1965,7 +1965,7 @@ export function Landing() {
                   href="https://wa.me/6285215902047?text=Halo%20Admin%20Balasin%2C%20saya%20ingin%20aktivasi%20lisensi%20WhatsApp%20saya."
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-full bg-[#25D366] hover:bg-[#128C7E] px-8 py-4 font-extrabold text-white shadow-xl transform-gpu will-change-[transform,opacity] [backface-visibility:hidden] transition-[transform,opacity,background-color] duration-150 ease-out hover:scale-105 active:scale-95 text-base flex items-center justify-center gap-2 w-full sm:w-auto"
+                  className="rounded-full bg-[#25D366] hover:bg-[#128C7E] px-8 py-4 font-extrabold text-white shadow-xltransition-[transform,opacity,background-color] duration-150 ease-out hover:scale-105 active:scale-95 text-base flex items-center justify-center gap-2 w-full sm:w-auto"
                 >
                   <svg className="size-5 fill-current" viewBox="0 0 24 24">
                     <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.634.044-1.282-.128-.85-.226-1.523-.626-2.196-1.299-.958-.958-1.554-2.146-1.637-2.316-.083-.17-.234-.488-.234-.933 0-.445.234-.664.318-.749.085-.085.185-.106.247-.106.062 0 .125.001.179.003.058.002.136-.022.213.161.085.202.289.704.314.756.025.053.042.115.008.183-.034.068-.051.11-.102.17-.051.06-.107.133-.153.179-.051.051-.104.106-.045.207.06.101.265.438.568.708.391.349.721.457.823.508.102.051.162.043.222-.026.06-.068.256-.298.324-.4.068-.102.137-.085.23-.051.094.034.596.281.698.332.102.051.17.077.196.12.025.042.025.247-.119.652z" />
@@ -2017,7 +2017,7 @@ export function Landing() {
           href="https://wa.me/6285215902047?text=Halo%20Admin%20Balasin%2C%20saya%20ingin%20aktivasi%20lisensi%20akun%20WhatsApp%20saya."
           target="_blank"
           rel="noopener noreferrer"
-          className="group relative flex items-center gap-3 rounded-full bg-gradient-to-r from-[#25D366] to-[#128C7E] px-4 py-3 text-white shadow-[0_4px_25px_rgba(37,211,102,0.5)] transform-gpu will-change-[transform,opacity] [backface-visibility:hidden] [perspective:1000px] transition-[transform,opacity,box-shadow] duration-150 ease-out hover:scale-105 hover:shadow-[0_6px_35px_rgba(37,211,102,0.7)] active:scale-95"
+          className="group relative flex items-center gap-3 rounded-full bg-gradient-to-r from-[#25D366] to-[#128C7E] px-4 py-3 text-white shadow-[0_4px_25px_rgba(37,211,102,0.5)]transition-[transform,opacity,box-shadow] duration-150 ease-out hover:scale-105 hover:shadow-[0_6px_35px_rgba(37,211,102,0.7)] active:scale-95"
           title="Chat Admin WhatsApp untuk Aktivasi Lisensi"
         >
           {/* Animated Pulsing Ring */}
