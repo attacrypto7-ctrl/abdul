@@ -424,28 +424,6 @@ export function Landing() {
     setAvatarError(false);
   }, [googleUser?.avatarUrl, googleUser?.picture]);
 
-  useEffect(() => {
-    const root = document.documentElement;
-    const handleClick = (e) => {
-      if (e.target.closest('[data-radix-select-trigger], [data-radix-select-item]')) return;
-      const btn = e.target.closest("button");
-      if (!btn) return;
-      const svg = btn.querySelector("svg");
-      if (!svg) return;
-      const isSun = svg.querySelector('path[d*="M12 3v1m0"]');
-      const isMoon = svg.querySelector('path[d*="M21 12.79"]');
-      if (!isSun && !isMoon) return;
-      root.classList.add("theme-switching");
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          root.classList.remove("theme-switching");
-        });
-      });
-    };
-    root.addEventListener("click", handleClick, true);
-    return () => root.removeEventListener("click", handleClick, true);
-  }, []);
-
   // Scroll Reveal: animate elements into view when they enter the viewport
   useEffect(() => {
     const revealSelectors = '.scroll-reveal, .scroll-reveal-left, .scroll-reveal-right, .scroll-reveal-scale';

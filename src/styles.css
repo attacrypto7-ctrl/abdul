@@ -932,16 +932,16 @@ a:not(:active) {
 
 /* Force pointer on marquee logos & testimonial cards */
 .cursor-pointer,
-.animate-marquee,
 .animate-marquee img,
-.animate-marquee div,
+.animate-marquee a,
+.animate-marquee div[class*="group"],
 #testimoni div[class*="rounded"],
+#testimoni .card,
 [data-testimonial-card] {
   cursor: pointer !important;
 }
-
-/* Kill ALL transitions during theme switch to prevent lag */
-.theme-switching,
-.theme-switching * {
-  transition: none !important;
+.animate-marquee img *,
+.animate-marquee div *,
+[data-testimonial-card] * {
+  cursor: pointer !important;
 }
