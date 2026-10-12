@@ -4,41 +4,62 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export function useTheme() {
-  const [theme, setThemeState] = useState<"light" | "dark">("light");
-
-  useEffect(() => {
+  const getInitialTheme = (): "light" | "dark" => {
     try {
-      const saved = localStorage.getItem("balasin_theme");
-      if (saved === "dark") {
-        setThemeState("dark");
-        document.documentElement.classList.add("dark");
-      } else {
-        setThemeState("light");
-        document.documentElement.classList.remove("dark");
-      }
+      return localStorage.getItem("balasin_theme") === "dark"
+        ? "dark"
+        : "light";
     } catch {
-      setThemeState("light");
+      return "light";
+    }
+  };
+
+  const applyThemeSync = (newTheme: "light" | "dark") => {
+    if (newTheme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
       document.documentElement.classList.remove("dark");
     }
-  }, []);
-
-  const setTheme = (newTheme: "light" | "dark") => {
-    setThemeState(newTheme);
-    try {
-      localStorage.setItem("balasin_theme", newTheme);
-      if (newTheme === "dark") {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
-    } catch {}
   };
+
+  const toggleThemeState = (value: "light" | "dark") => {
+    try {
+      localStorage.setItem("balasin_theme", value);
+    } catch {}
+    applyThemeSync(value);
+  };
+
+  const [theme] = useState<"light" | "dark">(getInitialTheme());
+
+  useEffect(() => {
+    applyThemeSync(theme);
+    // Sync CSS custom properties immediately so opaque colour tokens
+    // (e.g. Tailwind v4 / Vite) pick up the new palette without a layout
+    // pause. Using startViewTransition keeps it non-blocking when the
+    // browser supports it; falls back to a direct synchronous update.
+    if (
+      typeof document !== "undefined" &&
+      typeof document.startViewTransition === "function"
+    ) {
+      const handle = () => document.documentElement.classList.toggle(
+        "dark",
+        theme === "dark",
+      );
+      document.startViewTransition(handle).finished.catch(() => {});
+    } else {
+      document.documentElement.classList.toggle(
+        "dark",
+        theme === "dark",
+      );
+    }
+  }, [theme]);
 
   const toggleTheme = () => {
-    setTheme(theme === "light" ? "dark" : "light");
+    const next = theme === "light" ? ("dark" as const) : ("light" as const);
+    toggleThemeState(next);
   };
 
-  return { theme, setTheme, toggleTheme, isDark: theme === "dark" };
+  return { theme, toggleTheme, isDark: theme === "dark" };
 }
 
 interface ThemeToggleProps {

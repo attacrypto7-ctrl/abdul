@@ -447,61 +447,7 @@ export const Landing = memo(function Landing() {
     return () => observer.disconnect();
   }, []);
 
-  // ════════════════════════════════════════════════════════════════
-  // INSTANT THEME TOGGLE - Non-blocking DOM mutation via double rAF
-  // Agar klik toggle tema langsung responsif tanpa jeda/stutter.
-  // Teknik: double requestAnimationFrame untuk memastikan browser
-  // sudah siap merender sebelum DOM di-mutasi, mencegah frame drop.
-  // ════════════════════════════════════════════════════════════════
-  useEffect(() => {
-    let cleanup: (() => void) | undefined;
 
-    const handleThemeToggleClick = (event: MouseEvent) => {
-      const target = event.target as HTMLElement | null;
-      if (!target) return;
-
-      // Deteksi tombol tema: aria-label mengandung "alih" (bahasa Indonesia)
-      // atau title mengandung "Mode" / "Theme"
-      const ariaLabel = target.getAttribute('aria-label') || '';
-      const title = target.getAttribute('title') || '';
-      const isThemeToggle =
-        ariaLabel.toLowerCase().includes('alih') ||
-        title.toLowerCase().includes('mode') ||
-        title.toLowerCase().includes('theme') ||
-        target.closest('[aria-label*="alih"]') ||
-        target.closest('[title*="Mode"]');
-
-      if (!isThemeToggle) return;
-
-      // Non-blocking: jangan mutasi DOM secara sinkron.
-      // Double rAF memastikan browser sudah siap merender frame berikutnya.
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          const html = document.documentElement;
-          if (html.classList.contains('dark')) {
-            html.classList.remove('dark');
-          } else {
-            html.classList.add('dark');
-          }
-          // Simpan preferensi ke localStorage (async-safe, tidak blocking)
-          try {
-            localStorage.setItem('balasin_theme', html.classList.contains('dark') ? 'dark' : 'light');
-          } catch {
-            // localStorage bisa fail di private mode, abaikan saja.
-          }
-        });
-      });
-    };
-
-    document.addEventListener('click', handleThemeToggleClick, true);
-    cleanup = () => {
-      document.removeEventListener('click', handleThemeToggleClick, true);
-    };
-
-    return () => {
-      if (cleanup) cleanup();
-    };
-  }, []);
 
   const handleGoogleClick = () => {
     if (googleClickLockRef.current) return;
