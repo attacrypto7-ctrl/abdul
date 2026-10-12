@@ -13,10 +13,9 @@ export function ThemeToggle() {
     const nextDark = !isDark;
     setIsDark(nextDark);
 
-    const updateDOM = () => {
-      if (nextDark) {
-        document.documentElement.classList.add('dark');
-        try {
+    if (nextDark) {
+      document.documentElement.classList.add('dark');
+      try {
         localStorage.setItem('balasin_theme', 'dark');
       } catch {
         // ignore
@@ -28,15 +27,6 @@ export function ThemeToggle() {
       } catch {
         // ignore
       }
-    }
-    };
-
-    if (typeof document !== 'undefined' && 'startViewTransition' in document) {
-      document.startViewTransition(() => {
-        updateDOM();
-      });
-    } else {
-      updateDOM();
     }
   };
 
