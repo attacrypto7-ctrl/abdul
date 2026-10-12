@@ -1,23 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Sun, Moon } from 'lucide-react';
 
 export function ThemeToggle() {
-  const [isDark, setIsDark] = useState<boolean>(false);
-
-  // Inisialisasi state awal langsung dari DOM saat pertama kali dipasang
-  useEffect(() => {
-    const hasDarkClass = document.documentElement.classList.contains('dark');
-    const storedTheme = localStorage.getItem('balasin_theme');
-    setIsDark(hasDarkClass || storedTheme === 'dark');
-  }, []);
+  // Inisialisasi state secara sinkron langsung dari DOM & localStorage saat render pertama
+  const [isDark, setIsDark] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      return document.documentElement.classList.contains('dark') || localStorage.getItem('balasin_theme') === 'dark';
+    }
+    return false;
+  });
 
   const toggleTheme = () => {
     const nextDark = !isDark;
 
-    // 1. Ubah state ikon LANGSUNG secara serentak
+    // 1. Ubah state ikon LANGSUNG secara instan
     setIsDark(nextDark);
 
-    // 2. Terapkan ke DOM & localStorage seketika
+    // 2. Terapkan perubahan ke DOM & localStorage seketika tanpa jeda
     if (nextDark) {
       document.documentElement.classList.add('dark');
       try {
