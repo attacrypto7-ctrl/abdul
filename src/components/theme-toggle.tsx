@@ -1,42 +1,270 @@
-import React, { useState } from 'react';
-import { Sun, Moon } from 'lucide-react';
+import React, { useEffect, useRef, useState } from "react";
+import { Sun, Moon } from "lucide-react";
+
+const STORAGE_KEY = "balasin_theme";
+const OVERLAY_CLASS = "theme-toggle-overlay";
+const OVERLAY_ANIMATION = "theme-toggle-fallback-reveal";
+const REVEAL_DURATION = 320;
+const OVERLAY_DURATION = 600;
+
+type ViewTransitionLike = {
+  finished: Promise<void>;
+};
+
+type DocumentWithViewTransition = Document & {
+  startViewTransition?: (callback: () => void) => ViewTransitionLike;
+};
+
+const THEME_TOGGLE_STYLES = `
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-old(root) {
+  z-index: 1;
+}
+::view-transition-new(root) {
+  z-index: 2;
+  animation: theme-toggle-vt-reveal ${REVEAL_DURATION}ms ease-in-out;
+}
+@keyframes theme-toggle-vt-reveal {
+  from {
+    clip-path: circle(0% at var(--theme-toggle-x, 50%) var(--theme-toggle-y, 50%));
+  }
+  to {
+    clip-path: circle(var(--theme-toggle-radius, 150%) at var(--theme-toggle-x, 50%) var(--theme-toggle-y, 50%));
+  }
+}
+.theme-toggle-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2147483000;
+  background: var(--background);
+  clip-path: circle(0px at var(--theme-toggle-x, 50%) var(--theme-toggle-y, 50%));
+  animation: theme-toggle-fallback-reveal ${REVEAL_DURATION}ms ease-in-out forwards;
+}
+@keyframes theme-toggle-fallback-reveal {
+  from {
+    clip-path: circle(0px at var(--theme-toggle-x, 50%) var(--theme-toggle-y, 50%));
+  }
+  to {
+    clip-path: circle(var(--theme-toggle-radius, 150vmax) at var(--theme-toggle-x, 50%) var(--theme-toggle-y, 50%));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+  .theme-toggle-overlay {
+    animation: none !important;
+  }
+}
+`;
+
+let stylesInjected = false;
+
+function ensureStyles() {
+  if (stylesInjected || typeof document === "undefined") return;
+  const style = document.createElement("style");
+  style.setAttribute("data-theme-toggle-styles", "");
+  style.textContent = THEME_TOGGLE_STYLES;
+  document.head.appendChild(style);
+  stylesInjected = true;
+}
+
+function prefersReducedMotion(): boolean {
+  return (
+    typeof window !== "undefined" &&
+    typeof window.matchMedia === "function" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
+}
+
+function applyTheme(isDark: boolean): void {
+  document.documentElement.classList.toggle("dark", isDark);
+  try {
+    localStorage.setItem(STORAGE_KEY, isDark ? "dark" : "light");
+  } catch {
+    // ignore storage failures (private mode / quota)
+  }
+}
 
 export function ThemeToggle() {
   // Inisialisasi state secara sinkron langsung dari DOM & localStorage saat render pertama
   const [isDark, setIsDark] = useState<boolean>(() => {
-    if (typeof window !== 'undefined') {
-      return document.documentElement.classList.contains('dark') || localStorage.getItem('balasin_theme') === 'dark';
+    if (typeof window !== "undefined") {
+      return (
+        document.documentElement.classList.contains("dark") ||
+        localStorage.getItem(STORAGE_KEY) === "dark"
+      );
     }
     return false;
   });
 
-  const toggleTheme = () => {
-    const nextDark = !isDark;
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const overlayRef = useRef<HTMLDivElement | null>(null);
+  const isTransitioningRef = useRef(false);
+  const cleanupRef = useRef<(() => void) | null>(null);
+  // Mouse press is handled on pointerdown for instant response; the trailing
+  // click must be swallowed so one interaction never toggles twice.
+  const suppressClickRef = useRef(false);
 
-    // 1. Ubah state ikon LANGSUNG secara instan
-    setIsDark(nextDark);
+  useEffect(() => {
+    ensureStyles();
+    return () => {
+      cleanupRef.current?.();
+    };
+  }, []);
 
-    // 2. Terapkan perubahan ke DOM & localStorage seketika tanpa jeda
-    if (nextDark) {
-      document.documentElement.classList.add('dark');
-      try {
-        localStorage.setItem('balasin_theme', 'dark');
-      } catch {
-        // ignore
-      }
-    } else {
-      document.documentElement.classList.remove('dark');
-      try {
-        localStorage.setItem('balasin_theme', 'light');
-      } catch {
-        // ignore
-      }
+  const resolveOrigin = (clientX?: number, clientY?: number) => {
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+
+    let x = viewportWidth / 2;
+    let y = viewportHeight / 2;
+
+    if (
+      typeof clientX === "number" &&
+      typeof clientY === "number" &&
+      (clientX !== 0 || clientY !== 0)
+    ) {
+      x = clientX;
+      y = clientY;
+    } else if (buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      x = rect.left + rect.width / 2;
+      y = rect.top + rect.height / 2;
     }
+
+    // Radius hingga sudut viewport terjauh agar seluruh layar terjangkau
+    const radius = Math.hypot(Math.max(x, viewportWidth - x), Math.max(y, viewportHeight - y));
+
+    return { x, y, radius };
+  };
+
+  const runOverlayReveal = (x: number, y: number, radius: number) => {
+    const overlay = document.createElement("div");
+    overlay.setAttribute("aria-hidden", "true");
+    overlay.className = OVERLAY_CLASS;
+    overlay.style.setProperty("--theme-toggle-x", `${x}px`);
+    overlay.style.setProperty("--theme-toggle-y", `${y}px`);
+    overlay.style.setProperty("--theme-toggle-radius", `${radius}px`);
+
+    overlayRef.current = overlay;
+    isTransitioningRef.current = true;
+
+    let timeoutId = 0;
+    let settled = false;
+
+    const cleanup = () => {
+      try {
+        overlay.remove();
+      } catch {
+        // ignore
+      }
+      if (settled) return;
+      settled = true;
+      window.clearTimeout(timeoutId);
+      overlay.removeEventListener("animationend", onAnimationEnd);
+      overlayRef.current = null;
+      isTransitioningRef.current = false;
+      if (cleanupRef.current === cleanup) cleanupRef.current = null;
+    };
+
+    const onAnimationEnd = (event: AnimationEvent) => {
+      if (event.animationName !== OVERLAY_ANIMATION) return;
+      cleanup();
+    };
+
+    overlay.addEventListener("animationend", onAnimationEnd);
+    document.body.appendChild(overlay);
+    cleanupRef.current = cleanup;
+    timeoutId = window.setTimeout(cleanup, OVERLAY_DURATION);
+  };
+
+  const toggleTheme = (clientX?: number, clientY?: number) => {
+    if (typeof window === "undefined") return;
+    if (isTransitioningRef.current) return;
+
+    const nextDark = !isDark;
+    const { x, y, radius } = resolveOrigin(clientX, clientY);
+
+    // Hormati prefers-reduced-motion: terapkan langsung tanpa overlay/animasi
+    if (prefersReducedMotion()) {
+      setIsDark(nextDark);
+      applyTheme(nextDark);
+      return;
+    }
+
+    const doc = document as DocumentWithViewTransition;
+
+    if (typeof doc.startViewTransition === "function") {
+      isTransitioningRef.current = true;
+      const root = document.documentElement;
+      root.style.setProperty("--theme-toggle-x", `${x}px`);
+      root.style.setProperty("--theme-toggle-y", `${y}px`);
+      root.style.setProperty("--theme-toggle-radius", `${radius}px`);
+
+      // Respons visual ikon tombol dimulai seketika pada interaksi pointer,
+      // tanpa menunggu snapshot lama View Transition.
+      setIsDark(nextDark);
+
+      // Perubahan tema halaman tetap dilakukan di dalam update callback supaya
+      // snapshot lama/baru benar dan reveal melingkar 320ms tetap berjalan.
+      const transition = doc.startViewTransition(() => {
+        applyTheme(nextDark);
+      });
+
+      const reset = () => {
+        isTransitioningRef.current = false;
+      };
+
+      if (transition && typeof transition.finished?.then === "function") {
+        transition.finished.finally(reset);
+      } else {
+        reset();
+      }
+      return;
+    }
+
+    // Fallback aman: terapkan tema lalu reveal melingkar dari titik klik.
+    setIsDark(nextDark);
+    applyTheme(nextDark);
+    runOverlayReveal(x, y, radius);
+  };
+
+  // Start the theme change on pointerdown (mouse) so the visual response begins
+  // on press instead of release. Keyboard activation still arrives via click.
+  const handlePointerDown = (event: React.PointerEvent<HTMLButtonElement>) => {
+    if (event.pointerType === "mouse" && event.button === 0) {
+      suppressClickRef.current = true;
+      toggleTheme(event.clientX, event.clientY);
+      return;
+    }
+    // Non-mouse pointer: clear any stale suppression; handled on the click.
+    suppressClickRef.current = false;
+  };
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    // A click generated by our own mouse press carries detail > 0 and is
+    // swallowed. Keyboard (Enter/Space) and programmatic activations arrive
+    // with detail === 0, so they always go through even if a flag is stale.
+    if (suppressClickRef.current && event.detail > 0) {
+      suppressClickRef.current = false;
+      return;
+    }
+    suppressClickRef.current = false;
+    toggleTheme(event.clientX, event.clientY);
   };
 
   return (
     <button
-      onClick={toggleTheme}
+      ref={buttonRef}
+      onPointerDown={handlePointerDown}
+      onClick={handleClick}
       type="button"
       aria-label={isDark ? "Beralih ke Mode Terang" : "Beralih ke Mode Gelap"}
       className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 transition-colors duration-200"
