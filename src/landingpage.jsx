@@ -632,7 +632,7 @@ export const Landing = memo(function Landing() {
 
           {/* Right: Theme Toggle & CTA / User Dropdown */}
           <div className="flex items-center gap-2.5">
-            <ThemeToggle className="size-8 rounded-full border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-200 hover:border-emerald-500/40" />
+            <ThemeToggle variant="landing" className="size-8 rounded-full border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-200 hover:border-emerald-500/40" />
 
             {googleUser ? (
               <div
