@@ -4,12 +4,8 @@ import { Sun, Moon } from "lucide-react";
 const STORAGE_KEY = "balasin_theme";
 const OVERLAY_CLASS = "theme-toggle-overlay";
 const OVERLAY_ANIMATION = "theme-toggle-fallback-reveal";
-const DEFAULT_REVEAL_DURATION = 320;
-const DEFAULT_OVERLAY_DURATION = 600;
-const LANDING_REVEAL_DURATION = 500;
-const LANDING_OVERLAY_DURATION = 600;
-
-type Variant = "default" | "landing";
+const REVEAL_DURATION = 320;
+const OVERLAY_DURATION = 600;
 
 type ViewTransitionLike = {
   finished: Promise<void>;
@@ -30,7 +26,7 @@ const THEME_TOGGLE_STYLES = `
 }
 ::view-transition-new(root) {
   z-index: 2;
-  animation: theme-toggle-vt-reveal var(--theme-toggle-vt-duration, ${DEFAULT_REVEAL_DURATION}ms) ease-in-out;
+  animation: theme-toggle-vt-reveal ${REVEAL_DURATION}ms ease-in-out;
 }
 @keyframes theme-toggle-vt-reveal {
   from {
@@ -47,7 +43,7 @@ const THEME_TOGGLE_STYLES = `
   z-index: 2147483000;
   background: var(--background);
   clip-path: circle(0px at var(--theme-toggle-x, 50%) var(--theme-toggle-y, 50%));
-  animation: theme-toggle-fallback-reveal var(--theme-toggle-fb-duration, ${DEFAULT_REVEAL_DURATION}ms) ease-in-out forwards;
+  animation: theme-toggle-fallback-reveal ${REVEAL_DURATION}ms ease-in-out forwards;
 }
 @keyframes theme-toggle-fallback-reveal {
   from {
@@ -96,9 +92,7 @@ function applyTheme(isDark: boolean): void {
   }
 }
 
-export function ThemeToggle({ variant = "default" }: { variant?: Variant } = {}) {
-  const isLanding = variant === "landing";
-
+export function ThemeToggle() {
   // Inisialisasi state secara sinkron langsung dari DOM & localStorage saat render pertama
   const [isDark, setIsDark] = useState<boolean>(() => {
     if (typeof window !== "undefined") {
@@ -121,7 +115,6 @@ export function ThemeToggle({ variant = "default" }: { variant?: Variant } = {})
   useEffect(() => {
     ensureStyles();
     return () => {
-      isTransitioningRef.current = false;
       cleanupRef.current?.();
     };
   }, []);
@@ -152,14 +145,13 @@ export function ThemeToggle({ variant = "default" }: { variant?: Variant } = {})
     return { x, y, radius };
   };
 
-  const runOverlayReveal = (x: number, y: number, radius: number, duration: number) => {
+  const runOverlayReveal = (x: number, y: number, radius: number) => {
     const overlay = document.createElement("div");
     overlay.setAttribute("aria-hidden", "true");
     overlay.className = OVERLAY_CLASS;
     overlay.style.setProperty("--theme-toggle-x", `${x}px`);
     overlay.style.setProperty("--theme-toggle-y", `${y}px`);
     overlay.style.setProperty("--theme-toggle-radius", `${radius}px`);
-    overlay.style.setProperty("--theme-toggle-fb-duration", `${duration}ms`);
 
     overlayRef.current = overlay;
     isTransitioningRef.current = true;
@@ -190,20 +182,15 @@ export function ThemeToggle({ variant = "default" }: { variant?: Variant } = {})
     overlay.addEventListener("animationend", onAnimationEnd);
     document.body.appendChild(overlay);
     cleanupRef.current = cleanup;
-    timeoutId = window.setTimeout(cleanup, duration + 100);
+    timeoutId = window.setTimeout(cleanup, OVERLAY_DURATION);
   };
 
   const toggleTheme = (clientX?: number, clientY?: number) => {
     if (typeof window === "undefined") return;
     if (isTransitioningRef.current) return;
 
-    const currentDark = isLanding
-      ? document.documentElement.classList.contains("dark")
-      : isDark;
-    const nextDark = !currentDark;
+    const nextDark = !isDark;
     const { x, y, radius } = resolveOrigin(clientX, clientY);
-    const revealDuration = isLanding ? LANDING_REVEAL_DURATION : DEFAULT_REVEAL_DURATION;
-    const overlayDuration = isLanding ? LANDING_OVERLAY_DURATION : DEFAULT_OVERLAY_DURATION;
 
     // Hormati prefers-reduced-motion: terapkan langsung tanpa overlay/animasi
     if (prefersReducedMotion()) {
@@ -215,81 +202,38 @@ export function ThemeToggle({ variant = "default" }: { variant?: Variant } = {})
     const doc = document as DocumentWithViewTransition;
 
     if (typeof doc.startViewTransition === "function") {
+      isTransitioningRef.current = true;
       const root = document.documentElement;
+      root.style.setProperty("--theme-toggle-x", `${x}px`);
+      root.style.setProperty("--theme-toggle-y", `${y}px`);
+      root.style.setProperty("--theme-toggle-radius", `${radius}px`);
+
+      // Respons visual ikon tombol dimulai seketika pada interaksi pointer,
+      // tanpa menunggu snapshot lama View Transition.
+      setIsDark(nextDark);
+
+      // Perubahan tema halaman tetap dilakukan di dalam update callback supaya
+      // snapshot lama/baru benar dan reveal melingkar 320ms tetap berjalan.
+      const transition = doc.startViewTransition(() => {
+        applyTheme(nextDark);
+      });
+
       const reset = () => {
         isTransitioningRef.current = false;
-        try {
-          root.style.removeProperty("--theme-toggle-vt-duration");
-          root.style.removeProperty("--theme-toggle-x");
-          root.style.removeProperty("--theme-toggle-y");
-          root.style.removeProperty("--theme-toggle-radius");
-        } catch {
-          // ignore
-        }
       };
-      try {
-        isTransitioningRef.current = true;
-        root.style.setProperty("--theme-toggle-x", `${x}px`);
-        root.style.setProperty("--theme-toggle-y", `${y}px`);
-        root.style.setProperty("--theme-toggle-radius", `${radius}px`);
-        root.style.setProperty("--theme-toggle-vt-duration", `${revealDuration}ms`);
 
-        if (isLanding) {
-          // For landing: start VT first to minimize snapshot delay; drive icon via CSS, update aria-label.
-          const transition = doc.startViewTransition(() => {
-            applyTheme(nextDark);
-            setIsDark(nextDark);
-            if (buttonRef.current) {
-              buttonRef.current.setAttribute(
-                "aria-label",
-                nextDark ? "Beralih ke Mode Terang" : "Beralih ke Mode Gelap",
-              );
-            }
-          });
-          if (transition && typeof transition.finished?.then === "function") {
-            transition.finished.finally(reset).catch(reset);
-          } else {
-            reset();
-          }
-          window.setTimeout(() => {
-            if (isTransitioningRef.current) reset();
-          }, revealDuration + 120);
-          return;
-        }
-
-        // Default: preserve existing behavior (set state before VT)
-        setIsDark(nextDark);
-        const transition = doc.startViewTransition(() => {
-          applyTheme(nextDark);
-        });
-        if (transition && typeof transition.finished?.then === "function") {
-          transition.finished.finally(reset).catch(reset);
-        } else {
-          reset();
-        }
-        // Safety timeout: ensure guard never sticks
-        window.setTimeout(() => {
-          if (isTransitioningRef.current) reset();
-        }, revealDuration + 120);
-        return;
-      } catch (err) {
-        // If VT fails unexpectedly, reset guard and fallback to safe path
+      if (transition && typeof transition.finished?.then === "function") {
+        transition.finished.finally(reset);
+      } else {
         reset();
-        // fall through to fallback below
       }
+      return;
     }
 
     // Fallback aman: terapkan tema lalu reveal melingkar dari titik klik.
-    isTransitioningRef.current = false;
     setIsDark(nextDark);
     applyTheme(nextDark);
-    if (buttonRef.current) {
-      buttonRef.current.setAttribute(
-        "aria-label",
-        nextDark ? "Beralih ke Mode Terang" : "Beralih ke Mode Gelap",
-      );
-    }
-    runOverlayReveal(x, y, radius, overlayDuration);
+    runOverlayReveal(x, y, radius);
   };
 
   // Start the theme change on pointerdown (mouse) so the visual response begins
@@ -325,16 +269,7 @@ export function ThemeToggle({ variant = "default" }: { variant?: Variant } = {})
       aria-label={isDark ? "Beralih ke Mode Terang" : "Beralih ke Mode Gelap"}
       className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 transition-colors duration-200"
     >
-      {isLanding ? (
-        <>
-          <Sun className="lucide lucide-sun w-5 h-5 hidden dark:block" />
-          <Moon className="lucide lucide-moon w-5 h-5 dark:hidden" />
-        </>
-      ) : isDark ? (
-        <Sun className="w-5 h-5" />
-      ) : (
-        <Moon className="w-5 h-5" />
-      )}
+      {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
     </button>
   );
 }
