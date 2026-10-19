@@ -166,7 +166,7 @@ export function DashboardShell({
           </div>
         ) : null}
 
-        <nav className="flex flex-1 flex-col justify-between gap-1.5 min-h-0 overflow-y-auto overflow-x-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <nav className="flex min-h-0 flex-col justify-start gap-3 overflow-y-auto overflow-x-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {items.map((item) => {
             const active =
               pathname === item.to ||
@@ -176,7 +176,7 @@ export function DashboardShell({
                 key={item.to}
                 to={item.to}
                 className={cn(
-                  "group flex flex-1 min-h-[34px] max-h-[52px] items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium cursor-pointer transition-[transform,background-color] duration-100 active:scale-[0.97]",
+                  "group flex min-h-[34px] items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium cursor-pointer transition-[transform,background-color] duration-100 active:scale-[0.97]",
                   active
                     ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-xs"
                     : "text-muted-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground",
@@ -194,6 +194,7 @@ export function DashboardShell({
           })}
         </nav>
 
+        {/* Bottom section pinned to the sidebar bottom; nav group above stays content-height */}
         <div className="mt-auto flex shrink-0 flex-col gap-2.5 pt-3">
           <Link
             to="/"
