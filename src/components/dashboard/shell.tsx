@@ -1,7 +1,9 @@
 import { Link, Outlet, useRouterState } from "@tanstack/react-router";
 import type { LucideIcon } from "lucide-react";
 import { ChevronDown, Home, LogOut, UserPlus } from "lucide-react";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
+
+const useIsomorphicLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
 import { cn } from "@/lib/utils";
 import { getGoogleUser, handleLogout, GoogleUser } from "@/lib/google-auth";
@@ -38,6 +40,13 @@ export function DashboardShell({
   const [isOpen, setIsOpen] = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  const asideRef = useRef<HTMLElement>(null);
+  const [compactNav, setCompactNav] = useState(false);
+  // Tenant/app only: active only when the natural (uncompact) menu list does
+  // not fit the remaining sidebar height, so short viewports can show every
+  // menu without internal scroll while viewports with enough room stay exact.
+  const isTenantApp = items.some((item) => item.to.startsWith("/app"));
+
   const handleMouseEnter = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     setIsOpen(true);
@@ -53,6 +62,35 @@ export function DashboardShell({
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
   }, []);
+
+  useIsomorphicLayoutEffect(() => {
+    if (!isTenantApp) return;
+    const asideEl = asideRef.current;
+    const nav = asideEl?.querySelector("nav");
+    if (!asideEl || !(nav instanceof HTMLElement)) return;
+
+    const evaluate = () => {
+      if (getComputedStyle(asideEl).display === "none") return; // desktop sidebar hidden (mobile)
+      const hadCompact = asideEl.hasAttribute("data-nav-compact");
+      if (hadCompact) asideEl.removeAttribute("data-nav-compact");
+      // Measure the list height at natural sizes (attribute off + sync reflow),
+      // then compare with the nav box height, which is fixed by the shrink-0
+      // chrome blocks and therefore identical with/without compact styling.
+      const naturalNeed = nav.scrollHeight;
+      const available = nav.clientHeight;
+      const next = naturalNeed > available;
+      if (next) asideEl.setAttribute("data-nav-compact", "");
+      setCompactNav(next);
+    };
+    evaluate();
+    const observer = new ResizeObserver(() => evaluate());
+    observer.observe(nav);
+    window.addEventListener("resize", evaluate);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", evaluate);
+    };
+  }, [isTenantApp]);
 
   useEffect(() => {
     const sync = () => {
@@ -90,7 +128,11 @@ export function DashboardShell({
 
   return (
     <div className="flex min-h-screen bg-background text-foreground transition-colors duration-200">
-      <aside className="sticky top-0 hidden h-[100vh] supports-[height:100dvh]:h-[100dvh] w-64 shrink-0 flex-col overflow-hidden border-r border-sidebar-border bg-sidebar px-4 py-4 md:flex">
+      <aside
+        ref={asideRef}
+        data-nav-compact={compactNav ? "" : undefined}
+        className="sticky top-0 hidden h-[100vh] supports-[height:100dvh]:h-[100dvh] w-64 shrink-0 flex-col overflow-hidden border-r border-sidebar-border bg-sidebar px-4 py-4 md:flex"
+      >
         {/* Brand Logo & Header */}
         <div className="mb-4 flex shrink-0 items-center justify-between px-2">
           <Link to="/" className="transition-opacity hover:opacity-90">
@@ -166,7 +208,7 @@ export function DashboardShell({
           </div>
         ) : null}
 
-        <nav className="flex min-h-0 flex-col justify-start gap-3 overflow-y-auto overflow-x-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <nav className="flex min-h-0 flex-1 flex-col justify-start gap-3 overflow-y-auto overflow-x-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {items.map((item) => {
             const active =
               pathname === item.to ||
@@ -176,7 +218,7 @@ export function DashboardShell({
                 key={item.to}
                 to={item.to}
                 className={cn(
-                  "group flex min-h-[34px] items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium cursor-pointer transition-[transform,background-color] duration-100 active:scale-[0.97]",
+                  "group flex min-h-[34px] shrink-0 items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium cursor-pointer transition-[transform,background-color] duration-100 active:scale-[0.97]",
                   active
                     ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-xs"
                     : "text-muted-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground",
@@ -216,7 +258,8 @@ export function DashboardShell({
       </aside>
 
       <style>{`@property --sb-angle{syntax:"<angle>";inherits:false;initial-value:0deg}
-@media (max-height: 650px){aside nav > a{min-height:30px!important}}
+aside[data-nav-compact] nav{row-gap:4px}
+aside[data-nav-compact] nav > a{min-height:0;padding-top:6px;padding-bottom:6px}
 @keyframes lightBlueGlow {
   0%, 100% {
     box-shadow: 0 0 4px rgba(56, 189, 248, 0.3), 0 0 8px rgba(56, 189, 248, 0.15);
